@@ -1,0 +1,2 @@
+- Add clamp function to math file
+- Rework State System to allow for certain events to be added on a per window and per state bases to reduce the need for unwanted members in objects.
