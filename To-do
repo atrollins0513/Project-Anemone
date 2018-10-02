@@ -1,2 +1,3 @@
-- Add clamp function to math file
-- Rework State System to allow for certain events to be added on a per window and per state bases to reduce the need for unwanted members in objects.
+- Pass the ae::Window class into the current state and allow the state to enable event functions as needed.
+  Example: window->enableEvent(Anemone::Window::CHAR_KEY_EVENT);
+           window->disableEvent(Anemone::Window::CHAR_KEY_EVENT);
