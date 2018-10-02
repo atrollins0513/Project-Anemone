@@ -3,6 +3,8 @@
            window->disableEvent(Anemone::Window::CHAR_KEY_EVENT);
 - Improve error checking in the Resource Manager.
 - Finish the Sprite class and all related classes.
+- Create a binary reader/writer.
 - Look into writing a texture packing algorithm and creating reference files.
   -> Allow for a sprite to use a texture's name and let the sprite manager take care of sorting based on which atlas
      the desired texture ends up in and what it's relative coordinates are in the atlas.
+- Create a binary scripting language to improve the efficiency and ease of laying out animations.
