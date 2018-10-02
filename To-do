@@ -1,3 +1,5 @@
 - Pass the ae::Window class into the current state and allow the state to enable event functions as needed.
   Example: window->enableEvent(Anemone::Window::CHAR_KEY_EVENT);
            window->disableEvent(Anemone::Window::CHAR_KEY_EVENT);
+- Improve error checking in the Resource Manager.
+- Finish the Sprite class and all related classes.
