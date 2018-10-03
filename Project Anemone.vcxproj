@@ -64,7 +64,6 @@
     <ClCompile Include="Anemone\mat3.cpp" />
     <ClCompile Include="Anemone\mat4.cpp" />
     <ClCompile Include="Anemone\Math.cpp" />
-    <ClCompile Include="Anemone\Particle.cpp" />
     <ClCompile Include="Anemone\ParticleManager.cpp" />
     <ClCompile Include="Anemone\Quaternion.cpp" />
     <ClCompile Include="Anemone\Renderer.cpp" />
@@ -133,8 +132,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>$(ProjectDir)\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\lib;$(ProjectDir)\lib\glew\$(PlatformTarget);$(LibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)output\</OutDir>
+    <IncludePath>C:\Users\Gecko\Desktop\Project-Anemone\includes\glfw;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Users\Gecko\Desktop\Project-Anemone\includes\glfw;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\lib;$(ProjectDir)\lib\glew\$(PlatformTarget);$(LibraryPath)</LibraryPath>
+    <OutDir>$(ProjectDir)output\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

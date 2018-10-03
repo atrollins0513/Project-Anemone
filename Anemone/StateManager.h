@@ -40,6 +40,12 @@ namespace Anemone
 
 		extern void MouseClickEvent(GLFWwindow* window, AE_INT button, AE_INT action, AE_INT mods);
 
+		extern void ScrollEvent(GLFWwindow* window, AE_DOUBLE xoffset, AE_DOUBLE yoffset);
+
+		extern void MouseEnterEvent(GLFWwindow* window, AE_INT entered);
+
+		extern void JoystickEvent(AE_INT joy, AE_INT ev);
+
 
 		extern void Destroy();
 

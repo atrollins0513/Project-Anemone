@@ -19,38 +19,47 @@ namespace Anemone
 
 		void Update(AE_DOUBLE dt)
 		{
-			if (states[current_state] != nullptr)
-				states[current_state]->Update(dt);
+			states[current_state]->Update(dt);
 		}
 
 		void Render(AE_DOUBLE alpha)
 		{
-			if (states[current_state] != nullptr)
-				states[current_state]->Render(alpha);
+			states[current_state]->Render(alpha);
 		}
 
 		void KeyEvent(GLFWwindow* window, AE_INT key, AE_INT scancode, AE_INT action, AE_INT mods)
 		{
-			if (states[current_state] != nullptr)
-				states[current_state]->KeyEvent(window, key, scancode, action, mods);
+			states[current_state]->KeyEvent(window, key, scancode, action, mods);
 		}
 
 		void CharEvent(GLFWwindow* window, AE_UINT codepoint)
 		{
-			if (states[current_state] != nullptr)
-				states[current_state]->CharEvent(window, codepoint);
+			states[current_state]->CharEvent(window, codepoint);
 		}
 
 		void MouseMoveEvent(GLFWwindow* window, AE_DOUBLE xpos, AE_DOUBLE ypos)
 		{
-			if (states[current_state] != nullptr)
-				states[current_state]->MouseMoveEvent(window, xpos, ypos);
+			states[current_state]->MouseMoveEvent(window, xpos, ypos);
 		}
 
 		void MouseClickEvent(GLFWwindow* window, AE_INT button, AE_INT action, AE_INT mods)
 		{
-			if (states[current_state] != nullptr)
-				states[current_state]->MouseClickEvent(window, button, action, mods);
+			states[current_state]->MouseClickEvent(window, button, action, mods);
+		}
+
+		void ScrollEvent(GLFWwindow* window, AE_DOUBLE xoffset, AE_DOUBLE yoffset)
+		{
+			states[current_state]->ScrollEvent(window, xoffset, yoffset);
+		}
+
+		void MouseEnterEvent(GLFWwindow* window, AE_INT entered)
+		{
+			states[current_state]->MouseEnterEvent(window, entered);
+		}
+
+		void JoystickEvent(AE_INT joy, AE_INT ev)
+		{
+			states[current_state]->JoystickEvent(joy, ev);
 		}
 
 		void Destroy()
@@ -61,9 +70,12 @@ namespace Anemone
 
 		void AddState(AE_UINT id, std::shared_ptr<State> state)
 		{
-			state->SetID(id);
-			states[id] = state;
-			initialization_list[id] = false;
+			if (state != nullptr)
+			{
+				state->SetID(id);
+				states[id] = state;
+				initialization_list[id] = false;
+			}
 		}
 
 		void SetState(AE_UINT id, AE_BOOL transition_in)

@@ -16,15 +16,15 @@ namespace Anemone
 		}
 	}
 
-	bool Window::Create(const AE_CHAR* _title, AE_INT _width, AE_INT _height, GLFWmonitor* _monitor, GLFWwindow* _share)
+	bool Window::Create(const AE_CHAR* _title, AE_INT _width, AE_INT _height, GLFWmonitor* _monitor, GLFWwindow* _share, std::shared_ptr<State> initial_state)
 	{
-		width = _width;
-		height = _height;
+		w = _width;
+		h = _height;
 		monitor = _monitor;
 		share = _share;
 		title = _title;
 
-		window = glfwCreateWindow(width, height, title, monitor, share);
+		window = glfwCreateWindow(w, h, title, monitor, share);
 		if (window == NULL)
 		{
 			Error::Log("Window", "Failed to open GLFW window.");
@@ -40,10 +40,8 @@ namespace Anemone
 			return 0;
 		}
 
-		glfwSetKeyCallback(window, StateManager::KeyEvent);
-		glfwSetCharCallback(window, StateManager::CharEvent);
-		glfwSetCursorPosCallback(window, StateManager::MouseMoveEvent);
-		glfwSetMouseButtonCallback(window, StateManager::MouseClickEvent);
+		StateManager::AddState(0, initial_state);
+		StateManager::SetState(0, false);
 
 		return true;
 	}
@@ -85,5 +83,37 @@ namespace Anemone
 				break;
 		}
 		glfwDestroyWindow(window);
+	}
+
+	void Window::enableEvent(AE_UINT e)
+	{
+		if (e & KEYBOARD_EVENT)
+		{
+			glfwSetKeyCallback(window, StateManager::KeyEvent);
+		}
+		if (e & TEXT_EVENT)
+		{
+			glfwSetCharCallback(window, StateManager::CharEvent);
+		}
+		if (e & MOUSE_MOUSE_EVENT)
+		{
+			glfwSetCursorPosCallback(window, StateManager::MouseMoveEvent);
+		}
+		if (e & MOUSE_CLICK_EVENT)
+		{
+			glfwSetMouseButtonCallback(window, StateManager::MouseClickEvent);
+		}
+		if (e & MOUSE_SCROLL_EVENT)
+		{
+			glfwSetScrollCallback(window, StateManager::ScrollEvent);
+		}
+		if (e & MOUSE_CURSOR_ENTER_LEAVE_EVENT)
+		{
+			glfwSetCursorEnterCallback(window, StateManager::MouseEnterEvent);
+		}
+		if (e & JOYSTICK_EVENT)
+		{
+			glfwSetJoystickCallback(StateManager::JoystickEvent);
+		}
 	}
 };
