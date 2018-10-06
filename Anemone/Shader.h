@@ -3,7 +3,7 @@
 #include "Anemone.h"
 
 #include <Windows.h>
-#include <gl\glew.h>
+#include "includes\glew.h"
 #include <gl\GL.h>
 #include <gl\GLU.h>
 #include <string>

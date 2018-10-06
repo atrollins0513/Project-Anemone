@@ -43,13 +43,14 @@ namespace Anemone
 		StateManager::AddState(0, initial_state);
 		StateManager::SetState(0, false);
 
+		dt = 0.01;
+
 		return true;
 	}
 
 	void Window::Start()
 	{
 		// Loop variables
-		double dt = 0.01;
 		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 		double accumulator = 0.0;
 		std::chrono::high_resolution_clock::time_point newTime;

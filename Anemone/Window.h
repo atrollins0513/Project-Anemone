@@ -7,8 +7,8 @@
 #include <chrono>
 #include <memory>
 
-#include <gl\glew.h>
-#include <gl\glfw3.h>
+#include "includes\glew.h"
+#include "includes\glfw3.h"
 
 #include "StateManager.h"
 #include "Error.h"
@@ -46,6 +46,11 @@ namespace Anemone
 			return h;
 		}
 
+		void setUpdateRate(double _dt)
+		{
+			dt = _dt;
+		}
+
 	protected:
 	private:
 
@@ -60,6 +65,8 @@ namespace Anemone
 		GLFWwindow* share;
 
 		GLFWwindow* window;
+
+		double dt;
 
 	};
 };

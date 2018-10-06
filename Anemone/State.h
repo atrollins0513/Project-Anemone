@@ -2,8 +2,8 @@
 
 #include "Anemone.h"
 
-#include <gl\glew.h>
-#include <gl\glfw3.h>
+#include "includes\glew.h"
+#include "includes\glfw3.h"
 
 namespace Anemone
 {

@@ -137,10 +137,10 @@
     <IncludePath>C:\Users\Gecko\Desktop\Project-Anemone\includes\glfw;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\Gecko\Desktop\Project-Anemone\includes\glfw;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\lib;$(ProjectDir)\lib\glew\$(PlatformTarget);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)output\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
