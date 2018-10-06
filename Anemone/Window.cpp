@@ -16,7 +16,7 @@ namespace Anemone
 		}
 	}
 
-	bool Window::Create(const AE_CHAR* _title, AE_INT _width, AE_INT _height, GLFWmonitor* _monitor, GLFWwindow* _share, std::shared_ptr<State> initial_state)
+	bool Window::Create(std::string _title, AE_UINT _width, AE_UINT _height, GLFWmonitor* _monitor, GLFWwindow* _share, std::shared_ptr<State> initial_state)
 	{
 		w = _width;
 		h = _height;
@@ -24,7 +24,7 @@ namespace Anemone
 		share = _share;
 		title = _title;
 
-		window = glfwCreateWindow(w, h, title, monitor, share);
+		window = glfwCreateWindow(w, h, title.c_str(), monitor, share);
 		if (window == NULL)
 		{
 			Error::Log("Window", "Failed to open GLFW window.");
@@ -50,23 +50,24 @@ namespace Anemone
 
 	void Window::Start()
 	{
-		// Loop variables
 		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
-		double accumulator = 0.0;
+		AE_DOUBLE accumulator = 0.0;
 		std::chrono::high_resolution_clock::time_point newTime;
-		double frameTime = 0.0;
+		AE_DOUBLE frameTime = 0.0;
 
 		while (true)
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			newTime = std::chrono::high_resolution_clock::now();
-			frameTime = std::chrono::duration<double>(newTime - currentTime).count();
+			frameTime = std::chrono::duration<AE_DOUBLE>(newTime - currentTime).count();
 			if (frameTime > 0.25)
 				frameTime = 0.25;
 			currentTime = newTime;
 
 			accumulator += frameTime;
+
+			glfwPollEvents();
 
 			while (accumulator >= dt)
 			{
@@ -76,9 +77,7 @@ namespace Anemone
 
 			Anemone::StateManager::Render(accumulator / dt);
 
-			// Swap buffers
 			glfwSwapBuffers(window);
-			glfwPollEvents();
 
 			if (glfwWindowShouldClose(window) == GLFW_TRUE)
 				break;
@@ -116,5 +115,11 @@ namespace Anemone
 		{
 			glfwSetJoystickCallback(StateManager::JoystickEvent);
 		}
+	}
+
+	void Window::setWindowTitle(std::string new_title)
+	{
+		title = new_title;
+		glfwSetWindowTitle(window, new_title.c_str());
 	}
 };

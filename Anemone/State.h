@@ -2,6 +2,7 @@
 
 #include "Anemone.h"
 
+#define GLEW_STATIC
 #include "includes\glew.h"
 #include "includes\glfw3.h"
 

@@ -6,7 +6,9 @@
 #include <stdlib.h>
 #include <chrono>
 #include <memory>
+#include <string>
 
+#define GLEW_STATIC
 #include "includes\glew.h"
 #include "includes\glfw3.h"
 
@@ -25,23 +27,23 @@ namespace Anemone
 
 		Window();
 		
-		bool Create(const AE_CHAR* _title, AE_INT _width, AE_INT _height, GLFWmonitor* _monitor, GLFWwindow* _share, std::shared_ptr<Anemone::State> initial_state);
+		bool Create(std::string _title, AE_UINT _width, AE_UINT _height, GLFWmonitor* _monitor, GLFWwindow* _share, std::shared_ptr<Anemone::State> initial_state);
 		
 		void Start();
 
 		void enableEvent(AE_UINT e);
 
-		GLFWwindow* handle()
+		GLFWwindow* handle() const
 		{
 			return window;
 		}
 
-		AE_INT width() const
+		const AE_INT width() const
 		{
 			return w;
 		}
 
-		AE_INT height() const
+		const AE_INT height() const
 		{
 			return h;
 		}
@@ -51,14 +53,21 @@ namespace Anemone
 			dt = _dt;
 		}
 
+		const AE_DOUBLE getUpdateRate() const
+		{
+			return dt;
+		}
+
+		void setWindowTitle(std::string new_title);
+
 	protected:
 	private:
 
-		AE_INT w;
+		AE_UINT w;
 
-		AE_INT h;
+		AE_UINT h;
 
-		const AE_CHAR* title;
+		std::string title;
 
 		GLFWmonitor* monitor;
 
@@ -66,7 +75,7 @@ namespace Anemone
 
 		GLFWwindow* window;
 
-		double dt;
+		AE_DOUBLE dt;
 
 	};
 };

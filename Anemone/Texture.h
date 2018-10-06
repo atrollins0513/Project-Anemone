@@ -3,6 +3,7 @@
 #include "Anemone.h"
 
 #include <Windows.h>
+#define GLEW_STATIC
 #include "includes\glew.h"
 #include <gl\GL.h>
 #include "stb_image.h"
