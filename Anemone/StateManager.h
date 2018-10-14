@@ -5,8 +5,8 @@
 #include <memory>
 #include <unordered_map>
 #include <tuple>
-#include <gl\glew.h>
-#include <gl\glfw3.h>
+#include "includes\glew.h"
+#include "includes\glfw3.h"
 
 #include "State.h"
 
@@ -39,6 +39,12 @@ namespace Anemone
 		extern void MouseMoveEvent(GLFWwindow* window, AE_DOUBLE xpos, AE_DOUBLE ypos);
 
 		extern void MouseClickEvent(GLFWwindow* window, AE_INT button, AE_INT action, AE_INT mods);
+
+		extern void ScrollEvent(GLFWwindow* window, AE_DOUBLE xoffset, AE_DOUBLE yoffset);
+
+		extern void MouseEnterEvent(GLFWwindow* window, AE_INT entered);
+
+		extern void JoystickEvent(AE_INT joy, AE_INT ev);
 
 
 		extern void Destroy();

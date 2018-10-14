@@ -1,17 +1,17 @@
 #pragma once
 
 #include "Anemone.h"
-
-#include <Windows.h>
-#include <gl\glew.h>
-#include <gl\GL.h>
-#include <gl\GLU.h>
-#include <string>
-#include <unordered_map>
-
 #include "Error.h"
 #include "File.h"
 #include "ShaderBuilder.h"
+
+#include <Windows.h>
+#include <string>
+#include <unordered_map>
+#define GLEW_STATIC
+#include "includes\glew.h"
+#include <gl\GL.h>
+#include <gl\GLU.h>
 
 namespace Anemone
 {

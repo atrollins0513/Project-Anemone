@@ -3,10 +3,9 @@
 #include "Anemone.h"
 
 #include <Windows.h>
-#include <gl\glew.h>
+#define GLEW_STATIC
+#include "includes\glew.h"
 #include <gl\GL.h>
-#include <gl\GLU.h>
-#include <gl\glut.h>
 #include "stb_image.h"
 
 namespace Anemone
