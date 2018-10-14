@@ -16,21 +16,19 @@ namespace Anemone
 
 		void AddComponent(Component* component);
 
-		template<typename T>
-		T* GetComponent(int bitset_id)
+		template<typename T> std::shared_ptr<T> GetComponent(int bitset_id)
 		{
-			return static_cast<T*>(components[bitset_id]);
+			return std::dynamic_pointer_cast<T>(components[bitset_id]);
 		}
 
 		std::bitset<64> GetComponentBitset() const { return bitset; }
 
-		~Entity();
 	protected:
 	private:
 
 		std::bitset<64> bitset;
 
-		std::unordered_map<int, Component*> components;
+		std::unordered_map<int, std::shared_ptr<Component>> components;
 
 	};
 };

@@ -29,6 +29,7 @@
     <ClInclude Include="Anemone\EntityManager.h" />
     <ClInclude Include="Anemone\Error.h" />
     <ClInclude Include="Anemone\File.h" />
+    <ClInclude Include="Anemone\Font.h" />
     <ClInclude Include="Anemone\Frame.h" />
     <ClInclude Include="Anemone\mat3.h" />
     <ClInclude Include="Anemone\mat4.h" />
@@ -61,6 +62,7 @@
     <ClCompile Include="Anemone\Entity.cpp" />
     <ClCompile Include="Anemone\Error.cpp" />
     <ClCompile Include="Anemone\File.cpp" />
+    <ClCompile Include="Anemone\Font.cpp" />
     <ClCompile Include="Anemone\mat3.cpp" />
     <ClCompile Include="Anemone\mat4.cpp" />
     <ClCompile Include="Anemone\Math.cpp" />

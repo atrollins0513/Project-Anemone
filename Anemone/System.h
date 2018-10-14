@@ -14,21 +14,25 @@ namespace Anemone
 	class System
 	{
 	public:
-		virtual void Init() = 0;
-		virtual void Update(AE_DOUBLE dt) = 0;
 
-		AE_BOOL CompatiableEntity(Entity* entity);
-		virtual bool AddEntity(Entity* entity);
+		virtual void init() = 0;
 
-		template<typename T>
-		void AddComponent()
+		virtual void update(AE_DOUBLE dt) = 0;
+
+		bool AddEntity(std::shared_ptr<Entity> entity);
+
+		template<typename T> void AddComponent()
 		{
 			T comp;
 			bitset[comp.BitSetIndex()];
 		}
+
 	protected:
+
 		std::bitset<64> bitset;
-		std::vector<Entity*> entities;
+
+		std::vector<std::shared_ptr<Entity>> entities;
+
 	private:
 	};
 };

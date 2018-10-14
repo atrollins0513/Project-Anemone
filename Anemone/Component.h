@@ -8,7 +8,10 @@ namespace Anemone
 
 	struct Component
 	{
+
 		Entity* entity;
+
 		virtual AE_INT BitSetIndex() const = 0;
+
 	};
 };

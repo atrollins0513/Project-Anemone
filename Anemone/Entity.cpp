@@ -4,16 +4,8 @@ void Anemone::Entity::AddComponent(Component* component)
 {
 	if (bitset[component->BitSetIndex()] != 1)
 	{
-		component->entity = this;
-		components[component->BitSetIndex()] = component;
-	}
-}
-
-Anemone::Entity::~Entity()
-{
-	for (auto c : components)
-	{
-		if (c.second)
-			delete c.second;
+		std::shared_ptr<Component> c{ component };
+		c->entity = this;
+		components[c->BitSetIndex()] = c;
 	}
 }

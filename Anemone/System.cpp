@@ -1,13 +1,8 @@
 #include "System.h"
 
-Anemone::AE_BOOL Anemone::System::CompatiableEntity(Entity* entity)
+bool Anemone::System::AddEntity(std::shared_ptr<Entity> entity)
 {
-	return (bitset == entity->GetComponentBitset());
-}
-
-bool Anemone::System::AddEntity(Entity* entity)
-{
-	if (CompatiableEntity(entity))
+	if ((bitset & entity->GetComponentBitset()) == bitset)
 	{
 		entities.push_back(entity);
 		return true;
