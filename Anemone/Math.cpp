@@ -363,6 +363,18 @@ namespace Anemone
 			);
 			return perspective;
 		}
+
+		/* Quaternion */
+
+		Quaternion multiply(const Quaternion& q1, const Quaternion& q2)
+		{
+			return Quaternion(
+				q1.values.w*q2.values.w - q1.values.x*q2.values.x - q1.values.y*q2.values.y - q1.values.z*q2.values.z,
+				q1.values.w*q2.values.x + q1.values.x*q2.values.w + q1.values.y*q2.values.z - q1.values.z*q2.values.y,
+				q1.values.w*q2.values.y + q1.values.y*q2.values.w + q1.values.z*q2.values.x - q1.values.x*q2.values.z,
+				q1.values.w*q2.values.z + q1.values.z*q2.values.w + q1.values.x*q2.values.y - q1.values.y*q2.values.x);
+		}
+
 	};
 
 	/* 2D Vector */
@@ -956,6 +968,63 @@ namespace Anemone
 		mat[6] = mat4[8];
 		mat[7] = mat4[9];
 		mat[8] = mat4[10];
+	}
+
+	/* Quaternion */
+
+	Quaternion::Quaternion()
+	{
+
+	}
+
+	Quaternion::Quaternion(float _x, float _y, float _z, float _w)
+	{
+		values.x = _x;
+		values.y = _y;
+		values.z = _z;
+		values.w = _w;
+	}
+
+	Quaternion::Quaternion(ae::vec4 _values)
+	{
+		values = _values;
+	}
+
+	void Quaternion::scale(float s)
+	{
+		values *= s;
+	}
+
+	Quaternion Quaternion::conjugate()
+	{
+		return Quaternion(values.w, -values.x, -values.y, -values.z);
+	}
+
+	Quaternion Quaternion::inverse()
+	{
+		Quaternion quat = conjugate();
+		quat.scale(1.0f / values.squareLength());
+		return quat;
+	}
+
+	Quaternion Quaternion::unit()
+	{
+		Quaternion quat;
+		quat.values = values;
+		quat.scale(1.0f / values.length());
+		return quat;
+	}
+
+	ae::mat4 Quaternion::getRotationMatrix()
+	{
+		ae::mat4 mat;
+		mat.set(
+			values.w, -values.z, values.y, values.x,
+			values.z, values.w, -values.x, values.y,
+			-values.y, values.x, values.w, values.z,
+			-values.x, -values.y, -values.z, values.w
+		);
+		return aem::multiply(mat, mat);
 	}
 
 };

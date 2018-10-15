@@ -257,6 +257,34 @@ namespace Anemone
 
 	};
 
+	/* Quaternion */
+
+	class Quaternion
+	{
+	public:
+
+		ae::vec4 values;
+
+		Quaternion();
+
+		Quaternion(float _x, float _y, float _z, float _w);
+
+		Quaternion(ae::vec4 _values);
+
+		void scale(float s);
+
+		Quaternion conjugate();
+
+		Quaternion inverse();
+
+		Quaternion unit();
+
+		ae::mat4 getRotationMatrix();
+
+		const ae::vec4& get() { return values; }
+
+	};
+
 	namespace Math
 	{
 
@@ -337,6 +365,10 @@ namespace Anemone
 		extern mat4 LookAt(vec3 eye, vec3 target, vec3 up);
 
 		extern mat4 Perspective(AE_FLOAT fovy, AE_FLOAT aspect, AE_FLOAT near, AE_FLOAT far);
+
+		/* Quaternion */
+
+		extern Quaternion multiply(const Quaternion& q1, const Quaternion& q2);
 	};
 
 };
