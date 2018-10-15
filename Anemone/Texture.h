@@ -1,11 +1,14 @@
 #pragma once
 
-#include "Anemone.h"
+#ifndef GLEW_STATIC
+#define GLEW_STATIC
+#endif
 
 #include <Windows.h>
-#define GLEW_STATIC
 #include "includes\glew.h"
 #include <gl\GL.h>
+
+#include "Anemone.h"
 #include "stb_image.h"
 
 namespace Anemone
