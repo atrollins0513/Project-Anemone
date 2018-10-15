@@ -2,7 +2,7 @@
 
 #include "Anemone.h"
 
-#include "vec3.h"
+#include "Math.h"
 #include "Color.h"
 
 namespace Anemone

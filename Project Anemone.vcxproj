@@ -23,16 +23,11 @@
     <ClInclude Include="Anemone\Animation.h" />
     <ClInclude Include="Anemone\BufferObject.h" />
     <ClInclude Include="Anemone\Color.h" />
-    <ClInclude Include="Anemone\Component.h" />
     <ClInclude Include="Anemone\Emitter.h" />
-    <ClInclude Include="Anemone\Entity.h" />
-    <ClInclude Include="Anemone\EntityManager.h" />
     <ClInclude Include="Anemone\Error.h" />
     <ClInclude Include="Anemone\File.h" />
     <ClInclude Include="Anemone\Font.h" />
     <ClInclude Include="Anemone\Frame.h" />
-    <ClInclude Include="Anemone\mat3.h" />
-    <ClInclude Include="Anemone\mat4.h" />
     <ClInclude Include="Anemone\Math.h" />
     <ClInclude Include="Anemone\Particle.h" />
     <ClInclude Include="Anemone\ParticleManager.h" />
@@ -46,12 +41,7 @@
     <ClInclude Include="Anemone\State.h" />
     <ClInclude Include="Anemone\StateManager.h" />
     <ClInclude Include="Anemone\stb_image.h" />
-    <ClInclude Include="Anemone\System.h" />
-    <ClInclude Include="Anemone\SystemManager.h" />
     <ClInclude Include="Anemone\Texture.h" />
-    <ClInclude Include="Anemone\vec2.h" />
-    <ClInclude Include="Anemone\vec3.h" />
-    <ClInclude Include="Anemone\vec4.h" />
     <ClInclude Include="Anemone\Window.h" />
   </ItemGroup>
   <ItemGroup>
@@ -59,12 +49,9 @@
     <ClCompile Include="Anemone\BufferObject.cpp" />
     <ClCompile Include="Anemone\Color.cpp" />
     <ClCompile Include="Anemone\Emitter.cpp" />
-    <ClCompile Include="Anemone\Entity.cpp" />
     <ClCompile Include="Anemone\Error.cpp" />
     <ClCompile Include="Anemone\File.cpp" />
     <ClCompile Include="Anemone\Font.cpp" />
-    <ClCompile Include="Anemone\mat3.cpp" />
-    <ClCompile Include="Anemone\mat4.cpp" />
     <ClCompile Include="Anemone\Math.cpp" />
     <ClCompile Include="Anemone\ParticleManager.cpp" />
     <ClCompile Include="Anemone\Quaternion.cpp" />
@@ -74,12 +61,7 @@
     <ClCompile Include="Anemone\ShaderBuilder.cpp" />
     <ClCompile Include="Anemone\StateManager.cpp" />
     <ClCompile Include="Anemone\stb_image.c" />
-    <ClCompile Include="Anemone\System.cpp" />
-    <ClCompile Include="Anemone\SystemManager.cpp" />
     <ClCompile Include="Anemone\Texture.cpp" />
-    <ClCompile Include="Anemone\vec2.cpp" />
-    <ClCompile Include="Anemone\vec3.cpp" />
-    <ClCompile Include="Anemone\vec4.cpp" />
     <ClCompile Include="Anemone\Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
