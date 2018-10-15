@@ -1,12 +1,14 @@
 #pragma once
 
+#ifndef GLEW_STATIC
+#define GLEW_STATIC
+#endif
+
 #include <vector>
+#include "includes\glew.h"
 
 #include "Anemone.h"
 #include "Error.h"
-
-#define GLEW_STATIC
-#include "includes\glew.h"
 
 namespace Anemone
 {
