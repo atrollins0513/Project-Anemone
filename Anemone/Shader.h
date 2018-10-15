@@ -10,6 +10,8 @@
 #include "includes\glew.h"
 #include <gl\GL.h>
 #include <gl\GLU.h>
+#include <cassert>
+#include <sstream>
 
 #include "Anemone.h"
 #include "Error.h"
