@@ -122,4 +122,9 @@ namespace Anemone
 		title = new_title;
 		glfwSetWindowTitle(window, new_title.c_str());
 	}
+
+	std::shared_ptr<Anemone::Window> CreateWindow()
+	{
+		return std::make_shared<Anemone::Window>();
+	}
 };
