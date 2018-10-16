@@ -4,6 +4,8 @@
 #define GLEW_STATIC
 #endif
 
+#include <memory>
+
 #include "includes\glew.h"
 #include "includes\glfw3.h"
 
