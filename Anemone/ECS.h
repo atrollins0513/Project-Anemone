@@ -49,7 +49,7 @@ namespace Anemone
 		template <typename T>
 		auto& getComponentList()
 		{
-			return components[T];
+			return components[typeid(T)];
 		}
 
 		class Entity
@@ -77,7 +77,7 @@ namespace Anemone
 			template<typename T>
 			T& get()
 			{
-				assert(hasComponent<T>());
+				assert(has<T>());
 				return *static_cast<T*>(components[typeid(T)][id]);
 			}
 
