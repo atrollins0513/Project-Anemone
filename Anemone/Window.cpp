@@ -40,9 +40,6 @@ namespace Anemone
 			return 0;
 		}
 
-		StateManager::AddState(0, initial_state);
-		StateManager::SetState(0, false);
-
 		dt = 0.01;
 
 		return true;

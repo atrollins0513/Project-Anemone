@@ -45,7 +45,7 @@ namespace Anemone
 
 		virtual void TransitionIn() {}
 
-		void SetID(unsigned int _id) { id = _id; }
+		void setID(unsigned int _id) { id = _id; }
 
 		void setParentWindow(std::shared_ptr<Window> parent)
 		{

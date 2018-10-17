@@ -68,17 +68,19 @@ namespace Anemone
 				states[current_state]->Destroy();
 		}
 
-		void AddState(AE_UINT id, std::shared_ptr<State> state)
+		bool AddState(AE_UINT id, std::shared_ptr<State> state)
 		{
-			if (state != nullptr)
+			if (state != nullptr && states[id] == nullptr)
 			{
-				state->SetID(id);
+				state->setID(id);
 				states[id] = state;
 				initialization_list[id] = false;
+				return true;
 			}
+			return false;
 		}
 
-		void SetState(AE_UINT id, AE_BOOL transition_in)
+		void SetState(AE_UINT id, AE_BOOL transitionIn)
 		{
 			if (states[id] != nullptr)
 			{
@@ -90,7 +92,7 @@ namespace Anemone
 					initialization_list[current_state] = true;
 				}
 
-				if (transition_in)
+				if (transitionIn)
 				{
 					states[current_state]->TransitionIn();
 				}
