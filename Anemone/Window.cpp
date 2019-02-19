@@ -40,9 +40,6 @@ namespace Anemone
 			return 0;
 		}
 
-		StateManager::AddState(0, initial_state);
-		StateManager::SetState(0, false);
-
 		dt = 0.01;
 
 		return true;
@@ -121,5 +118,10 @@ namespace Anemone
 	{
 		title = new_title;
 		glfwSetWindowTitle(window, new_title.c_str());
+	}
+
+	std::shared_ptr<Anemone::Window> CreateWindow()
+	{
+		return std::make_shared<Anemone::Window>();
 	}
 };

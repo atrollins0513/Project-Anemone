@@ -46,13 +46,11 @@ namespace Anemone
 
 		extern void JoystickEvent(AE_INT joy, AE_INT ev);
 
-
 		extern void Destroy();
 
+		extern bool AddState(AE_UINT id, std::shared_ptr<State> state);
 
-		extern void AddState(AE_UINT id, std::shared_ptr<State> state);
-
-		extern void SetState(AE_UINT id, AE_BOOL transition_in = false);
+		extern void SetState(AE_UINT id, AE_BOOL transitionIn = false);
 
 		extern std::shared_ptr<State> GetState(AE_UINT id);
 
@@ -60,5 +58,24 @@ namespace Anemone
 
 		extern void RemoveState(AE_UINT id);
 
+		class Window;
+
+		template<typename T>
+		std::shared_ptr<T> CreateState(AE_UINT id, std::shared_ptr<Anemone::Window> parent, AE_BOOL setCurrent = false, AE_BOOL transitionIn = false)
+		{
+			static_assert(std::is_base_of<State, T>::value, "T must be derived from State");
+
+			auto newState = std::make_shared<T>();
+			newState->setParentWindow(parent);
+			AE_BOOL added = AddState(id, newState);
+
+			if (added && setCurrent)
+			{
+				SetState(id, transitionIn);
+				return newState;
+			}
+
+			return nullptr;
+		}
 	};
 };

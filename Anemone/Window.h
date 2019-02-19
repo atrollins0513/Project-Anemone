@@ -82,4 +82,6 @@ namespace Anemone
 		AE_DOUBLE dt;
 
 	};
+
+	extern std::shared_ptr<Anemone::Window> CreateWindow();
 };
