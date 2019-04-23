@@ -119,4 +119,10 @@ namespace Anemone
 		AE_INT height;
 
 	};
+
+	struct RenderObject
+	{
+		VertexArray vao;
+		VertexBuffer vbo;
+	};
 };
