@@ -122,7 +122,10 @@ namespace Anemone
 
 	struct RenderObject
 	{
+
 		VertexArray vao;
+
 		VertexBuffer vbo;
+
 	};
 };
