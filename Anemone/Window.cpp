@@ -4,6 +4,14 @@ namespace Anemone
 {
 	Window::Window()
 	{
+		w = 1280;
+		h = 720;
+		monitor = nullptr;
+		share = nullptr;
+		title = "";
+		dt = 0.01;
+		window = nullptr;
+
 		glfwSetErrorCallback([](AE_INT error, const AE_CHAR* description) {
 			AE_CHAR log_buffer[8192];
 			printf(log_buffer, "%s%s", "Error: ", description);
@@ -50,39 +58,42 @@ namespace Anemone
 
 	void Window::Start()
 	{
-		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
-		AE_DOUBLE accumulator = 0.0;
-		std::chrono::high_resolution_clock::time_point newTime;
-		AE_DOUBLE frameTime = 0.0;
-
-		while (true)
+		if (window != nullptr)
 		{
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+			AE_DOUBLE accumulator = 0.0;
+			std::chrono::high_resolution_clock::time_point newTime;
+			AE_DOUBLE frameTime = 0.0;
 
-			newTime = std::chrono::high_resolution_clock::now();
-			frameTime = std::chrono::duration<AE_DOUBLE>(newTime - currentTime).count();
-			if (frameTime > 0.25)
-				frameTime = 0.25;
-			currentTime = newTime;
-
-			accumulator += frameTime;
-
-			glfwPollEvents();
-
-			while (accumulator >= dt)
+			while (true)
 			{
-				Anemone::StateManager::Update(dt);
-				accumulator -= dt;
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+				newTime = std::chrono::high_resolution_clock::now();
+				frameTime = std::chrono::duration<AE_DOUBLE>(newTime - currentTime).count();
+				if (frameTime > 0.25)
+					frameTime = 0.25;
+				currentTime = newTime;
+
+				accumulator += frameTime;
+
+				glfwPollEvents();
+
+				while (accumulator >= dt)
+				{
+					Anemone::StateManager::Update(dt);
+					accumulator -= dt;
+				}
+
+				Anemone::StateManager::Render(accumulator / dt);
+
+				glfwSwapBuffers(window);
+
+				if (glfwWindowShouldClose(window) == GLFW_TRUE)
+					break;
 			}
-
-			Anemone::StateManager::Render(accumulator / dt);
-
-			glfwSwapBuffers(window);
-
-			if (glfwWindowShouldClose(window) == GLFW_TRUE)
-				break;
+			glfwDestroyWindow(window);
 		}
-		glfwDestroyWindow(window);
 	}
 
 	void Window::enableEvent(AE_UINT e)
