@@ -104,7 +104,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>$(ProjectDir)\lib;$(ProjectDir)\lib\glew\$(PlatformTarget);$(LibraryPath)</LibraryPath>
-    <OutDir>$(ProjectDir)output\</OutDir>
+    <OutDir>$(ProjectDir)Anemone\lib\</OutDir>
     <IncludePath>C:\Users\Gecko\Desktop\Project-Anemone\includes\glfw;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
