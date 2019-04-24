@@ -42,6 +42,9 @@ namespace Anemone
 
 		dt = 0.01;
 
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glViewport(0.0f, 0.0f, w, h);
+
 		return true;
 	}
 
