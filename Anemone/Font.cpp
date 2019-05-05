@@ -115,16 +115,16 @@ namespace Anemone
 
 		void FontManager::init()
 		{
-			vao.Generate();
-			vbo[0].Init(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW);
-			vbo[0].SetData(0, nullptr);
-			vao.BindAttribute(0, vbo[0], GL_FLOAT, 3, 20, 0);
-			vao.BindAttribute(1, vbo[0], GL_FLOAT, 2, 20, 12);
-			vbo[1].Init(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW);
-			vbo[1].SetData(0, nullptr);
-			vao.BindAttribute(2, vbo[1], GL_FLOAT, 3, 12, 0);
-			vbo[2].Init(GL_ELEMENT_ARRAY_BUFFER, GL_DYNAMIC_DRAW);
-			vbo[2].SetData(0, nullptr);
+			vao.init();
+			vbo[0].init(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW);
+			vbo[0].setData(0, nullptr);
+			vao.bindAttribute(0, vbo[0], GL_FLOAT, 3, 20, 0);
+			vao.bindAttribute(1, vbo[0], GL_FLOAT, 2, 20, 12);
+			vbo[1].init(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW);
+			vbo[1].setData(0, nullptr);
+			vao.bindAttribute(2, vbo[1], GL_FLOAT, 3, 12, 0);
+			vbo[2].init(GL_ELEMENT_ARRAY_BUFFER, GL_DYNAMIC_DRAW);
+			vbo[2].setData(0, nullptr);
 			vao.setIndexBuffer(vbo[2]);
 
 			Anemone::ShaderBuilder vs(330);
@@ -186,9 +186,9 @@ namespace Anemone
 			index_count = indices.size();
 
 			vao.bind();
-			vbo[0].SetData(vertices.size() * sizeof(FontVertex), &vertices[0]);
-			vbo[1].SetData(color.size() * sizeof(ae::vec3), &color[0]);
-			vbo[2].SetData(indices.size() * sizeof(AE_UINT), &indices[0]);
+			vbo[0].setData(vertices.size() * sizeof(FontVertex), &vertices[0]);
+			vbo[1].setData(color.size() * sizeof(ae::vec3), &color[0]);
+			vbo[2].setData(indices.size() * sizeof(AE_UINT), &indices[0]);
 		}
 
 		void FontManager::render()

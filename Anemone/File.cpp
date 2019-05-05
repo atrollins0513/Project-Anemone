@@ -22,11 +22,10 @@ namespace Anemone
 
 			AE_CHAR* fileData = new char[size + 1];
 			file.read((char*)fileData, size);
-			fileData[size] = '\0';
 
 			data = fileData;
 
-			delete fileData;
+			delete[] fileData;
 
 			file.close();
 

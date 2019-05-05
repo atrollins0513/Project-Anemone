@@ -2,6 +2,7 @@
 
 #include "Anemone.h"
 
+#include <iostream>
 #include <stdlib.h>
 #include <math.h>
 #include <algorithm>
@@ -285,94 +286,96 @@ namespace Anemone
 
 	};
 
-	namespace Math
-	{
+	extern void SetSeed(AE_INT seed);
 
-		extern void SetSeed(AE_INT seed);
+	extern AE_INT random(AE_UINT upper_limit);
 
-		extern AE_INT random(AE_UINT upper_limit);
+	extern AE_INT random(AE_UINT lower_limit, AE_UINT upper_limit);
 
-		extern AE_INT random(AE_UINT lower_limit, AE_UINT upper_limit);
+	/* 2D Vector */
 
-		/* 2D Vector */
+	extern AE_FLOAT dot(const vec2& vec1, const vec2& vec2);
 
-		extern AE_FLOAT dot(const vec2& vec1, const vec2& vec2);
+	extern vec2 normalize(const vec2& vec);
 
-		extern vec2 normalize(const vec2& vec);
+	extern AE_BOOL equal(const vec2& vec1, const vec2& vec2, float epsilon);
 
-		extern AE_BOOL equal(const vec2& vec1, const vec2& vec2, float epsilon);
+	extern vec2 rotateZ(const vec2& vec, float angle);
 
-		extern vec2 rotateZ(const vec2& vec, float angle);
+	extern void print(const vec2& vec);
 
-		/* 3D Vector */
+	/* 3D Vector */
 
-		extern AE_FLOAT dot(const vec3& vec1, const vec3& vec2);
+	extern AE_FLOAT dot(const vec3& vec1, const vec3& vec2);
 
-		extern vec3 cross(const vec3& vec1, const vec3& vec2);
+	extern vec3 cross(const vec3& vec1, const vec3& vec2);
 
-		extern vec3 normalize(const vec3& vec);
+	extern vec3 normalize(const vec3& vec);
 
-		extern AE_BOOL equal(const vec3& vec1, const vec3& vec2, float epsilon);
+	extern AE_BOOL equal(const vec3& vec1, const vec3& vec2, float epsilon);
 
-		extern vec3 rotateX(const vec3& vec, float angle);
+	extern vec3 rotateX(const vec3& vec, float angle);
 
-		extern vec3 rotateY(const vec3& vec, float angle);
+	extern vec3 rotateY(const vec3& vec, float angle);
 
-		extern vec3 rotateZ(const vec3& vec, float angle);
+	extern vec3 rotateZ(const vec3& vec, float angle);
 
-		/* 4D Vector */
+	extern void print(const vec3& vec);
 
-		extern AE_FLOAT dot(const vec4& vec1, const vec4& vec2);
+	/* 4D Vector */
 
-		extern vec4 normalize(const vec4& vec);
+	extern AE_FLOAT dot(const vec4& vec1, const vec4& vec2);
 
-		extern AE_BOOL equal(const vec4& vec1, const vec4& vec2, float epsilon);
+	extern vec4 normalize(const vec4& vec);
 
-		/* 3x3 Matrix */
+	extern AE_BOOL equal(const vec4& vec1, const vec4& vec2, float epsilon);
 
-		extern mat3 multiply(const mat3& mat1, const mat3& mat2);
+	extern void print(const vec4& vec);
 
-		extern vec3 multiply(const mat3& mat, const vec3& vec);
+	/* 3x3 Matrix */
 
-		extern mat3 transpose(const mat3& mat);
+	extern mat3 multiply(const mat3& mat1, const mat3& mat2);
 
-		/* 4x4 Matrix */
+	extern vec3 multiply(const mat3& mat, const vec3& vec);
 
-		extern mat4 identity();
+	extern mat3 transpose(const mat3& mat);
 
-		extern mat4 multiply(const mat4& mat1, const mat4& mat2);
+	extern void print(const mat3& mat);
 
-		extern vec3 multiply(const mat4& mat, const vec3& vec);
+	/* 4x4 Matrix */
 
-		extern vec4 multiply(const mat4& mat, const vec4& vec);
+	extern mat4 identity();
 
-		extern mat4 transpose(const mat4& mat);
+	extern mat4 multiply(const mat4& mat1, const mat4& mat2);
 
-		extern mat4 translate(AE_FLOAT x, AE_FLOAT y, AE_FLOAT z);
+	extern vec3 multiply(const mat4& mat, const vec3& vec);
 
-		extern mat4 scale(AE_FLOAT x, AE_FLOAT y, AE_FLOAT z);
+	extern vec4 multiply(const mat4& mat, const vec4& vec);
 
-		extern mat4 rotateX(AE_FLOAT radians);
+	extern mat4 transpose(const mat4& mat);
 
-		extern mat4 rotateY(AE_FLOAT radians);
+	extern mat4 translate(AE_FLOAT x, AE_FLOAT y, AE_FLOAT z);
 
-		extern mat4 rotateZ(AE_FLOAT radians);
+	extern mat4 scale(AE_FLOAT x, AE_FLOAT y, AE_FLOAT z);
 
-		extern mat4 Ortho(AE_FLOAT left, AE_FLOAT right, AE_FLOAT bottom, AE_FLOAT top, AE_FLOAT near, AE_FLOAT far);
+	extern mat4 rotateX(AE_FLOAT radians);
 
-		extern mat4 Frustum(AE_FLOAT left, AE_FLOAT right, AE_FLOAT bottom, AE_FLOAT top, AE_FLOAT near, AE_FLOAT far);
+	extern mat4 rotateY(AE_FLOAT radians);
 
-		extern mat4 LookAt(vec3 eye, vec3 target, vec3 up);
+	extern mat4 rotateZ(AE_FLOAT radians);
 
-		extern mat4 Perspective(AE_FLOAT fovy, AE_FLOAT aspect, AE_FLOAT near, AE_FLOAT far);
+	extern mat4 Ortho(AE_FLOAT left, AE_FLOAT right, AE_FLOAT bottom, AE_FLOAT top, AE_FLOAT near, AE_FLOAT far);
 
-		/* Quaternion */
+	extern mat4 Frustum(AE_FLOAT left, AE_FLOAT right, AE_FLOAT bottom, AE_FLOAT top, AE_FLOAT near, AE_FLOAT far);
 
-		extern Quaternion multiply(const Quaternion& q1, const Quaternion& q2);
-	};
+	extern mat4 LookAt(vec3 eye, vec3 target, vec3 up);
+
+	extern mat4 Perspective(AE_FLOAT fovy, AE_FLOAT aspect, AE_FLOAT near, AE_FLOAT far);
+
+	extern void print(const mat4& mat);
+
+	/* Quaternion */
+
+	extern Quaternion multiply(const Quaternion& q1, const Quaternion& q2);
 
 };
-
-#ifndef aem
-#define aem Anemone::Math
-#endif

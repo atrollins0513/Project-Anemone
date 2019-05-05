@@ -14,8 +14,10 @@
 
 namespace Anemone
 {
+
 	namespace ResourceManager
 	{
+
 		class resource_shader
 		{
 		public:
@@ -67,6 +69,7 @@ namespace Anemone
 		extern resource_shader shader;
 		extern resource_texture texture;
 	};
+
 };
 
 #define resource Anemone::ResourceManager

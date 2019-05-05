@@ -16,7 +16,7 @@
 #include "includes\glew.h"
 #include "includes\glfw3.h"
 
-#include "StateManager.h"
+#include "State.h"
 #include "Error.h"
 
 namespace Anemone

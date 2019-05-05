@@ -31,7 +31,6 @@
     <ClInclude Include="Anemone\ResourceManager.h" />
     <ClInclude Include="Anemone\Shader.h" />
     <ClInclude Include="Anemone\State.h" />
-    <ClInclude Include="Anemone\StateManager.h" />
     <ClInclude Include="Anemone\stb_image.h" />
     <ClInclude Include="Anemone\Texture.h" />
     <ClInclude Include="Anemone\Window.h" />
@@ -46,7 +45,7 @@
     <ClCompile Include="Anemone\Renderer.cpp" />
     <ClCompile Include="Anemone\ResourceManager.cpp" />
     <ClCompile Include="Anemone\Shader.cpp" />
-    <ClCompile Include="Anemone\StateManager.cpp" />
+    <ClCompile Include="Anemone\State.cpp" />
     <ClCompile Include="Anemone\stb_image.c" />
     <ClCompile Include="Anemone\Texture.cpp" />
     <ClCompile Include="Anemone\Window.cpp" />

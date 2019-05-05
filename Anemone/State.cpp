@@ -1,9 +1,11 @@
-#include "StateManager.h"
+#include "State.h"
 
 namespace Anemone
 {
+
 	namespace StateManager
 	{
+
 		namespace
 		{
 			AE_UINT current_state = 0;
@@ -27,32 +29,32 @@ namespace Anemone
 			states[current_state]->Render(alpha);
 		}
 
-		void KeyEvent(GLFWwindow* window, AE_INT key, AE_INT scancode, AE_INT action, AE_INT mods)
+		void KeyEvent(GLFWwindow * window, AE_INT key, AE_INT scancode, AE_INT action, AE_INT mods)
 		{
 			states[current_state]->KeyEvent(window, key, scancode, action, mods);
 		}
 
-		void CharEvent(GLFWwindow* window, AE_UINT codepoint)
+		void CharEvent(GLFWwindow * window, AE_UINT codepoint)
 		{
 			states[current_state]->CharEvent(window, codepoint);
 		}
 
-		void MouseMoveEvent(GLFWwindow* window, AE_DOUBLE xpos, AE_DOUBLE ypos)
+		void MouseMoveEvent(GLFWwindow * window, AE_DOUBLE xpos, AE_DOUBLE ypos)
 		{
 			states[current_state]->MouseMoveEvent(window, xpos, ypos);
 		}
 
-		void MouseClickEvent(GLFWwindow* window, AE_INT button, AE_INT action, AE_INT mods)
+		void MouseClickEvent(GLFWwindow * window, AE_INT button, AE_INT action, AE_INT mods)
 		{
 			states[current_state]->MouseClickEvent(window, button, action, mods);
 		}
 
-		void ScrollEvent(GLFWwindow* window, AE_DOUBLE xoffset, AE_DOUBLE yoffset)
+		void ScrollEvent(GLFWwindow * window, AE_DOUBLE xoffset, AE_DOUBLE yoffset)
 		{
 			states[current_state]->ScrollEvent(window, xoffset, yoffset);
 		}
 
-		void MouseEnterEvent(GLFWwindow* window, AE_INT entered)
+		void MouseEnterEvent(GLFWwindow * window, AE_INT entered)
 		{
 			states[current_state]->MouseEnterEvent(window, entered);
 		}
@@ -120,5 +122,7 @@ namespace Anemone
 				initialization_list.erase(id);
 			}
 		}
+
 	};
+
 };
