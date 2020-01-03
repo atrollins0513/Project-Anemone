@@ -19,7 +19,7 @@ namespace Anemone
 		Create(data, length, bpp, mipmaps, mag_filter, min_filter);
 	}
 
-	void Texture::LoadFromFile(AE_CHAR* file_name, AE_BOOL mipmaps, GLint mag_filter, GLint min_filter)
+	void Texture::LoadFromFile(const AE_CHAR* file_name, AE_BOOL mipmaps, GLint mag_filter, GLint min_filter)
 	{
 		AE_INT bpp;
 		AE_UCHAR* data = stbi_load(file_name, &texture_width, &texture_height, &bpp, 0);

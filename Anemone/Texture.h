@@ -19,6 +19,23 @@ namespace Anemone
 	{
 	public:
 
+		Texture()
+		{
+			texture_width = 0;
+			texture_height = 0;
+			texture_id = 0;
+		}
+
+		Texture(AE_UCHAR* data, AE_INT length, AE_BOOL mipmaps, GLint mag_filter = GL_NEAREST, GLint min_filter = GL_NEAREST) : Texture()
+		{
+			LoadFromData(data, length, mipmaps, mag_filter, min_filter);
+		}
+
+		Texture(const AE_CHAR* file_name, AE_BOOL mipmaps, GLint mag_filter = GL_NEAREST, GLint min_filter = GL_NEAREST) : Texture()
+		{
+			LoadFromFile(file_name, mipmaps, mag_filter, min_filter);
+		};
+
 		void bind();
 
 		void unbind();
@@ -27,7 +44,7 @@ namespace Anemone
 
 		void LoadFromData(AE_UCHAR* data, AE_INT length, AE_BOOL mipmaps, GLint mag_filter = GL_NEAREST, GLint min_filter = GL_NEAREST);
 
-		void LoadFromFile(AE_CHAR* file_name, AE_BOOL mipmaps, GLint mag_filter = GL_NEAREST, GLint min_filter = GL_NEAREST);
+		void LoadFromFile(const AE_CHAR* file_name, AE_BOOL mipmaps, GLint mag_filter = GL_NEAREST, GLint min_filter = GL_NEAREST);
 
 		void SetParameter(GLenum parameter, GLint param_value);
 

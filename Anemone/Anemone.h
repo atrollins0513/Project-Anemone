@@ -43,9 +43,5 @@ namespace Anemone
 
 };
 
-#define ANME Anemone
-#define Anme Anemone
-#define anme Anemone
-#define ane Anemone
 #define AE Anemone
 #define ae Anemone
