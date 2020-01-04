@@ -20,7 +20,7 @@ namespace Anemone
 		void FontLoader::Load(std::string texture_file, std::string bmFontFile)
 		{
 			font_file = bmFontFile;
-			texture = resource::texture(texture_file);
+			texture = rm::texture(texture_file);
 
 			std::ifstream font_file(bmFontFile);
 

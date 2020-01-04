@@ -72,4 +72,4 @@ namespace Anemone
 
 };
 
-#define aerm Anemone::ResourceManager
+#define rm Anemone::ResourceManager
