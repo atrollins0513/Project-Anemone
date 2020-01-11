@@ -41,6 +41,10 @@ namespace Anemone
 
 		void setUpdateRate(double _dt);
 
+		void setWindowPosition(AE_INT x, AE_INT y);
+
+		void setHint(AE_INT hint, AE_INT value);
+
 		GLFWwindow* handle() { return window; }
 
 		const AE_INT width() { return w; }

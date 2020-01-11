@@ -139,6 +139,16 @@ namespace Anemone
 		dt = _dt;
 	}
 
+	void Window::setWindowPosition(AE_INT x, AE_INT y)
+	{
+		glfwSetWindowPos(window, x, y);
+	}
+
+	void Window::setHint(AE_INT hint, AE_INT value)
+	{
+		glfwWindowHint(hint, value);
+	}
+
 	std::shared_ptr<Anemone::Window> MakeWindow()
 	{
 		return std::make_shared<Anemone::Window>();
