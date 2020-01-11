@@ -135,7 +135,7 @@ namespace Anemone
 			vs.AddUniform("mat4", "view");
 			vs.AddOutput("vec3", "fragColor", 2);
 			vs.AddOutput("vec2", "fragTexCoord", 1);
-			vs.AddFunction("gl_Position = proj * view * vec4(pos, 1.0);");
+			vs.AddMain("gl_Position = proj * view * vec4(pos, 1.0);");
 
 			Anemone::ShaderBuilder fs(330);
 			fs.AddUniform("sampler2D", "texture_id");
@@ -144,7 +144,7 @@ namespace Anemone
 			fs.AddOutput("vec4", "color");
 			fs.AddVariable(true, "AE_FLOAT", "width", "0.49");
 			fs.AddVariable(true, "AE_FLOAT", "edge", "0.23");
-			fs.AddFunction("AE_FLOAT distance = 1.0 - texture(texture_id, fragTexCoord).a; AE_FLOAT alpha = 1.0 - smoothstep(width, width+edge, distance); color = vec4(fragColor, alpha);");
+			fs.AddMain("AE_FLOAT distance = 1.0 - texture(texture_id, fragTexCoord).a; AE_FLOAT alpha = 1.0 - smoothstep(width, width+edge, distance); color = vec4(fragColor, alpha);");
 
 			shader.LoadFromShaderBuilder(vs, fs);
 		}

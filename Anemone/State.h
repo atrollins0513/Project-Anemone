@@ -120,7 +120,7 @@ namespace Anemone
 		class Window;
 
 		template<typename T>
-		std::shared_ptr<T> CreateState(AE_UINT id, std::shared_ptr<Anemone::Window> parent, AE_BOOL setCurrent = false, AE_BOOL transitionIn = false)
+		inline std::shared_ptr<T> CreateState(AE_UINT id, std::shared_ptr<Anemone::Window> parent, AE_BOOL setCurrent = false, AE_BOOL transitionIn = false)
 		{
 			static_assert(std::is_base_of<State, T>::value, "T must be derived from State");
 

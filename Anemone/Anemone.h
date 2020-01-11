@@ -12,6 +12,10 @@
 #pragma comment(lib, "Anemone/lib/Project Anemone.lib")
 #endif
 
+#ifndef ANEMONE_DISABLE_MAIN_ENTRY_POINT
+#pragma comment(linker, "/ENTRY:mainCRTStartup")
+#endif
+
 namespace Anemone
 {
 

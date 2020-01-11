@@ -215,4 +215,63 @@ namespace Anemone
 	{
 		vao.unbind();
 	}
+
+	/* Buffer Object */
+	BufferObject::BufferObject()
+	{
+		type = target = usage = 0;
+		vertex_count = 0;
+	}
+
+	BufferObject::BufferObject(std::map<AE_INT, AE_INT> topology, GLenum _type, GLenum _target, GLenum _usage) : BufferObject()
+	{
+		type = _type;
+		target = _target;
+		usage = _usage;
+
+		va.init();
+		buffer.init(target, usage);
+
+		AE_INT sum = 0;
+		AE_INT offset = 0;
+
+		for (auto t : topology)
+		{
+			sum += t.second;
+		}
+
+		for (auto t : topology)
+		{
+			va.bindAttribute(t.first, buffer, type, t.second, sum * sizeof(AE_FLOAT), offset);
+			offset += t.second * sizeof(AE_FLOAT);
+		}
+
+		buffer.unbind();
+		va.unbind();
+	}
+
+	void BufferObject::setData(std::size_t length, const void* data)
+	{
+		buffer.setData(length, data);
+	}
+
+	void BufferObject::setSubData(std::size_t pointer, std::size_t length, const void* data)
+	{
+		buffer.setSubData(pointer, length, data);
+	}
+
+	void BufferObject::bind()
+	{
+		va.bind();
+	}
+
+	void BufferObject::unbind()
+	{
+		va.unbind();
+	}
+
+	void BufferObject::setVertexCount(AE_ULONG _vertex_count)
+	{
+		vertex_count = _vertex_count;
+	}
 };

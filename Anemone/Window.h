@@ -31,38 +31,23 @@ namespace Anemone
 
 		Window();
 		
-		bool Create(std::string _title, AE_UINT _width, AE_UINT _height, GLFWmonitor* _monitor, GLFWwindow* _share, std::shared_ptr<Anemone::State> initial_state);
+		bool Create(std::string _title, AE_UINT _width, AE_UINT _height, GLFWmonitor* _monitor = nullptr, GLFWwindow* _share = nullptr);
 		
 		void Start();
 
 		void enableEvent(AE_UINT e);
 
-		GLFWwindow* handle() const
-		{
-			return window;
-		}
-
-		const AE_INT width() const
-		{
-			return w;
-		}
-
-		const AE_INT height() const
-		{
-			return h;
-		}
-
-		void setUpdateRate(double _dt)
-		{
-			dt = _dt;
-		}
-
-		const AE_DOUBLE getUpdateRate() const
-		{
-			return dt;
-		}
-
 		void setWindowTitle(std::string new_title);
+
+		void setUpdateRate(double _dt);
+
+		GLFWwindow* handle() { return window; }
+
+		const AE_INT width() { return w; }
+
+		const AE_INT height() { return h; }
+
+		const AE_DOUBLE getUpdateRate() { return dt; }
 
 	protected:
 	private:
@@ -83,5 +68,5 @@ namespace Anemone
 
 	};
 
-	extern std::shared_ptr<Anemone::Window> CreateWindow();
+	extern std::shared_ptr<Anemone::Window> MakeWindow();
 };

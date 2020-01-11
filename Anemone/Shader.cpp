@@ -53,7 +53,12 @@ namespace Anemone
 		inputs.push_back(input);
 	}
 
-	void ShaderBuilder::AddFunction(std::string _func)
+	void ShaderBuilder::AddLine(std::string line)
+	{
+		lines.push_back(line);
+	}
+
+	void ShaderBuilder::AddMain(std::string _func)
 	{
 		func = _func;
 	}
@@ -127,6 +132,11 @@ namespace Anemone
 					}
 				}
 			}
+		}
+
+		for (auto l : lines)
+		{
+			ss << l << "\n";
 		}
 
 		ss << func << "\n";

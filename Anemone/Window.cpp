@@ -24,7 +24,7 @@ namespace Anemone
 		}
 	}
 
-	bool Window::Create(std::string _title, AE_UINT _width, AE_UINT _height, GLFWmonitor* _monitor, GLFWwindow* _share, std::shared_ptr<State> initial_state)
+	bool Window::Create(std::string _title, AE_UINT _width, AE_UINT _height, GLFWmonitor* _monitor, GLFWwindow* _share)
 	{
 		w = _width;
 		h = _height;
@@ -134,7 +134,12 @@ namespace Anemone
 		glfwSetWindowTitle(window, new_title.c_str());
 	}
 
-	std::shared_ptr<Anemone::Window> CreateWindow()
+	void Window::setUpdateRate(double _dt)
+	{
+		dt = _dt;
+	}
+
+	std::shared_ptr<Anemone::Window> MakeWindow()
 	{
 		return std::make_shared<Anemone::Window>();
 	}

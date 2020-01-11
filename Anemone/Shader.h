@@ -37,7 +37,9 @@ namespace Anemone
 
 		void AddInput(std::string data_type, std::string name);
 
-		void AddFunction(std::string _func);
+		void AddLine(std::string line);
+
+		void AddMain(std::string _func);
 
 		void AddVariable(bool is_const, std::string data_type, std::string name, std::string value = "no value");
 
@@ -90,6 +92,8 @@ namespace Anemone
 		std::vector<ShaderBuilderInput> inputs;
 
 		std::vector<ShaderBuilderVariable> variables;
+
+		std::vector<std::string> lines;
 
 		std::string func;
 

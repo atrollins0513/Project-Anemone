@@ -5,6 +5,7 @@
 #endif
 
 #include <vector>
+#include <map>
 #include "includes\glew.h"
 
 #include "Anemone.h"
@@ -38,13 +39,13 @@ namespace Anemone
 
 		void getSubData(std::size_t pointer, std::size_t length, void* data);
 
-		AE_UINT GetId() const { return id; }
+		AE_UINT GetId() { return id; }
 
-		AE_UINT size() const { return dataSize; }
+		AE_UINT size() { return dataSize; }
 
-		AE_UINT getTarget() const { return target; };
+		AE_UINT getTarget() { return target; };
 
-		AE_UINT getUsage() const { return usage; };
+		AE_UINT getUsage() { return usage; };
 
 	protected:
 
@@ -164,10 +165,47 @@ namespace Anemone
 		{
 			return ibo;
 		}
+
 	protected:
 	private:
+
 		VertexArray vao;
+
 		std::vector<VertexBuffer> vbo_array;
+
 		VertexBuffer ibo;
+
+	};
+
+	class BufferObject
+	{
+	public:
+
+		BufferObject();
+
+		BufferObject(std::map<AE_INT, AE_INT> topology, GLenum _type = GL_FLOAT, GLenum _target = GL_ARRAY_BUFFER, GLenum _usage = GL_STATIC_DRAW);
+
+		void setData(std::size_t length, const void* data);
+
+		void setSubData(std::size_t pointer, std::size_t length, const void* data);
+
+		void bind();
+
+		void unbind();
+
+		void setVertexCount(AE_ULONG _vertex_count);
+
+		AE_ULONG getVertexCount() { return vertex_count; }
+
+	private:
+
+		ae::VertexArray va;
+
+		ae::VertexBuffer buffer;
+
+		GLenum type, target, usage;
+
+		AE_ULONG vertex_count;
+
 	};
 };
