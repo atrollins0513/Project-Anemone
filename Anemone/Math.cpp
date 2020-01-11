@@ -2,21 +2,6 @@
 
 namespace Anemone
 {
-	void SetSeed(AE_INT seed)
-	{
-		srand(seed);
-	}
-
-	AE_INT random(AE_UINT upper_limit)
-	{
-		return rand() % upper_limit;
-	}
-
-	AE_INT random(AE_UINT lower_limit, AE_UINT upper_limit)
-	{
-		return rand() % upper_limit + lower_limit;
-	}
-
 	/* 2D Vector */
 
 	AE_FLOAT dot(const vec2& vec1, const vec2& vec2)
@@ -1051,6 +1036,42 @@ namespace Anemone
 			-values.x, -values.y, -values.z, values.w
 		);
 		return multiply(mat, mat);
+	}
+
+	/* Misc Functions */
+
+	void SetSeed(AE_INT seed)
+	{
+		srand(seed);
+	}
+
+	AE_INT random(AE_UINT upper_limit)
+	{
+		return rand() % upper_limit;
+	}
+
+	AE_INT random(AE_UINT lower_limit, AE_UINT upper_limit)
+	{
+		return rand() % upper_limit + lower_limit;
+	}
+
+	ae::vec3 hexToRGB(std::string hex)
+	{
+		if (hex.at(0) == '#')
+		{
+			hex = hex.substr(1);
+		}
+
+		if (hex.size() == 6)
+		{
+			return ae::vec3(
+				std::stol(hex.substr(0, 2), nullptr, 16) / 255.0f,
+				std::stol(hex.substr(2, 2), nullptr, 16) / 255.0f,
+				std::stol(hex.substr(4, 2), nullptr, 16) / 255.0f
+			);
+		}
+
+		return ae::vec3(1.0f, 1.0f, 1.0f);
 	}
 
 };

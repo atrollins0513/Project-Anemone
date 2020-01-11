@@ -1,11 +1,13 @@
 #pragma once
 
-#include "Anemone.h"
-
 #include <iostream>
 #include <stdlib.h>
 #include <math.h>
 #include <algorithm>
+#include <random>
+#include <string>
+
+#include "Anemone.h"
 
 #define PI 3.141592654f
 #define to_radians(deg) (deg * PI) / 180.0f
@@ -286,12 +288,6 @@ namespace Anemone
 
 	};
 
-	extern void SetSeed(AE_INT seed);
-
-	extern AE_INT random(AE_UINT upper_limit);
-
-	extern AE_INT random(AE_UINT lower_limit, AE_UINT upper_limit);
-
 	/* 2D Vector */
 
 	extern AE_FLOAT dot(const vec2& vec1, const vec2& vec2);
@@ -377,5 +373,15 @@ namespace Anemone
 	/* Quaternion */
 
 	extern Quaternion multiply(const Quaternion& q1, const Quaternion& q2);
+
+	/* Misc Functions */
+
+	extern void SetSeed(AE_INT seed);
+
+	extern AE_INT random(AE_UINT upper_limit);
+
+	extern AE_INT random(AE_UINT lower_limit, AE_UINT upper_limit);
+
+	extern ae::vec3 hexToRGB(std::string hex);
 
 };
