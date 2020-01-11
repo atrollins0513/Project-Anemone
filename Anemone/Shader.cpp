@@ -58,11 +58,6 @@ namespace Anemone
 		lines.push_back(line);
 	}
 
-	void ShaderBuilder::AddMain(std::string _func)
-	{
-		func = _func;
-	}
-
 	void ShaderBuilder::AddVariable(bool is_const, std::string data_type, std::string name, std::string value)
 	{
 		ShaderBuilderVariable variable;
@@ -75,8 +70,6 @@ namespace Anemone
 
 	std::string ShaderBuilder::Compile() const
 	{
-		assert(!func.empty());
-
 		std::stringstream ss;
 		ss << "#version " << version << "\n";
 		for (auto a : attributes)
@@ -139,7 +132,6 @@ namespace Anemone
 			ss << l << "\n";
 		}
 
-		ss << func << "\n";
 		ss << "}";
 
 		return ss.str().c_str();
