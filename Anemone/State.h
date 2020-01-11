@@ -81,8 +81,6 @@ namespace Anemone
 
 			extern std::unordered_map<AE_UINT, std::shared_ptr<State>> states;
 
-			extern std::unordered_map<AE_UINT, AE_BOOL> initialization_list;
-
 		};
 
 		extern void Init();
@@ -109,13 +107,15 @@ namespace Anemone
 
 		extern bool AddState(AE_UINT id, std::shared_ptr<State> state);
 
-		extern void SetState(AE_UINT id, AE_BOOL transitionIn = false);
+		extern void SetState(AE_UINT id, AE_BOOL initialize = false, AE_BOOL transitionIn = false);
 
 		extern std::shared_ptr<State> GetState(AE_UINT id);
 
 		extern std::shared_ptr<State> GetCurrentState();
 
 		extern void RemoveState(AE_UINT id);
+
+		extern bool StateExists(AE_UINT id);
 
 		class Window;
 
