@@ -382,6 +382,6 @@ namespace Anemone
 
 	extern AE_INT random(AE_UINT lower_limit, AE_UINT upper_limit);
 
-	extern ae::vec3 hexToRGB(std::string hex);
+	extern vec3 hexToRGB(std::string hex);
 
 };

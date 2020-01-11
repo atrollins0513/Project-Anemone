@@ -1055,7 +1055,7 @@ namespace Anemone
 		return rand() % upper_limit + lower_limit;
 	}
 
-	ae::vec3 hexToRGB(std::string hex)
+	vec3 hexToRGB(std::string hex)
 	{
 		if (hex.at(0) == '#')
 		{
