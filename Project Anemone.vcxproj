@@ -46,6 +46,7 @@
     <ClCompile Include="Anemone\ResourceManager.cpp" />
     <ClCompile Include="Anemone\Shader.cpp" />
     <ClCompile Include="Anemone\State.cpp" />
+    <ClCompile Include="Anemone\stb_image.cpp" />
     <ClCompile Include="Anemone\Texture.cpp" />
     <ClCompile Include="Anemone\Window.cpp" />
   </ItemGroup>
