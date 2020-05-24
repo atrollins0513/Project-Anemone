@@ -7,10 +7,10 @@
 #include <map>
 #include <unordered_map>
 
+#include "BufferObject.h"
 #include "ResourceManager.h"
 #include "Error.h"
 #include "Math.h"
-#include "BufferObject.h"
 #include "Shader.h"
 
 namespace Anemone
@@ -20,13 +20,13 @@ namespace Anemone
 		struct FontVertex
 		{
 
-			ae::vec3 position;
+			Anemone::vec3 position;
 
-			ae::vec2 tex;
+			Anemone::vec2 tex;
 
 			FontVertex() { }
 
-			FontVertex(ae::vec3 _position, ae::vec2 _tex)
+			FontVertex(Anemone::vec3 _position, Anemone::vec2 _tex)
 			{
 				position = _position;
 				tex = _tex;
@@ -37,21 +37,21 @@ namespace Anemone
 		struct FontCharInfo
 		{
 
-			AE_INT id;
+			int id;
 
-			AE_FLOAT x, y, width, height, xoffset, yoffset, xadvance;
+			float x, y, width, height, xoffset, yoffset, xadvance;
 
-			AE_FLOAT u, v, u_width, v_height;
+			float u, v, u_width, v_height;
 
-			void add(ae::vec3 position, AE_FLOAT fontSize, std::vector<FontVertex>& _vertices, std::vector<AE_UINT>& indices, AE_UINT& index_offset)
+			void add(Anemone::vec3 position, float fontSize, std::vector<FontVertex>& _vertices, std::vector<unsigned int>& indices, unsigned int& index_offset)
 			{
-				AE_FLOAT newWidth = width * fontSize;
-				AE_FLOAT newHeight = height * fontSize;
-				position += ae::vec3(xoffset * fontSize, 87.0f - (yoffset * fontSize + newHeight), 0.0f);
-				_vertices.push_back(FontVertex(ae::vec3(position.x, position.y, position.z), ae::vec2(u, v + v_height)));
-				_vertices.push_back(FontVertex(ae::vec3(position.x, position.y + newHeight, position.z), ae::vec2(u, v)));
-				_vertices.push_back(FontVertex(ae::vec3(position.x + newWidth, position.y + newHeight, position.z), ae::vec2(u + u_width, v)));
-				_vertices.push_back(FontVertex(ae::vec3(position.x + newWidth, position.y, position.z), ae::vec2(u + u_width, v + v_height)));
+				float newWidth = width * fontSize;
+				float newHeight = height * fontSize;
+				position += Anemone::vec3(xoffset * fontSize, 87.0f - (yoffset * fontSize + newHeight), 0.0f);
+				_vertices.push_back(FontVertex(Anemone::vec3(position.x, position.y, position.z), Anemone::vec2(u, v + v_height)));
+				_vertices.push_back(FontVertex(Anemone::vec3(position.x, position.y + newHeight, position.z), Anemone::vec2(u, v)));
+				_vertices.push_back(FontVertex(Anemone::vec3(position.x + newWidth, position.y + newHeight, position.z), Anemone::vec2(u + u_width, v)));
+				_vertices.push_back(FontVertex(Anemone::vec3(position.x + newWidth, position.y, position.z), Anemone::vec2(u + u_width, v + v_height)));
 				indices.push_back(index_offset + 0);
 				indices.push_back(index_offset + 2);
 				indices.push_back(index_offset + 1);
@@ -73,7 +73,7 @@ namespace Anemone
 
 			void Load(std::string texture_file, std::string bmFontFile);
 
-			const FontCharInfo& getCharacter(AE_UINT index);
+			const FontCharInfo& getCharacter(unsigned int index);
 
 			const std::string& getFontFileName() { return font_file; }
 
@@ -81,7 +81,7 @@ namespace Anemone
 
 		protected:
 
-			std::vector<std::string> explode(std::string const & s, AE_CHAR delim);
+			std::vector<std::string> explode(std::string const & s, char delim);
 
 		private:
 
@@ -89,7 +89,7 @@ namespace Anemone
 
 			std::shared_ptr<Anemone::Texture> texture;
 
-			std::map<AE_UINT, FontCharInfo> character_info;
+			std::map<unsigned int, FontCharInfo> character_info;
 
 		};
 
@@ -99,13 +99,13 @@ namespace Anemone
 
 			std::string text;
 
-			AE_FLOAT fontSize, width;
+			float fontSize, width;
 
-			ae::vec3 position, color;
+			Anemone::vec3 position, color;
 
-			AE_INT number_of_lines;
+			int number_of_lines;
 
-			AE_BOOL display, dynamic;
+			bool display, dynamic;
 
 			Text()
 			{
@@ -114,7 +114,7 @@ namespace Anemone
 				display = false;
 			}
 
-			Text(std::string _text, ae::vec3 _position, AE_FLOAT _fontSize, ae::vec3 _color, AE_BOOL _display, AE_BOOL _dynamic)
+			Text(std::string _text, Anemone::vec3 _position, float _fontSize, Anemone::vec3 _color, bool _display, bool _dynamic)
 			{
 				text = _text;
 				position = _position;
@@ -157,7 +157,7 @@ namespace Anemone
 
 			Anemone::VertexBuffer vbo[3];
 
-			AE_UINT index_count;
+			unsigned int index_count;
 
 			Anemone::Shader shader;
 

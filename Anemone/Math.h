@@ -7,8 +7,6 @@
 #include <random>
 #include <string>
 
-#include "Anemone.h"
-
 #define PI 3.141592654f
 #define to_radians(deg) (deg * PI) / 180.0f
 #define to_degrees(rad) (rad * 180.0f) / PI
@@ -22,55 +20,55 @@ namespace Anemone
 	{
 	public:
 
-		AE_FLOAT x, y;
+		float x, y;
 
 		vec2();
 
-		vec2(AE_FLOAT _x, AE_FLOAT _y);
+		vec2(float _x, float _y);
 
 		vec2& operator=(const vec2& vec);
 
-		vec2& operator=(AE_FLOAT scalar);
+		vec2& operator=(float scalar);
 
-		AE_BOOL operator==(const vec2& vec);
+		bool operator==(const vec2& vec);
 
-		AE_BOOL operator!=(const vec2& vec);
+		bool operator!=(const vec2& vec);
 
 		vec2& operator+=(const vec2& vec);
 
-		vec2& operator+=(AE_FLOAT scalar);
+		vec2& operator+=(float scalar);
 
 		vec2& operator-=(const vec2& vec);
 
-		vec2& operator-=(AE_FLOAT scalar);
+		vec2& operator-=(float scalar);
 
 		vec2& operator*=(const vec2& vec);
 
-		vec2& operator*=(AE_FLOAT scalar);
+		vec2& operator*=(float scalar);
 
 		vec2 operator+(vec2 vec);
 
-		vec2 operator+(AE_FLOAT scalar);
+		vec2 operator+(float scalar);
 
 		vec2 operator-(vec2 vec);
 
-		vec2 operator-(AE_FLOAT scalar);
+		vec2 operator-(float scalar);
 
 		vec2 operator*(vec2 vec);
 
-		vec2 operator*(AE_FLOAT scalar);
+		vec2 operator*(float scalar);
 
 		vec2 operator/(vec2 vec);
 
-		vec2 operator/(AE_FLOAT scalar);
+		vec2 operator/(float scalar);
 
-		AE_FLOAT length() const;
+		float length() const;
 
-		AE_FLOAT squareLength() const;
+		float squareLength() const;
 
-		AE_DOUBLE angle() const;
+		double angle() const;
 
-		AE_FLOAT distance(const vec2& vec) const;
+		float distance(const vec2& vec) const;
 
 		vec2(const vec2& other)
 		{
@@ -83,55 +81,55 @@ namespace Anemone
 	{
 	public:
 
-		AE_FLOAT x, y, z;
+		float x, y, z;
 
 		vec3();
 
-		vec3(AE_FLOAT _x, AE_FLOAT _y, AE_FLOAT _z);
+		vec3(float _x, float _y, float _z);
 
 		vec3& operator=(const vec3& vec);
 
-		vec3& operator=(AE_FLOAT scalar);
+		vec3& operator=(float scalar);
 
-		AE_BOOL operator==(const vec3& vec);
+		bool operator==(const vec3& vec);
 
-		AE_BOOL operator!=(const vec3& vec);
+		bool operator!=(const vec3& vec);
 
 		vec3& operator+=(const vec3& vec);
 
-		vec3& operator+=(AE_FLOAT scalar);
+		vec3& operator+=(float scalar);
 
 		vec3& operator-=(const vec3& vec);
 
-		vec3& operator-=(AE_FLOAT scalar);
+		vec3& operator-=(float scalar);
 
 		vec3& operator*=(const vec3& vec);
 
-		vec3& operator*=(AE_FLOAT scalar);
+		vec3& operator*=(float scalar);
 
 		vec3 operator+(vec3 vec);
 
-		vec3 operator+(AE_FLOAT scalar);
+		vec3 operator+(float scalar);
 
 		vec3 operator-(vec3 vec);
 
-		vec3 operator-(AE_FLOAT scalar);
+		vec3 operator-(float scalar);
 
 		vec3 operator*(vec3 vec);
 
-		vec3 operator*(AE_FLOAT scalar);
+		vec3 operator*(float scalar);
 
 		vec3 operator/(vec3 vec);
 
-		vec3 operator/(AE_FLOAT scalar);
+		vec3 operator/(float scalar);
 
-		AE_FLOAT length() const;
+		float length() const;
 
-		AE_FLOAT squareLength() const;
+		float squareLength() const;
 
-		AE_DOUBLE angle() const;
+		double angle() const;
 
-		AE_FLOAT distance(const vec3& vec) const;
+		float distance(const vec3& vec) const;
 
 		vec3(const vec3& other)
 		{
@@ -145,59 +143,59 @@ namespace Anemone
 	{
 	public:
 
-		AE_FLOAT x, y, z, w;
+		float x, y, z, w;
 
 		vec4();
 
-		vec4(AE_FLOAT _x, AE_FLOAT _y, AE_FLOAT _z, AE_FLOAT _w);
+		vec4(float _x, float _y, float _z, float _w);
 
-		vec4(const vec3& vec, AE_FLOAT _w);
+		vec4(const vec3& vec, float _w);
 
 		vec4(const vec2& vec1, const vec2& vec2);
 
 		vec4& operator=(const vec4& vec);
 
-		vec4& operator=(AE_FLOAT scalar);
+		vec4& operator=(float scalar);
 
-		AE_BOOL operator==(const vec4& vec);
+		bool operator==(const vec4& vec);
 
-		AE_BOOL operator!=(const vec4& vec);
+		bool operator!=(const vec4& vec);
 
 		vec4& operator+=(const vec4& vec);
 
-		vec4& operator+=(AE_FLOAT scalar);
+		vec4& operator+=(float scalar);
 
 		vec4& operator-=(const vec4& vec);
 
-		vec4& operator-=(AE_FLOAT scalar);
+		vec4& operator-=(float scalar);
 
 		vec4& operator*=(const vec4& vec);
 
-		vec4& operator*=(AE_FLOAT scalar);
+		vec4& operator*=(float scalar);
 
 		vec4 operator+(vec4 vec);
 
-		vec4 operator+(AE_FLOAT scalar);
+		vec4 operator+(float scalar);
 
 		vec4 operator-(vec4 vec);
 
-		vec4 operator-(AE_FLOAT scalar);
+		vec4 operator-(float scalar);
 
 		vec4 operator*(vec4 vec);
 
-		vec4 operator*(AE_FLOAT scalar);
+		vec4 operator*(float scalar);
 
 		vec4 operator/(vec4 vec);
 
-		vec4 operator/(AE_FLOAT scalar);
+		vec4 operator/(float scalar);
 
-		AE_FLOAT length() const;
+		float length() const;
 
-		AE_FLOAT squareLength() const;
+		float squareLength() const;
 
-		AE_DOUBLE angle() const;
+		double angle() const;
 
-		AE_FLOAT distance(const vec4& vec) const;
+		float distance(const vec4& vec) const;
 
 		vec4(const vec4& other)
 		{
@@ -216,21 +214,21 @@ namespace Anemone
 
 		mat4();
 
-		void set(AE_FLOAT _m0, AE_FLOAT _m1, AE_FLOAT _m2, AE_FLOAT _m3, AE_FLOAT _m4, AE_FLOAT _m5, AE_FLOAT _m6, AE_FLOAT _m7, AE_FLOAT _m8, AE_FLOAT _m9, AE_FLOAT _m10, AE_FLOAT _m11, AE_FLOAT _m12, AE_FLOAT _m13, AE_FLOAT _m14, AE_FLOAT _m15);
+		void set(float _m0, float _m1, float _m2, float _m3, float _m4, float _m5, float _m6, float _m7, float _m8, float _m9, float _m10, float _m11, float _m12, float _m13, float _m14, float _m15);
 
-		AE_FLOAT* get() { return mat; }
+		float* get() { return mat; }
 
 		void zero();
 
-		AE_FLOAT& operator[](std::size_t index);
+		float& operator[](std::size_t index);
 
-		const AE_FLOAT& operator[](std::size_t index) const;
+		const float& operator[](std::size_t index) const;
 
 		mat4 operator*(const mat4& other);
 
 	private:
 
-		AE_FLOAT mat[16];
+		float mat[16];
 
 	};
 
@@ -240,15 +238,15 @@ namespace Anemone
 
 		mat3();
 
-		void set(AE_FLOAT _m0, AE_FLOAT _m1, AE_FLOAT _m2, AE_FLOAT _m3, AE_FLOAT _m4, AE_FLOAT _m5, AE_FLOAT _m6, AE_FLOAT _m7, AE_FLOAT _m8);
+		void set(float _m0, float _m1, float _m2, float _m3, float _m4, float _m5, float _m6, float _m7, float _m8);
 
-		AE_FLOAT* get() { return mat; }
+		float* get() { return mat; }
 
 		void zero();
 
-		AE_FLOAT& operator[](std::size_t index);
+		float& operator[](std::size_t index);
 
-		const AE_FLOAT& operator[](std::size_t index) const;
+		const float& operator[](std::size_t index) const;
 
 		void operator=(const mat4& mat4);
 
@@ -256,7 +254,7 @@ namespace Anemone
 
 	private:
 
-		AE_FLOAT mat[9];
+		float mat[9];
 
 	};
 
@@ -266,13 +264,13 @@ namespace Anemone
 	{
 	public:
 
-		ae::vec4 values;
+		Anemone::vec4 values;
 
 		Quaternion();
 
 		Quaternion(float _x, float _y, float _z, float _w);
 
-		Quaternion(ae::vec4 _values);
+		Quaternion(Anemone::vec4 _values);
 
 		void scale(float s);
 
@@ -282,19 +280,19 @@ namespace Anemone
 
 		Quaternion unit();
 
-		ae::mat4 getRotationMatrix();
+		Anemone::mat4 getRotationMatrix();
 
-		const ae::vec4& get() { return values; }
+		const Anemone::vec4& get() { return values; }
 
 	};
 
 	/* 2D Vector */
 
-	extern AE_FLOAT dot(const vec2& vec1, const vec2& vec2);
+	extern float dot(const vec2& vec1, const vec2& vec2);
 
 	extern vec2 normalize(const vec2& vec);
 
-	extern AE_BOOL equal(const vec2& vec1, const vec2& vec2, float epsilon);
+	extern bool equal(const vec2& vec1, const vec2& vec2, float epsilon);
 
 	extern vec2 rotateZ(const vec2& vec, float angle);
 
@@ -302,13 +300,13 @@ namespace Anemone
 
 	/* 3D Vector */
 
-	extern AE_FLOAT dot(const vec3& vec1, const vec3& vec2);
+	extern float dot(const vec3& vec1, const vec3& vec2);
 
 	extern vec3 cross(const vec3& vec1, const vec3& vec2);
 
 	extern vec3 normalize(const vec3& vec);
 
-	extern AE_BOOL equal(const vec3& vec1, const vec3& vec2, float epsilon);
+	extern bool equal(const vec3& vec1, const vec3& vec2, float epsilon);
 
 	extern vec3 rotateX(const vec3& vec, float angle);
 
@@ -320,11 +318,11 @@ namespace Anemone
 
 	/* 4D Vector */
 
-	extern AE_FLOAT dot(const vec4& vec1, const vec4& vec2);
+	extern float dot(const vec4& vec1, const vec4& vec2);
 
 	extern vec4 normalize(const vec4& vec);
 
-	extern AE_BOOL equal(const vec4& vec1, const vec4& vec2, float epsilon);
+	extern bool equal(const vec4& vec1, const vec4& vec2, float epsilon);
 
 	extern void print(const vec4& vec);
 
@@ -350,23 +348,23 @@ namespace Anemone
 
 	extern mat4 transpose(const mat4& mat);
 
-	extern mat4 translate(AE_FLOAT x, AE_FLOAT y, AE_FLOAT z);
+	extern mat4 translate(float x, float y, float z);
 
-	extern mat4 scale(AE_FLOAT x, AE_FLOAT y, AE_FLOAT z);
+	extern mat4 scale(float x, float y, float z);
 
-	extern mat4 rotateX(AE_FLOAT radians);
+	extern mat4 rotateX(float radians);
 
-	extern mat4 rotateY(AE_FLOAT radians);
+	extern mat4 rotateY(float radians);
 
-	extern mat4 rotateZ(AE_FLOAT radians);
+	extern mat4 rotateZ(float radians);
 
-	extern mat4 Ortho(AE_FLOAT left, AE_FLOAT right, AE_FLOAT bottom, AE_FLOAT top, AE_FLOAT near, AE_FLOAT far);
+	extern mat4 Ortho(float left, float right, float bottom, float top, float near, float far);
 
-	extern mat4 Frustum(AE_FLOAT left, AE_FLOAT right, AE_FLOAT bottom, AE_FLOAT top, AE_FLOAT near, AE_FLOAT far);
+	extern mat4 Frustum(float left, float right, float bottom, float top, float near, float far);
 
 	extern mat4 LookAt(vec3 eye, vec3 target, vec3 up);
 
-	extern mat4 Perspective(AE_FLOAT fovy, AE_FLOAT aspect, AE_FLOAT near, AE_FLOAT far);
+	extern mat4 Perspective(float fovy, float aspect, float near, float far);
 
 	extern void print(const mat4& mat);
 
@@ -376,11 +374,11 @@ namespace Anemone
 
 	/* Misc Functions */
 
-	extern void SetSeed(AE_INT seed);
+	extern void SetSeed(int seed);
 
-	extern AE_INT random(AE_UINT upper_limit);
+	extern int random(unsigned int upper_limit);
 
-	extern AE_INT random(AE_UINT lower_limit, AE_UINT upper_limit);
+	extern int random(unsigned int lower_limit, unsigned int upper_limit);
 
 	extern vec3 hexToRGB(std::string hex);
 

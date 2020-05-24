@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="Anemone\Window.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\Anemone.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\Animation.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\BufferObject.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\ECS.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\Error.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\Font.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\Math.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\Renderer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\ResourceManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\Shader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\State.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\stb_image.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\Texture.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\Utilities.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{aff11e0c-68a3-4e26-a77c-7eb9f8baa956}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{db506a2c-e21b-4b0b-8663-46ee4ac7ce9a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Animation.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BufferObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Error.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Font.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ResourceManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\State.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stb_image.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utilities.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Window.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

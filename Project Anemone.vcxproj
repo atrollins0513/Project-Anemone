@@ -24,7 +24,6 @@
     <ClInclude Include="Anemone\BufferObject.h" />
     <ClInclude Include="Anemone\ECS.h" />
     <ClInclude Include="Anemone\Error.h" />
-    <ClInclude Include="Anemone\File.h" />
     <ClInclude Include="Anemone\Font.h" />
     <ClInclude Include="Anemone\Math.h" />
     <ClInclude Include="Anemone\Renderer.h" />
@@ -33,22 +32,23 @@
     <ClInclude Include="Anemone\State.h" />
     <ClInclude Include="Anemone\stb_image.h" />
     <ClInclude Include="Anemone\Texture.h" />
+    <ClInclude Include="Anemone\Utilities.h" />
     <ClInclude Include="Anemone\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Anemone\Animation.cpp" />
-    <ClCompile Include="Anemone\BufferObject.cpp" />
-    <ClCompile Include="Anemone\Error.cpp" />
-    <ClCompile Include="Anemone\File.cpp" />
-    <ClCompile Include="Anemone\Font.cpp" />
-    <ClCompile Include="Anemone\Math.cpp" />
-    <ClCompile Include="Anemone\Renderer.cpp" />
-    <ClCompile Include="Anemone\ResourceManager.cpp" />
-    <ClCompile Include="Anemone\Shader.cpp" />
-    <ClCompile Include="Anemone\State.cpp" />
-    <ClCompile Include="Anemone\stb_image.cpp" />
-    <ClCompile Include="Anemone\Texture.cpp" />
-    <ClCompile Include="Anemone\Window.cpp" />
+    <ClCompile Include="src\Animation.cpp" />
+    <ClCompile Include="src\BufferObject.cpp" />
+    <ClCompile Include="src\Error.cpp" />
+    <ClCompile Include="src\Font.cpp" />
+    <ClCompile Include="src\Math.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\ResourceManager.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\State.cpp" />
+    <ClCompile Include="src\stb_image.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Utilities.cpp" />
+    <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -103,13 +103,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>$(ProjectDir)\lib;$(ProjectDir)\lib\glew\$(PlatformTarget);$(LibraryPath)</LibraryPath>
-    <OutDir>$(ProjectDir)Anemone\lib\</OutDir>
+    <OutDir>$(ProjectDir)Anemone\lib\$(PlatformTarget)\</OutDir>
     <IncludePath>C:\Users\Gecko\Desktop\Project-Anemone\includes\glfw;$(IncludePath)</IncludePath>
+    <IntDir>$(PlatformTarget)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(LibraryPath)</LibraryPath>
-    <OutDir>$(ProjectDir)Anemone\lib\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)Anemone\lib\$(PlatformTarget)\</OutDir>
+    <IntDir>$(PlatformTarget)\$(Configuration)\</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

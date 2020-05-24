@@ -11,8 +11,6 @@
 #include "includes\glew.h"
 #include "includes\glfw3.h"
 
-#include "Anemone.h"
-
 namespace Anemone
 {
 	class Window;
@@ -77,56 +75,56 @@ namespace Anemone
 		namespace
 		{
 
-			extern AE_UINT current_state;
+			extern unsigned int current_state;
 
-			extern std::unordered_map<AE_UINT, std::shared_ptr<State>> states;
+			extern std::unordered_map<unsigned int, std::shared_ptr<State>> states;
 
 		};
 
 		extern void Init();
 
-		extern void Update(AE_DOUBLE dt);
+		extern void Update(double dt);
 
-		extern void Render(AE_DOUBLE alpha);
+		extern void Render(double alpha);
 
-		extern void KeyEvent(GLFWwindow* window, AE_INT key, AE_INT scancode, AE_INT action, AE_INT mods);
+		extern void KeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-		extern void CharEvent(GLFWwindow* window, AE_UINT codepoint);
+		extern void CharEvent(GLFWwindow* window, unsigned int codepoint);
 
-		extern void MouseMoveEvent(GLFWwindow* window, AE_DOUBLE xpos, AE_DOUBLE ypos);
+		extern void MouseMoveEvent(GLFWwindow* window, double xpos, double ypos);
 
-		extern void MouseClickEvent(GLFWwindow* window, AE_INT button, AE_INT action, AE_INT mods);
+		extern void MouseClickEvent(GLFWwindow* window, int button, int action, int mods);
 
-		extern void ScrollEvent(GLFWwindow* window, AE_DOUBLE xoffset, AE_DOUBLE yoffset);
+		extern void ScrollEvent(GLFWwindow* window, double xoffset, double yoffset);
 
-		extern void MouseEnterEvent(GLFWwindow* window, AE_INT entered);
+		extern void MouseEnterEvent(GLFWwindow* window, int entered);
 
-		extern void JoystickEvent(AE_INT joy, AE_INT ev);
+		extern void JoystickEvent(int joy, int ev);
 
 		extern void Destroy();
 
-		extern bool AddState(AE_UINT id, std::shared_ptr<State> state);
+		extern bool AddState(unsigned int id, std::shared_ptr<State> state);
 
-		extern void SetState(AE_UINT id, AE_BOOL initialize = false, AE_BOOL transitionIn = false);
+		extern void SetState(unsigned int id, bool initialize = false, bool transitionIn = false);
 
-		extern std::shared_ptr<State> GetState(AE_UINT id);
+		extern std::shared_ptr<State> GetState(unsigned int id);
 
 		extern std::shared_ptr<State> GetCurrentState();
 
-		extern void RemoveState(AE_UINT id);
+		extern void RemoveState(unsigned int id);
 
-		extern bool StateExists(AE_UINT id);
+		extern bool StateExists(unsigned int id);
 
 		class Window;
 
 		template<typename T>
-		inline std::shared_ptr<T> CreateState(AE_UINT id, std::shared_ptr<Anemone::Window> parent, AE_BOOL setCurrent = false, AE_BOOL initialize = false, AE_BOOL transitionIn = false)
+		inline std::shared_ptr<T> CreateState(unsigned int id, std::shared_ptr<Anemone::Window> parent, bool setCurrent = false, bool initialize = false, bool transitionIn = false)
 		{
 			static_assert(std::is_base_of<State, T>::value, "T must be derived from State");
 
 			auto newState = std::make_shared<T>();
 			newState->setParentWindow(parent);
-			AE_BOOL added = AddState(id, newState);
+			bool added = AddState(id, newState);
 
 			if (added && setCurrent)
 			{

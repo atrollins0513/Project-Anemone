@@ -13,9 +13,8 @@
 #include <cassert>
 #include <sstream>
 
-#include "Anemone.h"
 #include "Error.h"
-#include "File.h"
+#include "Utilities.h"
 
 namespace Anemone
 {
@@ -25,15 +24,15 @@ namespace Anemone
 
 		ShaderBuilder();
 
-		ShaderBuilder(AE_UINT _version);
+		ShaderBuilder(unsigned int _version);
 
-		void SetVersion(AE_UINT  _version);
+		void SetVersion(unsigned int  _version);
 
-		void AddAttribute(AE_UINT location, std::string data_type, std::string name);
+		void AddAttribute(unsigned int location, std::string data_type, std::string name);
 
 		void AddUniform(std::string data_type, std::string name);
 
-		void AddOutput(std::string data_type, std::string name, AE_INT linked_to = -1);
+		void AddOutput(std::string data_type, std::string name, int linked_to = -1);
 
 		void AddInput(std::string data_type, std::string name);
 
@@ -47,7 +46,7 @@ namespace Anemone
 
 		struct ShaderBuilderAttrib
 		{
-			AE_UINT location;
+			unsigned int location;
 			std::string data_type;
 			std::string name;
 		};
@@ -62,7 +61,7 @@ namespace Anemone
 		{
 			std::string data_type;
 			std::string name;
-			AE_INT linked_to;
+			int linked_to;
 		};
 
 		struct ShaderBuilderInput
@@ -96,7 +95,7 @@ namespace Anemone
 
 	struct UNIFORM_INFO
 	{
-		AE_INT id;
+		int id;
 		GLenum type;
 	};
 
@@ -106,65 +105,65 @@ namespace Anemone
 		
 		Shader();
 		
-		Shader(AE_CHAR* vertex, AE_CHAR* fragment, AE_BOOL loadFromFile);
+		Shader(char* vertex, char* fragment, bool loadFromFile);
 
 		Shader(const ShaderBuilder& vs, const ShaderBuilder& fs);
 
-		void LoadFromFile(AE_CHAR* vertex, AE_CHAR* fragment);
+		void LoadFromFile(char* vertex, char* fragment);
 
-		void LoadFromMemory(AE_CHAR* vertex, AE_CHAR* fragment);
+		void LoadFromMemory(char* vertex, char* fragment);
 
 		void LoadFromShaderBuilder(const ShaderBuilder& vs, const ShaderBuilder& fs);
 
-		AE_UINT id() const { return shader_id; }
+		unsigned int id() const { return shader_id; }
 
 		void bind();
 
 		void unbind();
 
-		AE_INT GetUniformLocation(AE_CHAR* name);
+		int GetUniformLocation(char* name);
 
-		AE_INT GetAttribLocation(AE_CHAR* name);
+		int GetAttribLocation(char* name);
 
 		~Shader();
 
 		// uniform set functions
-		void setUniform1f(std::string name, AE_FLOAT value);
-		void setUniform1d(std::string name, AE_DOUBLE value);
-		void setUniform1i(std::string name, AE_INT value);
-		void setUniform1ui(std::string name, AE_UINT value);
-		void setUniform2f(std::string name, AE_FLOAT v0, AE_FLOAT v1);
-		void setUniform2d(std::string name, AE_DOUBLE v0, AE_DOUBLE v1);
-		void setUniform2i(std::string name, AE_INT v0, AE_INT v1);
-		void setUniform2ui(std::string name, AE_UINT v0, AE_UINT v1);
-		void setUniform3f(std::string name, AE_FLOAT v0, AE_FLOAT v1, AE_FLOAT v2);
-		void setUniform3d(std::string name, AE_DOUBLE v0, AE_DOUBLE v1, AE_DOUBLE v2);
-		void setUniform3i(std::string name, AE_INT v0, AE_INT v1, AE_INT v2);
-		void setUniform3ui(std::string name, AE_UINT v0, AE_UINT v1, AE_UINT v2);
-		void setUniform4f(std::string name, AE_FLOAT v0, AE_FLOAT v1, AE_FLOAT v2, AE_FLOAT v3);
-		void setUniform4d(std::string name, AE_DOUBLE v0, AE_DOUBLE v1, AE_DOUBLE v2, AE_DOUBLE v3);
-		void setUniform4i(std::string name, AE_INT v0, AE_INT v1, AE_INT v2, AE_INT v3);
-		void setUniform4ui(std::string name, AE_UINT v0, AE_UINT v1, AE_UINT v2, AE_UINT v3);
-		void setUniformMatrix3fv(std::string name, AE_INT count, AE_BOOL transpose, const AE_FLOAT* value);
-		void setUniformMatrix4fv(std::string name, AE_INT count, AE_BOOL transpose, const AE_FLOAT* value);
+		void setUniform1f(std::string name, float value);
+		void setUniform1d(std::string name, double value);
+		void setUniform1i(std::string name, int value);
+		void setUniform1ui(std::string name, unsigned int value);
+		void setUniform2f(std::string name, float v0, float v1);
+		void setUniform2d(std::string name, double v0, double v1);
+		void setUniform2i(std::string name, int v0, int v1);
+		void setUniform2ui(std::string name, unsigned int v0, unsigned int v1);
+		void setUniform3f(std::string name, float v0, float v1, float v2);
+		void setUniform3d(std::string name, double v0, double v1, double v2);
+		void setUniform3i(std::string name, int v0, int v1, int v2);
+		void setUniform3ui(std::string name, unsigned int v0, unsigned int v1, unsigned int v2);
+		void setUniform4f(std::string name, float v0, float v1, float v2, float v3);
+		void setUniform4d(std::string name, double v0, double v1, double v2, double v3);
+		void setUniform4i(std::string name, int v0, int v1, int v2, int v3);
+		void setUniform4ui(std::string name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3);
+		void setUniformMatrix3fv(std::string name, int count, bool transpose, const float* value);
+		void setUniformMatrix4fv(std::string name, int count, bool transpose, const float* value);
 
 	protected:
 
-		void CreateShader(const AE_CHAR* vertexData, const AE_CHAR* fragmentData);
+		void CreateShader(const char* vertexData, const char* fragmentData);
 
-		bool ValidateShader(AE_CHAR* name, AE_UINT shader_id);
+		bool ValidateShader(char* name, unsigned int shader_id);
 
-		bool ValidateProgram(AE_UINT program_id);
+		bool ValidateProgram(unsigned int program_id);
 
 		void LoadUniforms();
 
 	private:
 
-		AE_UINT shader_id;
+		unsigned int shader_id;
 
-		AE_UINT vertex_id;
+		unsigned int vertex_id;
 
-		AE_UINT fragment_id;
+		unsigned int fragment_id;
 
 		std::unordered_map<std::string, UNIFORM_INFO> uniforms;
 

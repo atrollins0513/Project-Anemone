@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Anemone.h"
-
 #include <memory>
 #include <string>
 

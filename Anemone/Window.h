@@ -4,8 +4,6 @@
 #define GLEW_STATIC
 #endif
 
-#include "Anemone.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <chrono>
@@ -31,34 +29,34 @@ namespace Anemone
 
 		Window();
 		
-		bool Create(std::string _title, AE_UINT _width, AE_UINT _height, GLFWmonitor* _monitor = nullptr, GLFWwindow* _share = nullptr);
+		bool Create(std::string _title, unsigned int _width, unsigned int _height, GLFWmonitor* _monitor = nullptr, GLFWwindow* _share = nullptr);
 		
 		void Start();
 
-		void enableEvent(AE_UINT e);
+		void enableEvent(unsigned int e);
 
 		void setWindowTitle(std::string new_title);
 
 		void setUpdateRate(double _dt);
 
-		void setWindowPosition(AE_INT x, AE_INT y);
+		void setWindowPosition(int x, int y);
 
-		void setHint(AE_INT hint, AE_INT value);
+		void setHint(int hint, int value);
 
 		GLFWwindow* handle() { return window; }
 
-		const AE_INT width() { return w; }
+		const int width() { return w; }
 
-		const AE_INT height() { return h; }
+		const int height() { return h; }
 
-		const AE_DOUBLE getUpdateRate() { return dt; }
+		const double getUpdateRate() { return dt; }
 
 	protected:
 	private:
 
-		AE_UINT w;
+		unsigned int w;
 
-		AE_UINT h;
+		unsigned int h;
 
 		std::string title;
 
@@ -68,7 +66,7 @@ namespace Anemone
 
 		GLFWwindow* window;
 
-		AE_DOUBLE dt;
+		double dt;
 
 	};
 

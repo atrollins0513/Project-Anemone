@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Anemone.h"
-
 #include <time.h>
 #include <string>
 #include <fstream>

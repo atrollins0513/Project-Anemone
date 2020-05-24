@@ -8,7 +8,6 @@
 #include <map>
 #include "includes\glew.h"
 
-#include "Anemone.h"
 #include "Error.h"
 
 namespace Anemone
@@ -39,25 +38,25 @@ namespace Anemone
 
 		void getSubData(std::size_t pointer, std::size_t length, void* data);
 
-		AE_UINT GetId() { return id; }
+		unsigned int GetId() { return id; }
 
-		AE_UINT size() { return dataSize; }
+		unsigned int size() { return dataSize; }
 
-		AE_UINT getTarget() { return target; };
+		unsigned int getTarget() { return target; };
 
-		AE_UINT getUsage() { return usage; };
+		unsigned int getUsage() { return usage; };
 
 	protected:
 
-		AE_BOOL set;
+		bool set;
 
-		AE_UINT target;
+		unsigned int target;
 
-		AE_UINT id;
+		unsigned int id;
 
-		AE_UINT dataSize;
+		unsigned int dataSize;
 
-		AE_UINT usage;
+		unsigned int usage;
 
 	private:
 	};
@@ -74,7 +73,7 @@ namespace Anemone
 
 		void init();
 
-		void bindAttribute(AE_INT attribute, VertexBuffer& VertexBuffer, GLenum type, AE_UINT count, AE_UINT stride, intptr_t offset);
+		void bindAttribute(int attribute, VertexBuffer& VertexBuffer, GLenum type, unsigned int count, unsigned int stride, intptr_t offset);
 
 		void setIndexBuffer(VertexBuffer& indexBuffer);
 
@@ -82,14 +81,14 @@ namespace Anemone
 
 		void unbind();
 
-		AE_UINT GetId() const { return id; }
+		unsigned int GetId() const { return id; }
 
 	protected:
 	private:
 
-		AE_BOOL set;
+		bool set;
 
-		AE_UINT id;
+		unsigned int id;
 
 	};
 
@@ -99,28 +98,28 @@ namespace Anemone
 
 		FrameBuffer();
 
-		AE_BOOL create(AE_INT _width, AE_INT _height);
+		bool create(int _width, int _height);
 
 		void bind();
 
 		void unbind();
 
-		AE_UINT getId() const { return id; }
+		unsigned int getId() const { return id; }
 
-		AE_UINT getTextureId() const { return texture_id; }
+		unsigned int getTextureId() const { return texture_id; }
 
 	protected:
 	private:
 
-		AE_UINT id;
+		unsigned int id;
 
-		AE_UINT texture_id;
+		unsigned int texture_id;
 
-		AE_UINT depth_buffer_id;
+		unsigned int depth_buffer_id;
 
-		AE_INT width;
+		int width;
 
-		AE_INT height;
+		int height;
 
 	};
 
@@ -139,13 +138,13 @@ namespace Anemone
 
 		~RenderObject();
 
-		void init(AE_UINT vertex_buffer_count, GLenum _target, GLenum _usage);
+		void init(unsigned int vertex_buffer_count, GLenum _target, GLenum _usage);
 
 		void setBuffer(GLenum _target, GLenum _usage, std::size_t length, const void* data);
 
 		void setIndexBuffer(GLenum _usage, std::size_t length, const void* data);
 
-		void bindAttribute(AE_INT attribute, AE_UINT buffer_id, GLenum type, AE_UINT count, AE_UINT stride, intptr_t offset);
+		void bindAttribute(int attribute, unsigned int buffer_id, GLenum type, unsigned int count, unsigned int stride, intptr_t offset);
 
 		void bind();
 
@@ -156,7 +155,7 @@ namespace Anemone
 			return vao;
 		}
 
-		const VertexBuffer& getVertexBuffer(AE_UINT buffer_id)
+		const VertexBuffer& getVertexBuffer(unsigned int buffer_id)
 		{
 			return vbo_array.at(0);
 		}
@@ -183,7 +182,7 @@ namespace Anemone
 
 		BufferObject();
 
-		BufferObject(std::map<AE_INT, AE_INT> topology, GLenum _type = GL_FLOAT, GLenum _target = GL_ARRAY_BUFFER, GLenum _usage = GL_STATIC_DRAW);
+		BufferObject(std::map<int, int> topology, GLenum _type = GL_FLOAT, GLenum _target = GL_ARRAY_BUFFER, GLenum _usage = GL_STATIC_DRAW);
 
 		void setData(std::size_t length, const void* data);
 
@@ -193,19 +192,19 @@ namespace Anemone
 
 		void unbind();
 
-		void setVertexCount(AE_ULONG _vertex_count);
+		void setVertexCount(unsigned long _vertex_count);
 
-		AE_ULONG getVertexCount() { return vertex_count; }
+		unsigned long getVertexCount() { return vertex_count; }
 
 	private:
 
-		ae::VertexArray va;
+		Anemone::VertexArray va;
 
-		ae::VertexBuffer buffer;
+		Anemone::VertexBuffer buffer;
 
 		GLenum type, target, usage;
 
-		AE_ULONG vertex_count;
+		unsigned long vertex_count;
 
 	};
 };

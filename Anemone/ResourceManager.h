@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Anemone.h"
-
 #include <unordered_map>
 #include <string>
 #include <memory>
