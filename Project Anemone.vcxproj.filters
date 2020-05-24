@@ -13,9 +13,6 @@
     <ClInclude Include="Anemone\BufferObject.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="Anemone\ECS.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="Anemone\Error.h">
       <Filter>include</Filter>
     </ClInclude>
