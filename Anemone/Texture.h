@@ -23,7 +23,6 @@ namespace Anemone
 			texture_width = 0;
 			texture_height = 0;
 			texture_id = 0;
-			stbi_set_flip_vertically_on_load(true);
 		}
 
 		Texture(unsigned char* data, int length, bool mipmaps, GLint mag_filter = GL_NEAREST, GLint min_filter = GL_NEAREST) : Texture()
