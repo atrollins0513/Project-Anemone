@@ -138,7 +138,7 @@ namespace Anemone
 
 		bool StateExists(unsigned int id)
 		{
-			return states.count(id);
+			return (states.find(id) != states.end());
 		}
 
 	};
