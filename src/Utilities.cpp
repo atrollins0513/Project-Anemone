@@ -2,6 +2,7 @@
 
 namespace Anemone
 {
+
 	std::string LoadFile(std::string filename, int file_mode)
 	{
 		std::ifstream file(filename, file_mode);
@@ -50,4 +51,39 @@ namespace Anemone
 
 		return result;
 	}
+
+	void setSeed(int seed)
+	{
+		srand(seed);
+	}
+
+	int random(unsigned int upper_limit)
+	{
+		return rand() % upper_limit;
+	}
+
+	int random(unsigned int lower_limit, unsigned int upper_limit)
+	{
+		return rand() % upper_limit + lower_limit;
+	}
+
+	vec3 hexToRGB(std::string hex)
+	{
+		if (hex.at(0) == '#')
+		{
+			hex = hex.substr(1);
+		}
+
+		if (hex.size() == 6)
+		{
+			return vec3(
+				std::stol(hex.substr(0, 2), nullptr, 16) / 255.0f,
+				std::stol(hex.substr(2, 2), nullptr, 16) / 255.0f,
+				std::stol(hex.substr(4, 2), nullptr, 16) / 255.0f
+			);
+		}
+
+		return vec3(1.0f, 1.0f, 1.0f);
+	}
+
 };

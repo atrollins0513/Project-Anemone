@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <algorithm>
-#include <random>
 #include <string>
 
 #define PI 3.141592654f
@@ -16,6 +15,9 @@ namespace Anemone
 
 	/* Vectors */
 
+	class vec3;
+	class vec4;
+
 	class vec2
 	{
 	public:
@@ -25,6 +27,18 @@ namespace Anemone
 		vec2();
 
 		vec2(float _x, float _y);
+
+		float length() const;
+
+		float squareLength() const;
+
+		double angle() const;
+
+		float distance(const vec2& vec) const;
+
+		void normalize();
+
+		void inverse();
 
 		vec2& operator=(const vec2& vec);
 
@@ -46,6 +60,10 @@ namespace Anemone
 
 		vec2& operator*=(float scalar);
 
+		vec2& operator/=(const vec2& vec);
+
+		vec2& operator/=(float scalar);
+
 		vec2 operator+(vec2 vec);
 
 		vec2 operator+(float scalar);
@@ -62,19 +80,10 @@ namespace Anemone
 
 		vec2 operator/(float scalar);
 
-		float length() const;
+		vec2(const vec3& other);
 
-		float squareLength() const;
+		vec2(const vec2& other);
 
-		double angle() const;
-
-		float distance(const vec2& vec) const;
-
-		vec2(const vec2& other)
-		{
-			x = other.x;
-			y = other.y;
-		}
 	};
 
 	class vec3
@@ -86,6 +95,18 @@ namespace Anemone
 		vec3();
 
 		vec3(float _x, float _y, float _z);
+
+		float length() const;
+
+		float squareLength() const;
+
+		double angle() const;
+
+		float distance(const vec3& vec) const;
+
+		void normalize();
+
+		void inverse();
 
 		vec3& operator=(const vec3& vec);
 
@@ -107,6 +128,10 @@ namespace Anemone
 
 		vec3& operator*=(float scalar);
 
+		vec3& operator/=(const vec3& vec);
+
+		vec3& operator/=(float scalar);
+
 		vec3 operator+(vec3 vec);
 
 		vec3 operator+(float scalar);
@@ -123,20 +148,12 @@ namespace Anemone
 
 		vec3 operator/(float scalar);
 
-		float length() const;
+		vec3(const vec2& other);
 
-		float squareLength() const;
+		vec3(const vec4& other);
 
-		double angle() const;
+		vec3(const vec3& other);
 
-		float distance(const vec3& vec) const;
-
-		vec3(const vec3& other)
-		{
-			x = other.x;
-			y = other.y;
-			z = other.z;
-		}
 	};
 
 	class vec4
@@ -152,6 +169,18 @@ namespace Anemone
 		vec4(const vec3& vec, float _w);
 
 		vec4(const vec2& vec1, const vec2& vec2);
+
+		float length() const;
+
+		float squareLength() const;
+
+		double angle() const;
+
+		float distance(const vec4& vec) const;
+
+		void normalize();
+
+		void inverse();
 
 		vec4& operator=(const vec4& vec);
 
@@ -173,6 +202,10 @@ namespace Anemone
 
 		vec4& operator*=(float scalar);
 
+		vec4& operator/=(const vec4& vec);
+
+		vec4& operator/=(float scalar);
+
 		vec4 operator+(vec4 vec);
 
 		vec4 operator+(float scalar);
@@ -189,21 +222,12 @@ namespace Anemone
 
 		vec4 operator/(float scalar);
 
-		float length() const;
+		vec4(const vec2& other);
 
-		float squareLength() const;
+		vec4(const vec3& other);
 
-		double angle() const;
+		vec4(const vec4& other);
 
-		float distance(const vec4& vec) const;
-
-		vec4(const vec4& other)
-		{
-			x = other.x;
-			y = other.y;
-			z = other.z;
-			w = other.w;
-		}
 	};
 
 	/* Matrices */
@@ -298,6 +322,10 @@ namespace Anemone
 
 	extern void print(const vec2& vec);
 
+	extern vec2 perpcw(const vec2& vec);
+
+	extern vec2 perpccw(const vec2& vec);
+
 	/* 3D Vector */
 
 	extern float dot(const vec3& vec1, const vec3& vec2);
@@ -373,13 +401,4 @@ namespace Anemone
 	extern Quaternion multiply(const Quaternion& q1, const Quaternion& q2);
 
 	/* Misc Functions */
-
-	extern void SetSeed(int seed);
-
-	extern int random(unsigned int upper_limit);
-
-	extern int random(unsigned int lower_limit, unsigned int upper_limit);
-
-	extern vec3 hexToRGB(std::string hex);
-
 };

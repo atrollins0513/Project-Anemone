@@ -33,6 +33,16 @@ namespace Anemone
 		std::cout << "x: " << vec.x << " y: " << vec.y << "\n";
 	}
 
+	vec2 perpcw(const vec2& vec)
+	{
+		return vec2(vec.y, -vec.x);
+	}
+
+	vec2 perpccw(const vec2& vec)
+	{
+		return vec2(-vec.y, vec.x);
+	}
+
 	/* 3D Vector */
 
 	float dot(const vec3& vec1, const vec3& vec2)
@@ -421,6 +431,19 @@ namespace Anemone
 		return sqrtf((vec.x - x) * (vec.x - x) + (vec.y - y) * (vec.y - y));
 	}
 
+	void vec2::normalize()
+	{
+		float mag = 1.0f / length();
+		x *= mag;
+		y *= mag;
+	}
+
+	void vec2::inverse()
+	{
+		x *= -1.0f;
+		y *= -1.0f;
+	}
+
 	vec2& vec2::operator=(const vec2& vec)
 	{
 		if (this == &vec)
@@ -490,6 +513,20 @@ namespace Anemone
 		return *this;
 	}
 
+	vec2& vec2::operator/=(const vec2& vec)
+	{
+		x /= vec.x;
+		y /= vec.y;
+		return *this;
+	}
+
+	vec2& vec2::operator/=(float scalar)
+	{
+		x /= scalar;
+		y /= scalar;
+		return *this;
+	}
+
 	vec2 vec2::operator+(vec2 vec)
 	{
 		return vec2(x + vec.x, y + vec.y);
@@ -530,6 +567,18 @@ namespace Anemone
 		return vec2(x / scalar, y / scalar);
 	}
 
+	vec2::vec2(const vec3& other)
+	{
+		x = other.x;
+		y = other.y;
+	}
+
+	vec2::vec2(const vec2& other)
+	{
+		x = other.x;
+		y = other.y;
+	}
+
 	/* 3D Vector */
 
 	vec3::vec3()
@@ -562,6 +611,21 @@ namespace Anemone
 	float vec3::distance(const vec3& vec) const
 	{
 		return sqrtf((vec.x - x) * (vec.x - x) + (vec.y - y) * (vec.y - y) + (vec.z - z) * (vec.z - z));
+	}
+
+	void vec3::normalize()
+	{
+		float mag = 1.0f / length();
+		x *= mag;
+		y *= mag;
+		z *= mag;
+	}
+
+	void vec3::inverse()
+	{
+		x *= -1.0f;
+		y *= -1.0f;
+		z *= -1.0f;
 	}
 
 	vec3& vec3::operator=(const vec3& vec)
@@ -641,6 +705,22 @@ namespace Anemone
 		return *this;
 	}
 
+	vec3& vec3::operator/=(const vec3& vec)
+	{
+		x /= vec.x;
+		y /= vec.y;
+		z /= vec.z;
+		return *this;
+	}
+
+	vec3& vec3::operator/=(float scalar)
+	{
+		x /= scalar;
+		y /= scalar;
+		z /= scalar;
+		return *this;
+	}
+
 	vec3 vec3::operator+(vec3 vec)
 	{
 		return vec3(x + vec.x, y + vec.y, z + vec.z);
@@ -679,6 +759,27 @@ namespace Anemone
 	vec3 vec3::operator/(float scalar)
 	{
 		return vec3(x / scalar, y / scalar, z / scalar);
+	}
+
+	vec3::vec3(const vec2& other)
+	{
+		x = other.x;
+		y = other.y;
+		z = 0.0f;
+	}
+
+	vec3::vec3(const vec4& other)
+	{
+		x = other.x;
+		y = other.y;
+		z = other.z;
+	}
+
+	vec3::vec3(const vec3& other)
+	{
+		x = other.x;
+		y = other.y;
+		z = other.z;
 	}
 
 	/* 4D Vector */
@@ -730,6 +831,23 @@ namespace Anemone
 	float vec4::distance(const vec4& vec) const
 	{
 		return sqrtf((vec.x - x) * (vec.x - x) + (vec.y - y) * (vec.y - y) + (vec.z - z) * (vec.z - z) + (vec.w - w) * (vec.w - w));
+	}
+
+	void vec4::normalize()
+	{
+		float mag = 1.0f / length();
+		x *= mag;
+		y *= mag;
+		z *= mag;
+		w *= mag;
+	}
+
+	void vec4::inverse()
+	{
+		x *= -1.0f;
+		y *= -1.0f;
+		z *= -1.0f;
+		w *= -1.0f;
 	}
 
 	vec4& vec4::operator=(const vec4& vec)
@@ -817,6 +935,24 @@ namespace Anemone
 		return *this;
 	}
 
+	vec4& vec4::operator/=(const vec4& vec)
+	{
+		x /= vec.x;
+		y /= vec.y;
+		z /= vec.z;
+		w /= vec.w;
+		return *this;
+	}
+
+	vec4& vec4::operator/=(float scalar)
+	{
+		x /= scalar;
+		y /= scalar;
+		z /= scalar;
+		w /= scalar;
+		return *this;
+	}
+
 	vec4 vec4::operator+(vec4 vec)
 	{
 		return vec4(x + vec.x, y + vec.y, z + vec.z, w + vec.w);
@@ -855,6 +991,30 @@ namespace Anemone
 	vec4 vec4::operator/(float scalar)
 	{
 		return vec4(x / scalar, y / scalar, z / scalar, w / scalar);
+	}
+
+	vec4::vec4(const vec2& other)
+	{
+		x = other.x;
+		y = other.y;
+		z = 0.0f;
+		w = 0.0f;
+	}
+
+	vec4::vec4(const vec3& other)
+	{
+		x = other.x;
+		y = other.y;
+		z = other.z;
+		w = 0.0f;
+	}
+
+	vec4::vec4(const vec4& other)
+	{
+		x = other.x;
+		y = other.y;
+		z = other.z;
+		w = other.w;
 	}
 
 	/* 3x3 Matrix */
@@ -1039,39 +1199,4 @@ namespace Anemone
 	}
 
 	/* Misc Functions */
-
-	void SetSeed(int seed)
-	{
-		srand(seed);
-	}
-
-	int random(unsigned int upper_limit)
-	{
-		return rand() % upper_limit;
-	}
-
-	int random(unsigned int lower_limit, unsigned int upper_limit)
-	{
-		return rand() % upper_limit + lower_limit;
-	}
-
-	vec3 hexToRGB(std::string hex)
-	{
-		if (hex.at(0) == '#')
-		{
-			hex = hex.substr(1);
-		}
-
-		if (hex.size() == 6)
-		{
-			return Anemone::vec3(
-				std::stol(hex.substr(0, 2), nullptr, 16) / 255.0f,
-				std::stol(hex.substr(2, 2), nullptr, 16) / 255.0f,
-				std::stol(hex.substr(4, 2), nullptr, 16) / 255.0f
-			);
-		}
-
-		return Anemone::vec3(1.0f, 1.0f, 1.0f);
-	}
-
 };
