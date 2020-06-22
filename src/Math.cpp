@@ -28,6 +28,11 @@ namespace Anemone
 		return vec2(vec.x * c - vec.y * s, vec.x * s + vec.y * c);
 	}
 
+	vec2 rotateZ(const vec2& vec, double s, double c)
+	{
+		return vec2(vec.x * c - vec.y * s, vec.x * s + vec.y * c);
+	}
+
 	void print(const vec2& vec)
 	{
 		std::cout << "x: " << vec.x << " y: " << vec.y << "\n";
@@ -74,6 +79,11 @@ namespace Anemone
 		return vec3(vec.x, c * vec.y - s * vec.z, c * vec.z + s * vec.y);
 	}
 
+	vec3 rotateX(const vec3& vec, double s, double c)
+	{
+		return vec3(vec.x, c * vec.y - s * vec.z, c * vec.z + s * vec.y);
+	}
+
 	vec3 rotateY(const vec3& vec, float angle)
 	{
 		float s = sinf(angle);
@@ -82,11 +92,21 @@ namespace Anemone
 		return vec3(c * vec.x + s * vec.z, vec.y, c * vec.z - s * vec.x);
 	}
 
+	vec3 rotateY(const vec3& vec, double s, double c)
+	{
+		return vec3(c * vec.x + s * vec.z, vec.y, c * vec.z - s * vec.x);
+	}
+
 	vec3 rotateZ(const vec3& vec, float angle)
 	{
 		float s = sinf(angle);
 		float c = cosf(angle);
 
+		return vec3(c * vec.x - s * vec.y, c * vec.y + s * vec.x, vec.z);
+	}
+
+	vec3 rotateZ(const vec3& vec, double s, double c)
+	{
 		return vec3(c * vec.x - s * vec.y, c * vec.y + s * vec.x, vec.z);
 	}
 

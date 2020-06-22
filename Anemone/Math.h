@@ -320,6 +320,8 @@ namespace Anemone
 
 	extern vec2 rotateZ(const vec2& vec, float angle);
 
+	extern vec2 rotateZ(const vec2& vec, double s, double c);
+
 	extern void print(const vec2& vec);
 
 	extern vec2 perpcw(const vec2& vec);
@@ -338,9 +340,15 @@ namespace Anemone
 
 	extern vec3 rotateX(const vec3& vec, float angle);
 
+	extern vec3 rotateX(const vec3& vec, double s, double c);
+
 	extern vec3 rotateY(const vec3& vec, float angle);
 
+	extern vec3 rotateY(const vec3& vec, double s, double c);
+
 	extern vec3 rotateZ(const vec3& vec, float angle);
+
+	extern vec3 rotateZ(const vec3& vec, double s, double c);
 
 	extern void print(const vec3& vec);
 
