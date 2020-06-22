@@ -481,12 +481,12 @@ namespace Anemone
 		return *this;
 	}
 
-	bool vec2::operator==(const vec2& vec)
+	bool vec2::operator==(const vec2& vec) const
 	{
 		return (x == vec.x && y == vec.y);
 	}
 
-	bool vec2::operator!=(const vec2& vec)
+	bool vec2::operator!=(const vec2& vec) const
 	{
 		return !(x == vec.x && y == vec.y);
 	}
@@ -547,42 +547,42 @@ namespace Anemone
 		return *this;
 	}
 
-	vec2 vec2::operator+(vec2 vec)
+	vec2 vec2::operator+(vec2 vec) const
 	{
 		return vec2(x + vec.x, y + vec.y);
 	}
 
-	vec2 vec2::operator+(float scalar)
+	vec2 vec2::operator+(float scalar) const
 	{
 		return vec2(x + scalar, y + scalar);
 	}
 
-	vec2 vec2::operator-(vec2 vec)
+	vec2 vec2::operator-(vec2 vec) const
 	{
 		return vec2(x - vec.x, y - vec.y);
 	}
 
-	vec2 vec2::operator-(float scalar)
+	vec2 vec2::operator-(float scalar) const
 	{
 		return vec2(x - scalar, y - scalar);
 	}
 
-	vec2 vec2::operator*(vec2 vec)
+	vec2 vec2::operator*(vec2 vec) const
 	{
 		return vec2(x * vec.x, y * vec.y);
 	}
 
-	vec2 vec2::operator*(float scalar)
+	vec2 vec2::operator*(float scalar) const
 	{
 		return vec2(x * scalar, y * scalar);
 	}
 
-	vec2 vec2::operator/(vec2 vec)
+	vec2 vec2::operator/(vec2 vec) const
 	{
 		return vec2(x / vec.x, y / vec.y);
 	}
 
-	vec2 vec2::operator/(float scalar)
+	vec2 vec2::operator/(float scalar) const
 	{
 		return vec2(x / scalar, y / scalar);
 	}
@@ -667,12 +667,12 @@ namespace Anemone
 		return *this;
 	}
 
-	bool vec3::operator==(const vec3& vec)
+	bool vec3::operator==(const vec3& vec) const
 	{
 		return (x == vec.x && y == vec.y && z == vec.z);
 	}
 
-	bool vec3::operator!=(const vec3& vec)
+	bool vec3::operator!=(const vec3& vec) const
 	{
 		return !(x == vec.x && y == vec.y && z == vec.z);
 	}
@@ -741,42 +741,42 @@ namespace Anemone
 		return *this;
 	}
 
-	vec3 vec3::operator+(vec3 vec)
+	vec3 vec3::operator+(vec3 vec) const
 	{
 		return vec3(x + vec.x, y + vec.y, z + vec.z);
 	}
 
-	vec3 vec3::operator+(float scalar)
+	vec3 vec3::operator+(float scalar) const
 	{
 		return vec3(x + scalar, y + scalar, z + scalar);
 	}
 
-	vec3 vec3::operator-(vec3 vec)
+	vec3 vec3::operator-(vec3 vec) const
 	{
 		return vec3(x - vec.x, y - vec.y, z - vec.z);
 	}
 
-	vec3 vec3::operator-(float scalar)
+	vec3 vec3::operator-(float scalar) const
 	{
 		return vec3(x - scalar, y - scalar, z - scalar);
 	}
 
-	vec3 vec3::operator*(vec3 vec)
+	vec3 vec3::operator*(vec3 vec) const
 	{
 		return vec3(x * vec.x, y * vec.y, z * vec.z);
 	}
 
-	vec3 vec3::operator*(float scalar)
+	vec3 vec3::operator*(float scalar) const
 	{
 		return vec3(x * scalar, y * scalar, z * scalar);
 	}
 
-	vec3 vec3::operator/(vec3 vec)
+	vec3 vec3::operator/(vec3 vec) const
 	{
 		return vec3(x / vec.x, y / vec.y, z / vec.z);
 	}
 
-	vec3 vec3::operator/(float scalar)
+	vec3 vec3::operator/(float scalar) const
 	{
 		return vec3(x / scalar, y / scalar, z / scalar);
 	}
@@ -891,12 +891,12 @@ namespace Anemone
 		return *this;
 	}
 
-	bool vec4::operator==(const vec4& vec)
+	bool vec4::operator==(const vec4& vec) const
 	{
 		return (x == vec.x && y == vec.y && z == vec.z && w == vec.w);
 	}
 
-	bool vec4::operator!=(const vec4& vec)
+	bool vec4::operator!=(const vec4& vec) const
 	{
 		return !(*this == vec);
 	}
@@ -973,42 +973,42 @@ namespace Anemone
 		return *this;
 	}
 
-	vec4 vec4::operator+(vec4 vec)
+	vec4 vec4::operator+(vec4 vec) const
 	{
 		return vec4(x + vec.x, y + vec.y, z + vec.z, w + vec.w);
 	}
 
-	vec4 vec4::operator+(float scalar)
+	vec4 vec4::operator+(float scalar) const
 	{
 		return vec4(x + scalar, y + scalar, z + scalar, w + scalar);
 	}
 
-	vec4 vec4::operator-(vec4 vec)
+	vec4 vec4::operator-(vec4 vec) const
 	{
 		return vec4(x - vec.x, y - vec.y, z - vec.z, w - vec.w);
 	}
 
-	vec4 vec4::operator-(float scalar)
+	vec4 vec4::operator-(float scalar) const
 	{
 		return vec4(x - scalar, y - scalar, z - scalar, w - scalar);
 	}
 
-	vec4 vec4::operator*(vec4 vec)
+	vec4 vec4::operator*(vec4 vec) const
 	{
 		return vec4(x * vec.x, y * vec.y, z * vec.z, w * vec.w);
 	}
 
-	vec4 vec4::operator*(float scalar)
+	vec4 vec4::operator*(float scalar) const
 	{
 		return vec4(x * scalar, y * scalar, z * scalar, w * scalar);
 	}
 
-	vec4 vec4::operator/(vec4 vec)
+	vec4 vec4::operator/(vec4 vec) const
 	{
 		return vec4(x / vec.x, y / vec.y, z / vec.z, w / vec.w);
 	}
 
-	vec4 vec4::operator/(float scalar)
+	vec4 vec4::operator/(float scalar) const
 	{
 		return vec4(x / scalar, y / scalar, z / scalar, w / scalar);
 	}

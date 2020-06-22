@@ -44,9 +44,9 @@ namespace Anemone
 
 		vec2& operator=(float scalar);
 
-		bool operator==(const vec2& vec);
+		bool operator==(const vec2& vec) const;
 
-		bool operator!=(const vec2& vec);
+		bool operator!=(const vec2& vec) const;
 
 		vec2& operator+=(const vec2& vec);
 
@@ -64,21 +64,21 @@ namespace Anemone
 
 		vec2& operator/=(float scalar);
 
-		vec2 operator+(vec2 vec);
+		vec2 operator+(vec2 vec) const;
 
-		vec2 operator+(float scalar);
+		vec2 operator+(float scalar) const;
 
-		vec2 operator-(vec2 vec);
+		vec2 operator-(vec2 vec) const;
 
-		vec2 operator-(float scalar);
+		vec2 operator-(float scalar) const;
 
-		vec2 operator*(vec2 vec);
+		vec2 operator*(vec2 vec) const;
 
-		vec2 operator*(float scalar);
+		vec2 operator*(float scalar) const;
 
-		vec2 operator/(vec2 vec);
+		vec2 operator/(vec2 vec) const;
 
-		vec2 operator/(float scalar);
+		vec2 operator/(float scalar) const;
 
 		vec2(const vec3& other);
 
@@ -112,9 +112,9 @@ namespace Anemone
 
 		vec3& operator=(float scalar);
 
-		bool operator==(const vec3& vec);
+		bool operator==(const vec3& vec) const;
 
-		bool operator!=(const vec3& vec);
+		bool operator!=(const vec3& vec) const;
 
 		vec3& operator+=(const vec3& vec);
 
@@ -132,21 +132,21 @@ namespace Anemone
 
 		vec3& operator/=(float scalar);
 
-		vec3 operator+(vec3 vec);
+		vec3 operator+(vec3 vec) const;
 
-		vec3 operator+(float scalar);
+		vec3 operator+(float scalar) const;
 
-		vec3 operator-(vec3 vec);
+		vec3 operator-(vec3 vec) const;
 
-		vec3 operator-(float scalar);
+		vec3 operator-(float scalar) const;
 
-		vec3 operator*(vec3 vec);
+		vec3 operator*(vec3 vec) const;
 
-		vec3 operator*(float scalar);
+		vec3 operator*(float scalar) const;
 
-		vec3 operator/(vec3 vec);
+		vec3 operator/(vec3 vec) const;
 
-		vec3 operator/(float scalar);
+		vec3 operator/(float scalar) const;
 
 		vec3(const vec2& other);
 
@@ -186,9 +186,9 @@ namespace Anemone
 
 		vec4& operator=(float scalar);
 
-		bool operator==(const vec4& vec);
+		bool operator==(const vec4& vec) const;
 
-		bool operator!=(const vec4& vec);
+		bool operator!=(const vec4& vec) const;
 
 		vec4& operator+=(const vec4& vec);
 
@@ -206,21 +206,21 @@ namespace Anemone
 
 		vec4& operator/=(float scalar);
 
-		vec4 operator+(vec4 vec);
+		vec4 operator+(vec4 vec) const;
 
-		vec4 operator+(float scalar);
+		vec4 operator+(float scalar) const;
 
-		vec4 operator-(vec4 vec);
+		vec4 operator-(vec4 vec) const;
 
-		vec4 operator-(float scalar);
+		vec4 operator-(float scalar) const;
 
-		vec4 operator*(vec4 vec);
+		vec4 operator*(vec4 vec) const;
 
-		vec4 operator*(float scalar);
+		vec4 operator*(float scalar) const;
 
-		vec4 operator/(vec4 vec);
+		vec4 operator/(vec4 vec) const;
 
-		vec4 operator/(float scalar);
+		vec4 operator/(float scalar) const;
 
 		vec4(const vec2& other);
 
