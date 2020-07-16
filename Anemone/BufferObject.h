@@ -6,11 +6,12 @@
 
 #include <vector>
 #include <map>
+
 #include "includes\glew.h"
 
-#include "Error.h"
+#include "Utilities.h"
 
-namespace Anemone
+namespace ae
 {
 	class VertexBuffer
 	{
@@ -198,9 +199,9 @@ namespace Anemone
 
 	private:
 
-		Anemone::VertexArray va;
+		VertexArray va;
 
-		Anemone::VertexBuffer buffer;
+		VertexBuffer buffer;
 
 		GLenum type, target, usage;
 

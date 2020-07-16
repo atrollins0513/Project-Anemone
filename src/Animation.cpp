@@ -1,6 +1,6 @@
 #include "..\Anemone\Animation.h"
 
-namespace Anemone
+namespace ae
 {
 	Animation::Animation()
 	{

@@ -32,12 +32,8 @@
 	#endif
 #endif
 
-#define ae Anemone
-#define Anemone Anemone
-
 #include "Animation.h"
 #include "BufferObject.h"
-#include "Error.h"
 #include "Font.h"
 #include "Math.h"
 #include "ResourceManager.h"

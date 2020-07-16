@@ -1,6 +1,6 @@
 #include "..\Anemone\BufferObject.h"
 
-namespace Anemone
+namespace ae
 {
 	/* Vertex Buffer Object */
 
@@ -78,7 +78,8 @@ namespace Anemone
 	/* Vertex Array Object */
 	VertexArray::VertexArray()
 	{
-
+		id = 0;
+		set = false;
 	}
 
 	VertexArray::~VertexArray()
@@ -149,7 +150,7 @@ namespace Anemone
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{
-			Error::Log("Framebuffer", "Failed to create the frame buffer");
+			log("Framebuffer", "Failed to create the frame buffer");
 			return false;
 		}
 

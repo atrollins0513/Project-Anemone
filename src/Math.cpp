@@ -1,6 +1,6 @@
 #include "..\Anemone\Math.h"
 
-namespace Anemone
+namespace ae
 {
 	/* 2D Vector */
 
@@ -46,6 +46,21 @@ namespace Anemone
 	vec2 perpccw(const vec2& vec)
 	{
 		return vec2(-vec.y, vec.x);
+	}
+
+	float cross(const vec2& v1, const vec2& v2)
+	{
+		return (v1.x * v2.y - v1.y * v2.x);
+	}
+
+	vec2 cross(float a, const vec2& v)
+	{
+		return vec2(-a * v.y, a * v.x);
+	}
+
+	vec2 cross(const vec2& v, float a)
+	{
+		return vec2(a * v.y, -a * v.x);
 	}
 
 	/* 3D Vector */
@@ -185,7 +200,7 @@ namespace Anemone
 		return tm;
 	}
 
-	void print(const Anemone::mat3& mat)
+	void print(const mat3& mat)
 	{
 		std::cout << mat[0] << "\t\t" << mat[1] << "\t\t" << mat[2] << "\n";
 		std::cout << mat[3] << "\t\t" << mat[4] << "\t\t" << mat[5] << "\n";
@@ -399,7 +414,7 @@ namespace Anemone
 		return perspective;
 	}
 
-	void print(const Anemone::mat4& mat)
+	void print(const mat4& mat)
 	{
 		std::cout << mat[0] << "\t\t" << mat[1] << "\t\t" << mat[2] << "\t\t" << mat[3] << "\n";
 		std::cout << mat[4] << "\t\t" << mat[5] << "\t\t" << mat[6] << "\t\t" << mat[7] << "\n";
@@ -419,17 +434,6 @@ namespace Anemone
 	}
 
 	/* 2D Vector */
-
-	vec2::vec2()
-	{
-		x = y = 0.0f;
-	}
-
-	vec2::vec2(float _x, float _y)
-	{
-		x = _x;
-		y = _y;
-	}
 
 	float vec2::length() const
 	{
@@ -600,18 +604,6 @@ namespace Anemone
 	}
 
 	/* 3D Vector */
-
-	vec3::vec3()
-	{
-		x = y = z = 0.0f;
-	}
-
-	vec3::vec3(float _x, float _y, float _z)
-	{
-		x = _x;
-		y = _y;
-		z = _z;
-	}
 
 	float vec3::length() const
 	{
@@ -803,35 +795,6 @@ namespace Anemone
 	}
 
 	/* 4D Vector */
-
-	vec4::vec4()
-	{
-		x = y = z = w = 0.0f;
-	}
-
-	vec4::vec4(float _x, float _y, float _z, float _w)
-	{
-		x = _x;
-		y = _y;
-		z = _z;
-		w = _w;
-	}
-
-	vec4::vec4(const vec3& vec, float _w)
-	{
-		x = vec.x;
-		y = vec.y;
-		z = vec.z;
-		w = _w;
-	}
-
-	vec4::vec4(const vec2& vec1, const vec2& vec2)
-	{
-		x = vec1.x;
-		y = vec1.y;
-		z = vec2.x;
-		w = vec2.y;
-	}
 
 	float vec4::length() const
 	{
@@ -1176,7 +1139,7 @@ namespace Anemone
 		values.w = _w;
 	}
 
-	Quaternion::Quaternion(Anemone::vec4 _values)
+	Quaternion::Quaternion(vec4 _values)
 	{
 		values = _values;
 	}
@@ -1206,9 +1169,9 @@ namespace Anemone
 		return quat;
 	}
 
-	Anemone::mat4 Quaternion::getRotationMatrix()
+	mat4 Quaternion::getRotationMatrix()
 	{
-		Anemone::mat4 mat;
+		mat4 mat;
 		mat.set(
 			values.w, -values.z, values.y, values.x,
 			values.z, values.w, -values.x, values.y,
@@ -1219,4 +1182,26 @@ namespace Anemone
 	}
 
 	/* Misc Functions */
+
+	std::pair<bool, vec2> lineLineCollision(vec2 p1, vec2 p2, vec2 p3, vec2 p4)
+	{
+		float a = ((p4.y - p3.y) * (p2.x - p1.x) - (p4.x - p3.x) * (p2.y - p1.y));
+		float ua = ((p4.x - p3.x) * (p1.y - p3.y) - (p4.y - p3.y) * (p1.x - p3.x)) / a;
+		float ub = ((p2.x - p1.x) * (p1.y - p3.y) - (p2.y - p1.y) * (p1.x - p3.x)) / a;
+		if (ua >= 0.0f && ua <= 1.0f && ub >= 0.0f && ub <= 1.0f)
+		{
+			return std::make_pair(true, p1 + ((p2 - p1) * ua));
+		}
+		return std::make_pair(false, vec2(0.0f, 0.0f));
+	}
+
+	float triangleArea(const vec2& p1, const vec2& p2, const vec2& p3)
+	{
+		float a = (p1 - p2).length();
+		float b = (p1 - p3).length();
+		float c = (p2 - p3).length();
+		float s = (a + b + c) / 2.0f;
+		return sqrtf(s * (s - a) * (s - b) * (s - c));
+	}
+
 };

@@ -10,7 +10,7 @@
 
 #include "stb_image.h"
 
-namespace Anemone
+namespace ae
 {
 	enum TextureFiltering { NEAREST, LINEAR, TRILINEAR};
 
@@ -27,12 +27,12 @@ namespace Anemone
 
 		Texture(unsigned char* data, int length, bool mipmaps, GLint mag_filter = GL_NEAREST, GLint min_filter = GL_NEAREST) : Texture()
 		{
-			LoadFromData(data, length, mipmaps, mag_filter, min_filter);
+			loadFromData(data, length, mipmaps, mag_filter, min_filter);
 		}
 
 		Texture(const char* file_name, bool mipmaps, GLint mag_filter = GL_NEAREST, GLint min_filter = GL_NEAREST) : Texture()
 		{
-			LoadFromFile(file_name, mipmaps, mag_filter, min_filter);
+			loadFromFile(file_name, mipmaps, mag_filter, min_filter);
 		};
 
 		void bind();
@@ -41,11 +41,11 @@ namespace Anemone
 
 		unsigned int id() const { return texture_id; }
 
-		void LoadFromData(unsigned char* data, int length, bool mipmaps, GLint mag_filter = GL_NEAREST, GLint min_filter = GL_NEAREST);
+		void loadFromData(unsigned char* data, int length, bool mipmaps, GLint mag_filter = GL_NEAREST, GLint min_filter = GL_NEAREST);
 
-		void LoadFromFile(const char* file_name, bool mipmaps, GLint mag_filter = GL_NEAREST, GLint min_filter = GL_NEAREST);
+		void loadFromFile(const char* file_name, bool mipmaps, GLint mag_filter = GL_NEAREST, GLint min_filter = GL_NEAREST);
 
-		void SetParameter(GLenum parameter, GLint param_value);
+		void setParameter(GLenum parameter, GLint param_value);
 
 		int width() const { return texture_width; }
 
@@ -55,7 +55,7 @@ namespace Anemone
 
 	protected:
 
-		void Create(unsigned char* data, int length, int bpp, bool mipmaps, GLint mag_filter, GLint min_filter);
+		void create(unsigned char* data, int length, int bpp, bool mipmaps, GLint mag_filter, GLint min_filter);
 
 	private:
 

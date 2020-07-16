@@ -8,7 +8,7 @@
 #include "Shader.h"
 #include "ResourceManager.h"
 
-namespace Anemone
+namespace ae
 {
 	struct RenderInfo
 	{

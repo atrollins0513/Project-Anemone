@@ -1,6 +1,6 @@
 #include "..\Anemone\Shader.h"
 
-namespace Anemone
+namespace ae
 {
 	/* Shader Builder */
 
@@ -150,7 +150,7 @@ namespace Anemone
 	{
 		if (loadFromFile)
 		{
-			CreateShader(LoadFile(vertex).c_str(), LoadFile(fragment).c_str());
+			CreateShader(loadFile(vertex).c_str(), loadFile(fragment).c_str());
 		}
 		else
 		{
@@ -163,17 +163,17 @@ namespace Anemone
 		CreateShader(vs.Compile().c_str(), fs.Compile().c_str());
 	}
 
-	void Shader::LoadFromFile(char* vertex, char* fragment)
+	void Shader::loadFromFile(char* vertex, char* fragment)
 	{
-		CreateShader(LoadFile(vertex).c_str(), LoadFile(fragment).c_str());
+		CreateShader(loadFile(vertex).c_str(), loadFile(fragment).c_str());
 	}
 
-	void Shader::LoadFromMemory(char* vertex, char* fragment)
+	void Shader::loadFromMemory(char* vertex, char* fragment)
 	{
 		CreateShader(vertex, fragment);
 	}
 
-	void Shader::LoadFromShaderBuilder(const ShaderBuilder & vs, const ShaderBuilder & fs)
+	void Shader::loadFromShaderBuilder(const ShaderBuilder & vs, const ShaderBuilder & fs)
 	{
 		CreateShader(vs.Compile().c_str(), fs.Compile().c_str());
 	}
@@ -188,12 +188,12 @@ namespace Anemone
 		glUseProgram(0);
 	}
 
-	int Shader::GetUniformLocation(char* name)
+	int Shader::getUniformLocation(char* name)
 	{
 		return glGetUniformLocation(shader_id, name);
 	}
 
-	int Shader::GetAttribLocation(char* name)
+	int Shader::getAttribLocation(char* name)
 	{
 		return glGetAttribLocation(shader_id, name);
 	}
@@ -243,7 +243,7 @@ namespace Anemone
 			// Failed to validate shader
 			char log_buffer[8192];
 			sprintf(log_buffer, "%s%s%s%s", "Failed to validate the ", name, " shader: ", buffer);
-			Error::Log("Shader", log_buffer);
+			log("Shader", log_buffer);
 
 			delete buffer;
 
@@ -267,7 +267,7 @@ namespace Anemone
 			// Program link error
 			char log_buffer[8192];
 			sprintf(log_buffer, "%s%s", "Program link error: ", buffer);
-			Error::Log("Shader", log_buffer);
+			log("Shader", log_buffer);
 
 			delete buffer;
 
@@ -285,7 +285,7 @@ namespace Anemone
 		if (status == GL_FALSE)
 		{
 			// Error validating shader
-			Error::Log("Shader", "Error in validating the shader.");
+			log("Shader", "Error in validating the shader.");
 			return false;
 		}
 
@@ -317,92 +317,92 @@ namespace Anemone
 	}
 
 	// uniform Shader::set functions
-	void Shader::setUniform1f(std::string name, float value)
+	void Shader::setUniform1f(const std::string& name, float value)
 	{
 		glUniform1f(uniforms[name].id, value);
 	}
 
-	void Shader::setUniform1d(std::string name, double value)
+	void Shader::setUniform1d(const std::string& name, double value)
 	{
 		glUniform1d(uniforms[name].id, value);
 	}
 
-	void Shader::setUniform1i(std::string name, int value)
+	void Shader::setUniform1i(const std::string& name, int value)
 	{
 		glUniform1i(uniforms[name].id, value);
 	}
 
-	void Shader::setUniform1ui(std::string name, unsigned int value)
+	void Shader::setUniform1ui(const std::string& name, unsigned int value)
 	{
 		glUniform1ui(uniforms[name].id, value);
 	}
 
-	void Shader::setUniform2f(std::string name, float v0, float v1)
+	void Shader::setUniform2f(const std::string& name, float v0, float v1)
 	{
 		glUniform2f(uniforms[name].id, v0, v1);
 	}
 
-	void Shader::setUniform2d(std::string name, double v0, double v1)
+	void Shader::setUniform2d(const std::string& name, double v0, double v1)
 	{
 		glUniform2d(uniforms[name].id, v0, v1);
 	}
 
-	void Shader::setUniform2i(std::string name, int v0, int v1)
+	void Shader::setUniform2i(const std::string& name, int v0, int v1)
 	{
 		glUniform2i(uniforms[name].id, v0, v1);
 	}
 
-	void Shader::setUniform2ui(std::string name, unsigned int v0, unsigned int v1)
+	void Shader::setUniform2ui(const std::string& name, unsigned int v0, unsigned int v1)
 	{
 		glUniform2ui(uniforms[name].id, v0, v1);
 	}
 
-	void Shader::setUniform3f(std::string name, float v0, float v1, float v2)
+	void Shader::setUniform3f(const std::string& name, float v0, float v1, float v2)
 	{
 		glUniform3f(uniforms[name].id, v0, v1, v2);
 	}
 
-	void Shader::setUniform3d(std::string name, double v0, double v1, double v2)
+	void Shader::setUniform3d(const std::string& name, double v0, double v1, double v2)
 	{
 		glUniform3d(uniforms[name].id, v0, v1, v2);
 	}
 
-	void Shader::setUniform3i(std::string name, int v0, int v1, int v2)
+	void Shader::setUniform3i(const std::string& name, int v0, int v1, int v2)
 	{
 		glUniform3i(uniforms[name].id, v0, v1, v2);
 	}
 
-	void Shader::setUniform3ui(std::string name, unsigned int v0, unsigned int v1, unsigned int v2)
+	void Shader::setUniform3ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2)
 	{
 		glUniform3ui(uniforms[name].id, v0, v1, v2);
 	}
 
-	void Shader::setUniform4f(std::string name, float v0, float v1, float v2, float v3)
+	void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 	{
 		glUniform4f(uniforms[name].id, v0, v1, v2, v3);
 	}
 
-	void Shader::setUniform4d(std::string name, double v0, double v1, double v2, double v3)
+	void Shader::setUniform4d(const std::string& name, double v0, double v1, double v2, double v3)
 	{
 		glUniform4d(uniforms[name].id, v0, v1, v2, v3);
 	}
 
-	void Shader::setUniform4i(std::string name, int v0, int v1, int v2, int v3)
+	void Shader::setUniform4i(const std::string& name, int v0, int v1, int v2, int v3)
 	{
 		glUniform4i(uniforms[name].id, v0, v1, v2, v3);
 	}
 
-	void Shader::setUniform4ui(std::string name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3)
+	void Shader::setUniform4ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3)
 	{
 		glUniform4ui(uniforms[name].id, v0, v1, v2, v3);
 	}
 
-	void Shader::setUniformMatrix3fv(std::string name, int count, bool transpose, const float* value)
+	void Shader::setUniformMatrix3fv(const std::string& name, int count, bool transpose, const float* value)
 	{
 		glUniformMatrix3fv(uniforms[name].id, count, transpose, value);
 	}
 
-	void Shader::setUniformMatrix4fv(std::string name, int count, bool transpose, const float* value)
+	void Shader::setUniformMatrix4fv(const std::string& name, int count, bool transpose, const float* value)
 	{
 		glUniformMatrix4fv(uniforms[name].id, count, transpose, value);
 	}

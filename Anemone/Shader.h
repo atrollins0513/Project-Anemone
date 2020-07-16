@@ -13,10 +13,9 @@
 #include <cassert>
 #include <sstream>
 
-#include "Error.h"
 #include "Utilities.h"
 
-namespace Anemone
+namespace ae
 {
 	class ShaderBuilder
 	{
@@ -109,11 +108,11 @@ namespace Anemone
 
 		Shader(const ShaderBuilder& vs, const ShaderBuilder& fs);
 
-		void LoadFromFile(char* vertex, char* fragment);
+		void loadFromFile(char* vertex, char* fragment);
 
-		void LoadFromMemory(char* vertex, char* fragment);
+		void loadFromMemory(char* vertex, char* fragment);
 
-		void LoadFromShaderBuilder(const ShaderBuilder& vs, const ShaderBuilder& fs);
+		void loadFromShaderBuilder(const ShaderBuilder& vs, const ShaderBuilder& fs);
 
 		unsigned int id() const { return shader_id; }
 
@@ -121,31 +120,31 @@ namespace Anemone
 
 		void unbind();
 
-		int GetUniformLocation(char* name);
+		int getUniformLocation(char* name);
 
-		int GetAttribLocation(char* name);
+		int getAttribLocation(char* name);
 
 		~Shader();
 
 		// uniform set functions
-		void setUniform1f(std::string name, float value);
-		void setUniform1d(std::string name, double value);
-		void setUniform1i(std::string name, int value);
-		void setUniform1ui(std::string name, unsigned int value);
-		void setUniform2f(std::string name, float v0, float v1);
-		void setUniform2d(std::string name, double v0, double v1);
-		void setUniform2i(std::string name, int v0, int v1);
-		void setUniform2ui(std::string name, unsigned int v0, unsigned int v1);
-		void setUniform3f(std::string name, float v0, float v1, float v2);
-		void setUniform3d(std::string name, double v0, double v1, double v2);
-		void setUniform3i(std::string name, int v0, int v1, int v2);
-		void setUniform3ui(std::string name, unsigned int v0, unsigned int v1, unsigned int v2);
-		void setUniform4f(std::string name, float v0, float v1, float v2, float v3);
-		void setUniform4d(std::string name, double v0, double v1, double v2, double v3);
-		void setUniform4i(std::string name, int v0, int v1, int v2, int v3);
-		void setUniform4ui(std::string name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3);
-		void setUniformMatrix3fv(std::string name, int count, bool transpose, const float* value);
-		void setUniformMatrix4fv(std::string name, int count, bool transpose, const float* value);
+		void setUniform1f(const std::string& name, float value);
+		void setUniform1d(const std::string& name, double value);
+		void setUniform1i(const std::string& name, int value);
+		void setUniform1ui(const std::string& name, unsigned int value);
+		void setUniform2f(const std::string& name, float v0, float v1);
+		void setUniform2d(const std::string& name, double v0, double v1);
+		void setUniform2i(const std::string& name, int v0, int v1);
+		void setUniform2ui(const std::string& name, unsigned int v0, unsigned int v1);
+		void setUniform3f(const std::string& name, float v0, float v1, float v2);
+		void setUniform3d(const std::string& name, double v0, double v1, double v2);
+		void setUniform3i(const std::string& name, int v0, int v1, int v2);
+		void setUniform3ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2);
+		void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+		void setUniform4d(const std::string& name, double v0, double v1, double v2, double v3);
+		void setUniform4i(const std::string& name, int v0, int v1, int v2, int v3);
+		void setUniform4ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3);
+		void setUniformMatrix3fv(const std::string& name, int count, bool transpose, const float* value);
+		void setUniformMatrix4fv(const std::string& name, int count, bool transpose, const float* value);
 
 	protected:
 

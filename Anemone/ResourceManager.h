@@ -6,11 +6,10 @@
 
 #include "Shader.h"
 #include "Texture.h"
-#include "Error.h"
 //#include "Audio.h"
 // raw data
 
-namespace Anemone
+namespace ae
 {
 
 	namespace ResourceManager
@@ -33,7 +32,6 @@ namespace Anemone
 				return shaders[name];
 			}
 
-		protected:
 		private:
 
 			std::unordered_map<std::string, std::shared_ptr<Shader>> shaders;
@@ -57,7 +55,6 @@ namespace Anemone
 				return textures[name];
 			}
 
-		protected:
 		private:
 
 			std::unordered_map<std::string, std::shared_ptr<Texture>> textures;
@@ -70,4 +67,4 @@ namespace Anemone
 
 };
 
-#define rm Anemone::ResourceManager
+#define rm ae::ResourceManager

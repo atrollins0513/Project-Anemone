@@ -1,6 +1,6 @@
 #include "..\Anemone\Renderer.h"
 
-namespace Anemone
+namespace ae
 {
 
 	Renderer::Renderer(std::string shader_name, std::string texture_name, std::shared_ptr<VertexArray> _vao, RenderInfo ri)

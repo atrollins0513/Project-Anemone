@@ -1,6 +1,6 @@
 #include "..\Anemone\Font.h"
 
-namespace Anemone
+namespace ae
 {
 	namespace Font
 	{
@@ -89,7 +89,7 @@ namespace Anemone
 			}
 			else
 			{
-				Anemone::Error::Log("FontLoader", "Failed to load font file");
+				log("FontLoader", "Failed to load font file");
 			}
 		}
 
@@ -127,7 +127,7 @@ namespace Anemone
 			vbo[2].setData(0, nullptr);
 			vao.setIndexBuffer(vbo[2]);
 
-			Anemone::ShaderBuilder vs(330);
+			ShaderBuilder vs(330);
 			vs.AddAttribute(0, "vec3", "pos");
 			vs.AddAttribute(1, "vec2", "tex");
 			vs.AddAttribute(2, "vec3", "color");
@@ -137,7 +137,7 @@ namespace Anemone
 			vs.AddOutput("vec2", "fragTexCoord", 1);
 			vs.AddLine("gl_Position = proj * view * vec4(pos, 1.0);");
 
-			Anemone::ShaderBuilder fs(330);
+			ShaderBuilder fs(330);
 			fs.AddUniform("sampler2D", "texture_id");
 			fs.AddInput("vec3", "fragColor");
 			fs.AddInput("vec2", "fragTexCoord");
@@ -146,13 +146,13 @@ namespace Anemone
 			fs.AddVariable(true, "float", "edge", "0.23");
 			fs.AddLine("float distance = 1.0 - texture(texture_id, fragTexCoord).a; float alpha = 1.0 - smoothstep(width, width+edge, distance); color = vec4(fragColor, alpha);");
 
-			shader.LoadFromShaderBuilder(vs, fs);
+			shader.loadFromShaderBuilder(vs, fs);
 		}
 
 		void FontManager::update()
 		{
 			std::vector<FontVertex> vertices;
-			std::vector<Anemone::vec3> color;
+			std::vector<vec3> color;
 			std::vector<unsigned int> indices;
 			unsigned int index_offset = 0;
 			index_count = 0;
@@ -161,8 +161,8 @@ namespace Anemone
 			{
 				if (t->display)
 				{
-					Anemone::vec3 start_position = t->position;
-					Anemone::vec3 position = t->position;
+					vec3 start_position = t->position;
+					vec3 position = t->position;
 					unsigned int xadvance = 0;
 					for (auto s : t->text)
 					{
@@ -187,7 +187,7 @@ namespace Anemone
 
 			vao.bind();
 			vbo[0].setData(vertices.size() * sizeof(FontVertex), &vertices[0]);
-			vbo[1].setData(color.size() * sizeof(Anemone::vec3), &color[0]);
+			vbo[1].setData(color.size() * sizeof(vec3), &color[0]);
 			vbo[2].setData(indices.size() * sizeof(unsigned int), &indices[0]);
 		}
 

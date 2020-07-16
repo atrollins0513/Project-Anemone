@@ -13,9 +13,6 @@
     <ClInclude Include="Anemone\BufferObject.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="Anemone\Error.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="Anemone\Font.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -57,9 +54,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\BufferObject.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Error.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Font.cpp">

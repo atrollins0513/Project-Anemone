@@ -1,6 +1,6 @@
 #include "..\Anemone\ResourceManager.h"
 
-namespace Anemone
+namespace ae
 {
 	namespace ResourceManager
 	{

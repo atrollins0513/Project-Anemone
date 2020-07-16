@@ -5,13 +5,22 @@
 #include <math.h>
 #include <algorithm>
 #include <string>
+#include <utility>
 
-#define PI 3.141592654f
-#define to_radians(deg) (deg * PI) / 180.0f
-#define to_degrees(rad) (rad * 180.0f) / PI
 
-namespace Anemone
+namespace ae
 {
+	const double PI = 3.1415926535;
+
+	constexpr double to_radians(double deg)
+	{
+		return deg * PI / 180.0;
+	}
+
+	constexpr double to_degrees(double rad)
+	{
+		return rad * 180.0 / PI;
+	}
 
 	/* Vectors */
 
@@ -24,9 +33,9 @@ namespace Anemone
 
 		float x, y;
 
-		vec2();
+		constexpr vec2() : x(0.0f), y(0.0f) {}
 
-		vec2(float _x, float _y);
+		constexpr vec2(float _x, float _y) : x(_x), y(_y) {}
 
 		float length() const;
 
@@ -92,9 +101,9 @@ namespace Anemone
 
 		float x, y, z;
 
-		vec3();
+		constexpr vec3() : x(0.0f), y(0.0f), z(0.0f) {}
 
-		vec3(float _x, float _y, float _z);
+		constexpr vec3(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
 
 		float length() const;
 
@@ -162,13 +171,13 @@ namespace Anemone
 
 		float x, y, z, w;
 
-		vec4();
+		constexpr vec4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
 
-		vec4(float _x, float _y, float _z, float _w);
+		constexpr vec4(float _x, float _y, float _z, float _w) : x(_x), y(_y), z(_z), w(_w) {}
 
-		vec4(const vec3& vec, float _w);
+		constexpr vec4(const vec3& vec, float _w) : x(vec.x), y(vec.y), z(vec.z), w(_w) {}
 
-		vec4(const vec2& vec1, const vec2& vec2);
+		constexpr vec4(const vec2& vec1, const vec2& vec2) : x(vec1.x), y(vec1.y), z(vec2.x), w(vec2.y) {}
 
 		float length() const;
 
@@ -288,13 +297,13 @@ namespace Anemone
 	{
 	public:
 
-		Anemone::vec4 values;
+		vec4 values;
 
 		Quaternion();
 
 		Quaternion(float _x, float _y, float _z, float _w);
 
-		Quaternion(Anemone::vec4 _values);
+		Quaternion(vec4 _values);
 
 		void scale(float s);
 
@@ -304,9 +313,9 @@ namespace Anemone
 
 		Quaternion unit();
 
-		Anemone::mat4 getRotationMatrix();
+		mat4 getRotationMatrix();
 
-		const Anemone::vec4& get() { return values; }
+		const vec4& get() { return values; }
 
 	};
 
@@ -327,6 +336,12 @@ namespace Anemone
 	extern vec2 perpcw(const vec2& vec);
 
 	extern vec2 perpccw(const vec2& vec);
+
+	extern float cross(const vec2& v1, const vec2& v2);
+
+	extern vec2 cross(float a, const vec2& v);
+
+	extern vec2 cross(const vec2& v, float a);
 
 	/* 3D Vector */
 
@@ -409,4 +424,8 @@ namespace Anemone
 	extern Quaternion multiply(const Quaternion& q1, const Quaternion& q2);
 
 	/* Misc Functions */
+
+	extern std::pair<bool, vec2> lineLineCollision(vec2 p1, vec2 p2, vec2 p3, vec2 p4);
+
+	extern float triangleArea(const vec2& p1, const vec2& p2, const vec2& p3);
 };

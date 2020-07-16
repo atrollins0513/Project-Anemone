@@ -10,16 +10,15 @@
 #include <memory>
 #include <string>
 
-#define GLEW_STATIC
 #include "includes\glew.h"
 #include "includes\glfw3.h"
 
+#include "Utilities.h"
 #include "State.h"
-#include "Error.h"
 
-namespace Anemone
+namespace ae
 {
-	enum INPUT_EVENT { KEYBOARD_EVENT = 0x01, TEXT_EVENT = 0x02, MOUSE_MOUSE_EVENT = 0x04, MOUSE_CLICK_EVENT = 0x08, MOUSE_SCROLL_EVENT = 0x16, MOUSE_CURSOR_ENTER_LEAVE_EVENT = 0x32, JOYSTICK_EVENT = 0x64};
+	enum Event { KEYBOARD_EVENT = 0x01, TEXT_EVENT = 0x02, MOUSE_MOUSE_EVENT = 0x04, MOUSE_CLICK_EVENT = 0x08, MOUSE_SCROLL_EVENT = 0x16, MOUSE_CURSOR_ENTER_LEAVE_EVENT = 0x32, JOYSTICK_EVENT = 0x64};
 
 	class State;
 
@@ -29,17 +28,17 @@ namespace Anemone
 
 		Window();
 		
-		bool Create(std::string _title, unsigned int _width, unsigned int _height, GLFWmonitor* _monitor = nullptr, GLFWwindow* _share = nullptr);
+		bool Create(const std::string& _title, unsigned int _width, unsigned int _height, GLFWmonitor* _monitor = nullptr, GLFWwindow* _share = nullptr);
 		
 		void Start();
 
-		void enableEvent(unsigned int e);
+		void enableEvent(Event e);
 
-		void setWindowTitle(std::string new_title);
+		void setWindowTitle(const std::string& new_title);
 
 		void setUpdateRate(double _dt);
 
-		void setWindowPosition(int x, int y);
+		void setPosition(int x, int y);
 
 		void setHint(int hint, int value);
 
@@ -50,6 +49,10 @@ namespace Anemone
 		const int height() { return h; }
 
 		const double getUpdateRate() { return dt; }
+
+		const StateManager& getStateManager() { return sm; }
+
+		const std::shared_ptr<State> getCurrentState() { return sm.getCurrentState(); };
 
 	protected:
 	private:
@@ -68,7 +71,9 @@ namespace Anemone
 
 		double dt;
 
+		StateManager sm;
+
 	};
 
-	extern std::shared_ptr<Anemone::Window> MakeWindow();
+	extern std::shared_ptr<Window> MakeWindow();
 };

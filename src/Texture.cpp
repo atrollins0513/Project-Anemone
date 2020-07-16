@@ -1,6 +1,6 @@
 #include "..\Anemone\Texture.h"
 
-namespace Anemone
+namespace ae
 {
 	void Texture::bind()
 	{
@@ -12,30 +12,30 @@ namespace Anemone
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	void Texture::LoadFromData(unsigned char* data, int length, bool mipmaps, GLint mag_filter, GLint min_filter)
+	void Texture::loadFromData(unsigned char* data, int length, bool mipmaps, GLint mag_filter, GLint min_filter)
 	{
 		int bpp;
 		stbi_loadf_from_memory(data, length, &texture_width, &texture_height, &bpp, 0);
-		Create(data, length, bpp, mipmaps, mag_filter, min_filter);
+		create(data, length, bpp, mipmaps, mag_filter, min_filter);
 	}
 
-	void Texture::LoadFromFile(const char* file_name, bool mipmaps, GLint mag_filter, GLint min_filter)
+	void Texture::loadFromFile(const char* file_name, bool mipmaps, GLint mag_filter, GLint min_filter)
 	{
 		int bpp;
 		unsigned char* data = stbi_load(file_name, &texture_width, &texture_height, &bpp, 0);
 		int length = texture_width * texture_height * bpp;
 		bpp *= 8;
-		Create(data, length, bpp, mipmaps, mag_filter, min_filter);
+		create(data, length, bpp, mipmaps, mag_filter, min_filter);
 	}
 
-	void Texture::SetParameter(GLenum parameter, GLint param_value)
+	void Texture::setParameter(GLenum parameter, GLint param_value)
 	{
 		bind();
 		glTexParameteri(GL_TEXTURE_2D, parameter, param_value);
 		unbind();
 	}
 
-	void Texture::Create(unsigned char* data, int length, int bpp, bool mipmaps, GLint mag_filter, GLint min_filter)
+	void Texture::create(unsigned char* data, int length, int bpp, bool mipmaps, GLint mag_filter, GLint min_filter)
 	{
 		if (data != 0)
 		{

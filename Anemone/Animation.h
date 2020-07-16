@@ -2,7 +2,7 @@
 
 #include <vector>
 
-namespace Anemone
+namespace ae
 {
 	struct Frame
 	{

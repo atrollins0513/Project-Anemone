@@ -1,9 +1,41 @@
 #include "..\Anemone\Utilities.h"
 
-namespace Anemone
+namespace ae
 {
 
-	std::string LoadFile(std::string filename, int file_mode)
+	void log(std::string identifier, std::string message)
+	{
+		std::ofstream file("log.txt", std::ios::out | std::ios::app);
+		if (file.is_open())
+		{
+			time_t rawtime;
+			struct tm* timeinfo;
+			char buffer[25];
+			time(&rawtime);
+			timeinfo = localtime(&rawtime);
+			strftime(buffer, 25, "[%F %H:%M:%S]", timeinfo);
+			file << buffer << "[" << identifier << "]" << "[" << message << "]" << std::endl;
+			file.close();
+		}
+	}
+
+	void log(std::string identifier, std::string message, std::string message_two)
+	{
+		std::ofstream file("log.txt", std::ios::out | std::ios::app);
+		if (file.is_open())
+		{
+			time_t rawtime;
+			struct tm* timeinfo;
+			char buffer[25];
+			time(&rawtime);
+			timeinfo = localtime(&rawtime);
+			strftime(buffer, 25, "[%F %H:%M:%S]", timeinfo);
+			file << buffer << "[" << identifier << "]" << "[" << message << message_two << "]" << std::endl;
+			file.close();
+		}
+	}
+
+	std::string loadFile(std::string filename, int file_mode)
 	{
 		std::ifstream file(filename, file_mode);
 
@@ -12,7 +44,7 @@ namespace Anemone
 		if (file.is_open())
 		{
 			file.seekg(0, std::ios::end);
-			unsigned int size = file.tellg();
+			long size = file.tellg();
 			file.seekg(0, std::ios::beg);
 
 			if (size <= 0)
@@ -34,7 +66,7 @@ namespace Anemone
 		}
 		else
 		{
-			Error::Log(filename, "Failed to open.");
+			log(filename, "Failed to open.");
 			return "";
 		}
 	}
@@ -65,25 +97,6 @@ namespace Anemone
 	int random(unsigned int lower_limit, unsigned int upper_limit)
 	{
 		return rand() % upper_limit + lower_limit;
-	}
-
-	vec3 hexToRGB(std::string hex)
-	{
-		if (hex.at(0) == '#')
-		{
-			hex = hex.substr(1);
-		}
-
-		if (hex.size() == 6)
-		{
-			return vec3(
-				std::stol(hex.substr(0, 2), nullptr, 16) / 255.0f,
-				std::stol(hex.substr(2, 2), nullptr, 16) / 255.0f,
-				std::stol(hex.substr(4, 2), nullptr, 16) / 255.0f
-			);
-		}
-
-		return vec3(1.0f, 1.0f, 1.0f);
 	}
 
 };

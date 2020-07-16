@@ -22,7 +22,6 @@
     <ClInclude Include="Anemone\Anemone.h" />
     <ClInclude Include="Anemone\Animation.h" />
     <ClInclude Include="Anemone\BufferObject.h" />
-    <ClInclude Include="Anemone\Error.h" />
     <ClInclude Include="Anemone\Font.h" />
     <ClInclude Include="Anemone\Math.h" />
     <ClInclude Include="Anemone\Renderer.h" />
@@ -37,7 +36,6 @@
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\BufferObject.cpp" />
-    <ClCompile Include="src\Error.cpp" />
     <ClCompile Include="src\Font.cpp" />
     <ClCompile Include="src\Math.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
