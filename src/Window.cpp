@@ -56,6 +56,68 @@ namespace ae
 		glfwSetWindowUserPointer(window, this);
 		sm.parent = this;
 
+		glfwSetKeyCallback(window, [](GLFWwindow* w, int key, int scancode, int action, int mods) {
+
+			auto state = ((Window*)glfwGetWindowUserPointer(w))->getCurrentState();
+
+			switch (action)
+			{
+				case GLFW_KEY_DOWN:
+				{
+					state->event(KeyPressedEvent(key, scancode, mods, 0));
+					break;
+				}
+				case GLFW_KEY_UP:
+				{
+					state->event(KeyReleasedEvent(key, scancode, mods));
+					break;
+				}
+				case GLFW_REPEAT:
+				{
+					state->event(KeyPressedEvent(key, scancode, mods, 1));
+					break;
+				}
+			}
+		});
+
+		glfwSetCharCallback(window, [](GLFWwindow* w, unsigned int codepoint) {
+			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(KeyTypedEvent(codepoint));
+		});
+
+		glfwSetCursorPosCallback(window, [](GLFWwindow* w, double xpos, double ypos) {
+			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(MouseMoveEvent(xpos, ypos));
+		});
+
+		glfwSetMouseButtonCallback(window, [](GLFWwindow* w, int button, int action, int mods) {
+			auto state = ((Window*)glfwGetWindowUserPointer(w))->getCurrentState();
+
+			switch (action)
+			{
+				case GLFW_PRESS:
+				{
+					state->event(MouseDownEvent(button, mods));
+					break;
+				}
+				case GLFW_RELEASE:
+				{
+					state->event(MouseReleaseEvent(button, mods));
+					break;
+				}
+			}
+		});
+
+		glfwSetScrollCallback(window, [](GLFWwindow* w, double xoffset, double yoffset) {
+			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(MouseScrollEvent(xoffset, yoffset));
+		});
+
+		glfwSetCursorEnterCallback(window, [](GLFWwindow* w, int entered) {
+			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(WindowFocus(entered));
+		});
+
+		glfwSetWindowSizeCallback(window, [](GLFWwindow* w, int width, int height) {
+			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(WindowResizeEvent(width, height));
+		});
+
 		return true;
 	}
 
@@ -68,7 +130,7 @@ namespace ae
 			std::chrono::high_resolution_clock::time_point newTime;
 			double frameTime = 0.0;
 
-			while (true)
+			while (!glfwWindowShouldClose(window))
 			{
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -91,64 +153,8 @@ namespace ae
 				sm.getCurrentState()->render(accumulator / dt);
 
 				glfwSwapBuffers(window);
-
-				if (glfwWindowShouldClose(window) == GLFW_TRUE)
-					break;
 			}
 			glfwDestroyWindow(window);
-		}
-	}
-
-	void Window::enableEvent(Event e)
-	{
-		if (e & Event::KEYBOARD_EVENT)
-		{
-			//glfwSetKeyCallback(window, StateManager::KeyEvent);
-			glfwSetKeyCallback(window, [](GLFWwindow* w, int key, int scancode, int action, int mods) {
-				((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->keyEvent(key, scancode, action, mods);
-			});
-		}
-
-		if (e & TEXT_EVENT)
-		{
-			glfwSetCharCallback(window, [](GLFWwindow* w, unsigned int codepoint) {
-				((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->charEvent(codepoint);
-			});
-		}
-
-		if (e & MOUSE_MOUSE_EVENT)
-		{
-			glfwSetCursorPosCallback(window, [](GLFWwindow* w, double xpos, double ypos) {
-				((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->mouseMoveEvent(xpos, ypos);
-			});
-		}
-
-		if (e & MOUSE_CLICK_EVENT)
-		{
-			glfwSetMouseButtonCallback(window, [](GLFWwindow* w, int button, int action, int mods) {
-				((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->mouseClickEvent(button, action, mods);
-			});
-		}
-
-		if (e & MOUSE_SCROLL_EVENT)
-		{
-			glfwSetScrollCallback(window, [](GLFWwindow* w, double xoffset, double yoffset) {
-				((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->scrollEvent(xoffset, yoffset);
-			});
-		}
-
-		if (e & MOUSE_CURSOR_ENTER_LEAVE_EVENT)
-		{
-			glfwSetCursorEnterCallback(window, [](GLFWwindow* w, int entered) {
-				((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->mouseEnterEvent(entered);
-			});
-		}
-
-		if (e & JOYSTICK_EVENT)
-		{
-			glfwSetJoystickCallback([](int joy, int ev) {
-				((Window*)glfwGetWindowUserPointer(glfwGetCurrentContext()))->getCurrentState()->joystickEvent(joy, ev);
-			});
 		}
 	}
 
@@ -173,8 +179,8 @@ namespace ae
 		glfwWindowHint(hint, value);
 	}
 
-	std::shared_ptr<Window> MakeWindow()
+	sptr<Window> CreateWindow()
 	{
-		return std::make_shared<Window>();
+		return makeShared<Window>();
 	}
 };

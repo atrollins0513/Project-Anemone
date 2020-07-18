@@ -7,11 +7,28 @@
 #include <vector>
 #include <random>
 #include <time.h>
+#include <memory>
 
 #include "Math.h"
 
 namespace ae
 {
+
+	template<typename T>
+	using sptr = std::shared_ptr<T>;
+	template<typename T, typename ... Args>
+	constexpr sptr<T> makeShared(Args&& ... args)
+	{
+		return std::make_shared<T>(std::forward<Args>(args)...);
+	}
+
+	template<typename T>
+	using uptr = std::unique_ptr<T>;
+	template<typename T, typename ... Args>
+	constexpr uptr<T> makeUnique(Args&& ... args)
+	{
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
 
 	extern void log(std::string identifier, std::string message);
 

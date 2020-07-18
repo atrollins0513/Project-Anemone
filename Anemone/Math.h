@@ -401,7 +401,11 @@ namespace ae
 
 	extern mat4 translate(float x, float y, float z);
 
+	extern mat4 translate(const vec3& vec);
+
 	extern mat4 scale(float x, float y, float z);
+
+	extern mat4 scale(const vec3& s);
 
 	extern mat4 rotateX(float radians);
 

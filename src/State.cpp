@@ -3,35 +3,30 @@
 namespace ae
 {
 
-	void StateManager::removeState(unsigned int id)
+	void StateManager::removeState(const std::string& name)
 	{
-		if (stateExists(id))
+		if (stateExists(name))
 		{
-			states.erase(id);
+			states.erase(name);
 		}
 	}
 
-	void StateManager::setState(unsigned int id, bool initialize, bool transitionIn)
+	void StateManager::setState(const std::string& name, bool initialize)
 	{
-		if (stateExists(id))
+		if (stateExists(name))
 		{
-			current_state = states.at(id);
+			current_state = states.at(name);
 
 			if (initialize)
 			{
 				current_state->init();
 			}
-
-			if (transitionIn)
-			{
-				current_state->transitionIn();
-			}
 		}
 	}
 
-	std::shared_ptr<State> StateManager::getState(unsigned int id)
+	std::shared_ptr<State> StateManager::getState(const std::string& name)
 	{
-		return states.at(id);
+		return states.at(name);
 	}
 
 	std::shared_ptr<State> StateManager::getCurrentState()
@@ -39,9 +34,9 @@ namespace ae
 		return current_state;
 	}
 
-	bool StateManager::stateExists(unsigned int id)
+	bool StateManager::stateExists(const std::string& name)
 	{
-		return (states.find(id) != states.end());
+		return (states.find(name) != states.end());
 	}
 
 };

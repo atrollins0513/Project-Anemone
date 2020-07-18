@@ -12,6 +12,7 @@
 #include "Math.h"
 #include "Shader.h"
 #include "Utilities.h"
+#include "Texture.h"
 
 namespace ae
 {
@@ -67,9 +68,9 @@ namespace ae
 
 			FontLoader();
 
-			FontLoader(std::string texture_file, std::string bmFontFile);
+			FontLoader(sptr<Texture> _texture, std::string bmFontFile);
 
-			void Load(std::string texture_file, std::string bmFontFile);
+			void Load(sptr<Texture> _texture, std::string bmFontFile);
 
 			const FontCharInfo& getCharacter(unsigned int index);
 
@@ -85,7 +86,7 @@ namespace ae
 
 			std::string font_file;
 
-			std::shared_ptr<Texture> texture;
+			sptr<Texture> texture;
 
 			std::map<unsigned int, FontCharInfo> character_info;
 
@@ -139,7 +140,7 @@ namespace ae
 			
 			void render();
 			
-			void loadFont(std::string texture_file, std::string bm_font_file);
+			void loadFont(sptr<Texture> _texture, std::string bm_font_file);
 			
 			void addText(std::shared_ptr<Text> text);
 			

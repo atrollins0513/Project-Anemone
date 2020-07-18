@@ -304,6 +304,11 @@ namespace ae
 		return trans;
 	}
 
+	mat4 translate(const vec3& vec)
+	{
+		return translate(vec.x, vec.y, vec.z);
+	}
+
 	mat4 scale(float x, float y, float z)
 	{
 		mat4 scale;
@@ -311,6 +316,11 @@ namespace ae
 		scale[5] = y;
 		scale[10] = z;
 		return scale;
+	}
+
+	mat4 scale(const vec3& s)
+	{
+		return scale(s.x, s.y, s.z);
 	}
 
 	mat4 rotateX(float radians)

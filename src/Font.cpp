@@ -12,15 +12,15 @@ namespace ae
 			font_file = "";
 		}
 
-		FontLoader::FontLoader(std::string texture_file, std::string bmFontFile)
+		FontLoader::FontLoader(sptr<Texture> _texture, std::string bmFontFile)
 		{
-			Load(texture_file, bmFontFile);
+			Load(_texture, bmFontFile);
 		}
 
-		void FontLoader::Load(std::string texture_file, std::string bmFontFile)
+		void FontLoader::Load(sptr<Texture> _texture, std::string bmFontFile)
 		{
 			font_file = bmFontFile;
-			texture = rm::texture(texture_file);
+			texture = _texture;
 
 			std::ifstream font_file(bmFontFile);
 
@@ -212,9 +212,9 @@ namespace ae
 			glEnable(GL_DEPTH_TEST);
 		}
 
-		void FontManager::loadFont(std::string texture_file, std::string bm_font_file)
+		void FontManager::loadFont(sptr<Texture> _texture, std::string bm_font_file)
 		{
-			loader.Load(texture_file, bm_font_file);
+			loader.Load(_texture, bm_font_file);
 		}
 
 		void FontManager::addText(std::shared_ptr<Text> text)

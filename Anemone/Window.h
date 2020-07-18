@@ -15,11 +15,10 @@
 
 #include "Utilities.h"
 #include "State.h"
+#include "Event.h"
 
 namespace ae
 {
-	enum Event { KEYBOARD_EVENT = 0x01, TEXT_EVENT = 0x02, MOUSE_MOUSE_EVENT = 0x04, MOUSE_CLICK_EVENT = 0x08, MOUSE_SCROLL_EVENT = 0x16, MOUSE_CURSOR_ENTER_LEAVE_EVENT = 0x32, JOYSTICK_EVENT = 0x64};
-
 	class State;
 
 	class Window
@@ -31,8 +30,6 @@ namespace ae
 		bool Create(const std::string& _title, unsigned int _width, unsigned int _height, GLFWmonitor* _monitor = nullptr, GLFWwindow* _share = nullptr);
 		
 		void Start();
-
-		void enableEvent(Event e);
 
 		void setWindowTitle(const std::string& new_title);
 
@@ -75,5 +72,5 @@ namespace ae
 
 	};
 
-	extern std::shared_ptr<Window> MakeWindow();
+	extern sptr<Window> MakeWindow();
 };

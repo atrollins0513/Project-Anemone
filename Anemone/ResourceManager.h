@@ -2,69 +2,33 @@
 
 #include <unordered_map>
 #include <string>
-#include <memory>
-
-#include "Shader.h"
-#include "Texture.h"
-//#include "Audio.h"
-// raw data
+#include <any>
 
 namespace ae
 {
-
-	namespace ResourceManager
+	class ResourceManager
 	{
+	public:
 
-		class resource_shader
+		ResourceManager() { }
+
+		template<typename T>
+		void store(const std::string& name, T t)
 		{
-		public:
+			assert(data.find(name) != data.end());
+			data.emplace(name, t);
+		}
 
-			std::shared_ptr<Shader> create(std::string name);
-			void unload(std::string name);
-
-			std::shared_ptr<Shader> operator()(std::string name)
-			{
-				return shaders[name];
-			}
-				
-			std::shared_ptr<Shader>& operator[](std::string name)
-			{
-				return shaders[name];
-			}
-
-		private:
-
-			std::unordered_map<std::string, std::shared_ptr<Shader>> shaders;
-
-		};
-
-		class resource_texture
+		template<typename T>
+		T get(const std::string& name)
 		{
-		public:
+			assert(data.find(name) != data.end());
+			return std::any_cast<T>(data[name]);
+		}
 
-			std::shared_ptr<Texture> create(std::string name);
-			void unload(std::string name);
+	private:
 
-			auto operator()(std::string name)
-			{
-				return textures[name];
-			}
+		std::unordered_map<std::string, std::any> data;
 
-			auto& operator[](std::string name)
-			{
-				return textures[name];
-			}
-
-		private:
-
-			std::unordered_map<std::string, std::shared_ptr<Texture>> textures;
-
-		};
-
-		extern resource_shader shader;
-		extern resource_texture texture;
 	};
-
 };
-
-#define rm ae::ResourceManager

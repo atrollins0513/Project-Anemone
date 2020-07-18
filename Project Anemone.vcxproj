@@ -22,6 +22,7 @@
     <ClInclude Include="Anemone\Anemone.h" />
     <ClInclude Include="Anemone\Animation.h" />
     <ClInclude Include="Anemone\BufferObject.h" />
+    <ClInclude Include="Anemone\Event.h" />
     <ClInclude Include="Anemone\Font.h" />
     <ClInclude Include="Anemone\Math.h" />
     <ClInclude Include="Anemone\Renderer.h" />
@@ -39,7 +40,6 @@
     <ClCompile Include="src\Font.cpp" />
     <ClCompile Include="src\Math.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
-    <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\State.cpp" />
     <ClCompile Include="src\stb_image.cpp" />
@@ -116,6 +116,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,6 +125,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

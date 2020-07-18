@@ -3,14 +3,6 @@
 namespace ae
 {
 
-	Renderer::Renderer(std::string shader_name, std::string texture_name, std::shared_ptr<VertexArray> _vao, RenderInfo ri)
-	{
-		shader = rm::shader(shader_name);
-		texture = rm::texture(texture_name);
-		AddVertexArray(_vao);
-		SetRenderInfo(ri);
-	}
-
 	void Renderer::Render()
 	{
 		shader->bind();

@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <tuple>
 #include <assert.h>
+#include <string>
 
 #ifndef GLEW_STATIC
 	#define GLEW_STATIC
@@ -11,6 +12,9 @@
 
 #include "includes\glew.h"
 #include "includes\glfw3.h"
+
+#include "Utilities.h"
+#include "Event.h"
 
 namespace ae
 {
@@ -26,39 +30,15 @@ namespace ae
 
 		virtual void render(double alpha) = 0;
 
+		virtual void event(Event& e) = 0;
+
 		virtual void destroy() = 0;
-
-		virtual void keyEvent(int key, int scancode, int action, int mods) {}
-		
-		virtual void charEvent(unsigned int codepoint) {}
-		
-		virtual void mouseMoveEvent(double xpos, double ypos) {}
-
-		virtual void mouseClickEvent(int button, int action, int mods) {}
-		
-		virtual void scrollEvent(double xoffset, double yoffset) {}
-		
-		virtual void mouseEnterEvent(int entered) {}
-
-		virtual void joystickEvent(int joy, int ev) {}
-
-		virtual void transitionOut(unsigned int _transition_state_id) {}
-
-		virtual void transitionIn() {}
-
-		void setID(unsigned int _id) { id = _id; }
 
 		void setParent(Window* _parent) { parent = _parent; }
 
 		Window* getParent() { return parent; }
 
 	protected:
-
-		unsigned int id;
-
-		bool transition_in, transition_out;
-
-		unsigned int transition_state_id;
 
 		Window* parent;
 
@@ -70,35 +50,35 @@ namespace ae
 
 		StateManager() : current_state(nullptr), parent(nullptr) { }
 
-		template<typename T>
-		bool addState(unsigned int id)
+		template<typename T, typename ... Args>
+		bool addState(const std::string& name, Args&& ... args)
 		{
 			static_assert(std::is_base_of<State, T>::value, "T must inherit from State");
 			assert(states.find(id) != states.end()); // Throws if state id already exists
 
-			std::shared_ptr<T> newState = std::make_shared<T>();
+			sptr<T> newState = makeShared<T>(std::forward<Args>(args)...);
 			newState->setParent(parent);
 
-			states.emplace(id, newState);
+			states.emplace(name, newState);
 		}
 
-		void removeState(unsigned int id);
+		void removeState(const std::string& name);
 
-		void setState(unsigned int id, bool initialize = false, bool transitionIn = false);
+		void setState(const std::string& name, bool initialize = false);
 
-		std::shared_ptr<State> getState(unsigned int id);
+		std::shared_ptr<State> getState(const std::string& name);
 
 		std::shared_ptr<State> getCurrentState();
 
-		bool stateExists(unsigned int id);
+		bool stateExists(const std::string& name);
 
 		friend Window;
 
 	private:
 
-		std::shared_ptr<State> current_state;
+		sptr<State> current_state;
 
-		std::unordered_map<int, std::shared_ptr<State>> states;
+		std::unordered_map<std::string, sptr<State>> states;
 
 		Window* parent;
 

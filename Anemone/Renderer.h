@@ -58,7 +58,18 @@ namespace ae
 	{
 	public:
 		
-		Renderer(std::string shader_name, std::string texture_name, std::shared_ptr<VertexArray> _vao, RenderInfo ri);
+		Renderer()
+		{
+			texture = nullptr;
+			shader = nullptr;
+			ri = RenderInfo();
+		}
+
+		Renderer(sptr<Shader> _shader, sptr<Texture> _texture, sptr<VertexArray> _vao, RenderInfo _ri) : shader(_shader), texture(_texture)
+		{
+			AddVertexArray(_vao);
+			SetRenderInfo(_ri);
+		}
 
 		void Render();
 
@@ -69,11 +80,11 @@ namespace ae
 	protected:
 	private:
 
-		std::vector<std::shared_ptr<VertexArray>> vao;
+		std::vector<sptr<VertexArray>> vao;
 
-		std::shared_ptr<Texture> texture;
+		sptr<Texture> texture;
 
-		std::shared_ptr<Shader> shader;
+		sptr<Shader> shader;
 
 		RenderInfo ri;
 

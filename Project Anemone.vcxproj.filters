@@ -40,6 +40,9 @@
     <ClInclude Include="Anemone\Utilities.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="Anemone\Event.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -63,9 +66,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ResourceManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Shader.cpp">
