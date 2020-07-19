@@ -193,7 +193,7 @@ namespace ae
 		share = _share;
 	}
 
-	sptr<Window> CreateWindow()
+	sptr<Window> MakeWindow()
 	{
 		return makeShared<Window>();
 	}

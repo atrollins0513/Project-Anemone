@@ -77,5 +77,5 @@ namespace ae
 
 	};
 
-	extern sptr<Window> CreateWindow();
+	extern sptr<Window> MakeWindow();
 };
