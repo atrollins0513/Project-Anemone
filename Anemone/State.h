@@ -34,7 +34,10 @@ namespace ae
 
 		virtual void destroy() = 0;
 
-		virtual const std::string& getName() const = 0;
+		virtual const std::string& getName() const
+		{
+			return "";
+		};
 
 		void setParent(Window* _parent) { parent = _parent; }
 
@@ -60,9 +63,10 @@ namespace ae
 			sptr<T> newState = makeShared<T>(std::forward<Args>(args)...);
 			newState->setParent(parent);
 
+			assert(newState->getName() != "");
 			assert(!stateExists(newState->getName()));
 
-			states.emplace(name, newState);
+			states.emplace(newState->getName(), newState);
 
 		}
 

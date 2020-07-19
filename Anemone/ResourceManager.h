@@ -6,6 +6,7 @@
 
 namespace ae
 {
+	/*
 	class ResourceManager
 	{
 	public:
@@ -31,4 +32,5 @@ namespace ae
 		std::unordered_map<std::string, std::any> data;
 
 	};
+	*/
 };
