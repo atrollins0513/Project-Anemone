@@ -3,15 +3,9 @@
 namespace ae
 {
 
-	void StateManager::addState(sptr<State> state, bool initialize)
+	void StateManager::addState(sptr<State> state)
 	{
 		assert(!stateExists(state->getName()));
-
-		if (initialize)
-		{
-			state->init();
-		}
-
 		states.emplace(state->getName(), state);
 	}
 

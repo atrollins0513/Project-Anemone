@@ -34,10 +34,7 @@ namespace ae
 
 		virtual void destroy() = 0;
 
-		virtual const std::string& getName() const
-		{
-			return "";
-		};
+		virtual std::string getName() = 0;
 
 		void setParent(Window* _parent) { parent = _parent; }
 
@@ -70,7 +67,7 @@ namespace ae
 
 		}
 
-		void addState(sptr<State> state, bool initalize = false);
+		void addState(sptr<State> state);
 
 		void removeState(const std::string& name);
 

@@ -49,7 +49,8 @@ namespace ae
 			return false;
 		}
 
-		addState(initial_state, true);
+		addState(initial_state);
+		setState(initial_state->getName(), true);
 
 		glfwSetWindowUserPointer(window, this);
 
@@ -123,7 +124,7 @@ namespace ae
 
 	void Window::Start()
 	{
-		assert(current_state == nullptr);
+		assert(current_state != nullptr);
 
 		if (window != nullptr)
 		{
