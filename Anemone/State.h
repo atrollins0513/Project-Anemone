@@ -56,12 +56,14 @@ namespace ae
 		bool addState(Args&& ... args)
 		{
 			static_assert(std::is_base_of<State, T>::value, "T must inherit from State");
-			assert(!stateExists(state->getName()));
 
 			sptr<T> newState = makeShared<T>(std::forward<Args>(args)...);
 			newState->setParent(parent);
 
+			assert(!stateExists(newState->getName()));
+
 			states.emplace(name, newState);
+
 		}
 
 		void addState(sptr<State> state, bool initalize = false);
