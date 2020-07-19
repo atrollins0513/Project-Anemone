@@ -11,6 +11,8 @@ namespace ae
 		title = "";
 		dt = 0.01;
 		window = nullptr;
+		current_state = nullptr;
+		setStateManagerParent(this);
 
 		glfwSetErrorCallback([](int error, const char* description) {
 			char log_buffer[8192];
@@ -24,20 +26,19 @@ namespace ae
 		}
 	}
 
-	bool Window::Create(const std::string& _title, unsigned int _width, unsigned int _height, GLFWmonitor* _monitor, GLFWwindow* _share)
+	bool Window::Create(const std::string& _title, unsigned int _width, unsigned int _height, sptr<State> initial_state)
 	{
 		w = _width;
 		h = _height;
-		monitor = _monitor;
-		share = _share;
 		title = _title;
+		dt = 0.01;
 
 		window = glfwCreateWindow(w, h, title.c_str(), monitor, share);
 		if (window == NULL)
 		{
 			log("Window", "Failed to open GLFW window.");
 			glfwTerminate();
-			return 0;
+			return false;
 		}
 
 		glfwMakeContextCurrent(window);
@@ -45,16 +46,15 @@ namespace ae
 		if (glewInit() != GLEW_OK)
 		{
 			log("Window", "Failed to initialize GLEW");
-			return 0;
+			return false;
 		}
 
-		dt = 0.01;
+		addState(initial_state, true);
+
+		glfwSetWindowUserPointer(window, this);
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glViewport(0, 0, w, h);
-
-		glfwSetWindowUserPointer(window, this);
-		sm.parent = this;
 
 		glfwSetKeyCallback(window, [](GLFWwindow* w, int key, int scancode, int action, int mods) {
 
@@ -123,6 +123,8 @@ namespace ae
 
 	void Window::Start()
 	{
+		assert(current_state == nullptr);
+
 		if (window != nullptr)
 		{
 			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
@@ -146,11 +148,13 @@ namespace ae
 
 				while (accumulator >= dt)
 				{
-					sm.getCurrentState()->update(dt);
+					//sm->getCurrentState()->update(dt);
+					current_state->update(dt);
 					accumulator -= dt;
 				}
 
-				sm.getCurrentState()->render(accumulator / dt);
+				//sm->getCurrentState()->render(accumulator / dt);
+				current_state->render(accumulator / dt);
 
 				glfwSwapBuffers(window);
 			}
@@ -177,6 +181,16 @@ namespace ae
 	void Window::setHint(int hint, int value)
 	{
 		glfwWindowHint(hint, value);
+	}
+
+	void Window::setMonitor(GLFWmonitor* _monitor)
+	{
+		monitor = _monitor;
+	}
+
+	void Window::setShare(GLFWwindow* _share)
+	{
+		share = _share;
 	}
 
 	sptr<Window> CreateWindow()

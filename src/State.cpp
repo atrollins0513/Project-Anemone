@@ -3,6 +3,18 @@
 namespace ae
 {
 
+	void StateManager::addState(sptr<State> state, bool initialize)
+	{
+		assert(!stateExists(state->getName()));
+
+		if (initialize)
+		{
+			state->init();
+		}
+
+		states.emplace(state->getName(), state);
+	}
+
 	void StateManager::removeState(const std::string& name)
 	{
 		if (stateExists(name))
@@ -24,12 +36,12 @@ namespace ae
 		}
 	}
 
-	std::shared_ptr<State> StateManager::getState(const std::string& name)
+	sptr<State> StateManager::getState(const std::string& name)
 	{
 		return states.at(name);
 	}
 
-	std::shared_ptr<State> StateManager::getCurrentState()
+	sptr<State> StateManager::getCurrentState()
 	{
 		return current_state;
 	}

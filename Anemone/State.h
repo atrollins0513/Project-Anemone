@@ -30,9 +30,11 @@ namespace ae
 
 		virtual void render(double alpha) = 0;
 
-		virtual void event(Event& e) = 0;
+		virtual void event(ae::Event& e) = 0;
 
 		virtual void destroy() = 0;
+
+		virtual const std::string& getName() const = 0;
 
 		void setParent(Window* _parent) { parent = _parent; }
 
@@ -51,10 +53,10 @@ namespace ae
 		StateManager() : current_state(nullptr), parent(nullptr) { }
 
 		template<typename T, typename ... Args>
-		bool addState(const std::string& name, Args&& ... args)
+		bool addState(Args&& ... args)
 		{
 			static_assert(std::is_base_of<State, T>::value, "T must inherit from State");
-			assert(states.find(id) != states.end()); // Throws if state id already exists
+			assert(!stateExists(state->getName()));
 
 			sptr<T> newState = makeShared<T>(std::forward<Args>(args)...);
 			newState->setParent(parent);
@@ -62,23 +64,29 @@ namespace ae
 			states.emplace(name, newState);
 		}
 
+		void addState(sptr<State> state, bool initalize = false);
+
 		void removeState(const std::string& name);
 
 		void setState(const std::string& name, bool initialize = false);
 
-		std::shared_ptr<State> getState(const std::string& name);
+		sptr<State> getState(const std::string& name);
 
-		std::shared_ptr<State> getCurrentState();
+		sptr<State> getCurrentState();
 
 		bool stateExists(const std::string& name);
 
+		void setStateManagerParent(Window* _parent) { parent = _parent; }
+
 		friend Window;
 
-	private:
+	protected:
 
 		sptr<State> current_state;
 
 		std::unordered_map<std::string, sptr<State>> states;
+
+	private:
 
 		Window* parent;
 

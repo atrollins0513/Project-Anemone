@@ -21,13 +21,13 @@ namespace ae
 {
 	class State;
 
-	class Window
+	class Window : public StateManager
 	{
 	public:
 
 		Window();
 		
-		bool Create(const std::string& _title, unsigned int _width, unsigned int _height, GLFWmonitor* _monitor = nullptr, GLFWwindow* _share = nullptr);
+		bool Create(const std::string& _title, unsigned int _width, unsigned int _height, sptr<State> initial_state);
 		
 		void Start();
 
@@ -40,6 +40,10 @@ namespace ae
 		void setHint(int hint, int value);
 
 		GLFWwindow* handle() { return window; }
+	
+		void setMonitor(GLFWmonitor* _monitor);
+
+		void setShare(GLFWwindow* _share);
 
 		const int width() { return w; }
 
@@ -47,9 +51,10 @@ namespace ae
 
 		const double getUpdateRate() { return dt; }
 
-		const StateManager& getStateManager() { return sm; }
 
-		const std::shared_ptr<State> getCurrentState() { return sm.getCurrentState(); };
+		//sptr<StateManager> getStateManager() { return sm; }
+
+		//const sptr<State> getCurrentState() { return sm->getCurrentState(); };
 
 	protected:
 	private:
@@ -68,7 +73,7 @@ namespace ae
 
 		double dt;
 
-		StateManager sm;
+		//sptr<StateManager> sm;
 
 	};
 
