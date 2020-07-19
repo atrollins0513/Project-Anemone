@@ -45,9 +45,9 @@ namespace ae
 
 		void setShare(GLFWwindow* _share);
 
-		const int width() { return w; }
+		const int getWidth() { return w; }
 
-		const int height() { return h; }
+		const int getHeight() { return h; }
 
 		const double getUpdateRate() { return dt; }
 
