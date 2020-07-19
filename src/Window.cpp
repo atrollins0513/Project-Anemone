@@ -4,8 +4,8 @@ namespace ae
 {
 	Window::Window()
 	{
-		w = 1280;
-		h = 720;
+		width = 1280;
+		height = 720;
 		monitor = nullptr;
 		share = nullptr;
 		title = "";
@@ -28,12 +28,12 @@ namespace ae
 
 	bool Window::Create(const std::string& _title, unsigned int _width, unsigned int _height, sptr<State> initial_state)
 	{
-		w = _width;
-		h = _height;
+		width = _width;
+		height = _height;
 		title = _title;
 		dt = 0.01;
 
-		window = glfwCreateWindow(w, h, title.c_str(), monitor, share);
+		window = glfwCreateWindow(width, height, title.c_str(), monitor, share);
 		if (window == NULL)
 		{
 			log("Window", "Failed to open GLFW window.");
@@ -55,7 +55,7 @@ namespace ae
 		glfwSetWindowUserPointer(window, this);
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glViewport(0, 0, w, h);
+		glViewport(0, 0, width, height);
 
 		glfwSetKeyCallback(window, [](GLFWwindow* w, int key, int scancode, int action, int mods) {
 
@@ -63,12 +63,12 @@ namespace ae
 
 			switch (action)
 			{
-				case GLFW_KEY_DOWN:
+				case GLFW_PRESS:
 				{
 					state->event(KeyPressedEvent(key, scancode, mods, 0));
 					break;
 				}
-				case GLFW_KEY_UP:
+				case GLFW_RELEASE:
 				{
 					state->event(KeyReleasedEvent(key, scancode, mods));
 					break;
@@ -112,7 +112,7 @@ namespace ae
 		});
 
 		glfwSetCursorEnterCallback(window, [](GLFWwindow* w, int entered) {
-			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(WindowFocus(entered));
+			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(WindowFocusEvent(entered));
 		});
 
 		glfwSetWindowSizeCallback(window, [](GLFWwindow* w, int width, int height) {

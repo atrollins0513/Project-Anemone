@@ -6,6 +6,7 @@ namespace ae
 	void StateManager::addState(sptr<State> state)
 	{
 		assert(!stateExists(state->getName()));
+		state->setParent(parent);
 		states.emplace(state->getName(), state);
 	}
 

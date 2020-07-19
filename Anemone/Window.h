@@ -45,9 +45,9 @@ namespace ae
 
 		void setShare(GLFWwindow* _share);
 
-		const int getWidth() { return w; }
+		const unsigned int getWidth() { return width; }
 
-		const int getHeight() { return h; }
+		const unsigned int getHeight() { return height; }
 
 		const double getUpdateRate() { return dt; }
 
@@ -59,9 +59,9 @@ namespace ae
 	protected:
 	private:
 
-		unsigned int w;
+		unsigned int width;
 
-		unsigned int h;
+		unsigned int height;
 
 		std::string title;
 

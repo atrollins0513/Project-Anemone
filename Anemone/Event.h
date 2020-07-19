@@ -30,11 +30,11 @@ namespace ae
 		EVENT_TYPE(WindowResize);
 	};
 
-	struct WindowFocus : public Event
+	struct WindowFocusEvent : public Event
 	{
 		int entered;
 
-		WindowFocus(int _entered) : entered(_entered){}
+		WindowFocusEvent(int _entered) : entered(_entered){}
 
 		EVENT_TYPE(WindowFocus);
 	};

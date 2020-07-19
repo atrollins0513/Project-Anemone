@@ -104,13 +104,13 @@ namespace ae
 		
 		Shader();
 		
-		Shader(char* vertex, char* fragment, bool loadFromFile);
+		Shader(const std::string& vertex, const std::string& fragment, bool loadFromFile);
 
 		Shader(const ShaderBuilder& vs, const ShaderBuilder& fs);
 
-		void loadFromFile(char* vertex, char* fragment);
+		void loadFromFile(const std::string& vertex, const std::string& fragment);
 
-		void loadFromMemory(char* vertex, char* fragment);
+		void loadFromMemory(const std::string& vertex, const std::string& fragment);
 
 		void loadFromShaderBuilder(const ShaderBuilder& vs, const ShaderBuilder& fs);
 
@@ -148,7 +148,7 @@ namespace ae
 
 	protected:
 
-		void CreateShader(const char* vertexData, const char* fragmentData);
+		void CreateShader(const std::string& vertexData, const std::string& fragmentData);
 
 		bool ValidateShader(char* name, unsigned int shader_id);
 

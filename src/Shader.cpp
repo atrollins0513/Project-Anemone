@@ -146,7 +146,7 @@ namespace ae
 		fragment_id = 0;
 	}
 
-	Shader::Shader(char* vertex, char* fragment, bool loadFromFile)
+	Shader::Shader(const std::string& vertex, const std::string& fragment, bool loadFromFile)
 	{
 		if (loadFromFile)
 		{
@@ -163,12 +163,12 @@ namespace ae
 		CreateShader(vs.Compile().c_str(), fs.Compile().c_str());
 	}
 
-	void Shader::loadFromFile(char* vertex, char* fragment)
+	void Shader::loadFromFile(const std::string& vertex, const std::string& fragment)
 	{
 		CreateShader(loadFile(vertex).c_str(), loadFile(fragment).c_str());
 	}
 
-	void Shader::loadFromMemory(char* vertex, char* fragment)
+	void Shader::loadFromMemory(const std::string& vertex, const std::string& fragment)
 	{
 		CreateShader(vertex, fragment);
 	}
@@ -208,13 +208,16 @@ namespace ae
 		glDeleteProgram(shader_id);
 	}
 
-	void Shader::CreateShader(const char* vertexData, const char* fragmentData)
+	void Shader::CreateShader(const std::string& vertexData, const std::string& fragmentData)
 	{
 		vertex_id = glCreateShader(GL_VERTEX_SHADER);
 		fragment_id = glCreateShader(GL_FRAGMENT_SHADER);
 
-		glShaderSource(vertex_id, 1, &vertexData, NULL);
-		glShaderSource(fragment_id, 1, &fragmentData, NULL);
+		const char* vd = vertexData.c_str();
+		const char* fd = fragmentData.c_str();
+
+		glShaderSource(vertex_id, 1, &vd, NULL);
+		glShaderSource(fragment_id, 1, &fd, NULL);
 
 		glCompileShader(vertex_id);
 		ValidateShader("vertex", vertex_id);
