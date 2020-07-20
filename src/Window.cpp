@@ -49,13 +49,10 @@ namespace ae
 			return false;
 		}
 
-		addState(initial_state);
-		setState(initial_state->getName(), true);
-
-		glfwSetWindowUserPointer(window, this);
-
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glViewport(0, 0, width, height);
+
+		glfwSetWindowUserPointer(window, this);
 
 		glfwSetKeyCallback(window, [](GLFWwindow* w, int key, int scancode, int action, int mods) {
 
@@ -118,6 +115,10 @@ namespace ae
 		glfwSetWindowSizeCallback(window, [](GLFWwindow* w, int width, int height) {
 			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(WindowResizeEvent(width, height));
 		});
+
+		addState(initial_state);
+
+		setState(initial_state->getName(), true);
 
 		return true;
 	}
