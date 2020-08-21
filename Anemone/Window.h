@@ -9,13 +9,15 @@
 #include <chrono>
 #include <memory>
 #include <string>
+#include <unordered_map>
+#include <tuple>
 
 #include "includes\glew.h"
 #include "includes\glfw3.h"
 
 #include "Utilities.h"
-#include "State.h"
 #include "Event.h"
+#include "State.h"
 
 namespace ae
 {
@@ -27,15 +29,19 @@ namespace ae
 
 		Window();
 		
-		bool Create(const std::string& _title, unsigned int _width, unsigned int _height, sptr<State> initial_state);
+		bool Create(const std::string& _title, unsigned int _width, unsigned int _height);
 		
-		void Start();
+		virtual void Start();
 
 		void setWindowTitle(const std::string& new_title);
 
 		void setUpdateRate(double _dt);
 
+		void setScreenRefreshRate(unsigned int hertz);
+
 		void setPosition(int x, int y);
+
+		void setWindowSize(unsigned int _width, unsigned int _height);
 
 		void setHint(int hint, int value);
 
@@ -45,19 +51,33 @@ namespace ae
 
 		void setShare(GLFWwindow* _share);
 
-		const unsigned int getWidth() { return width; }
+		const unsigned int getWidth() const { return width; }
 
-		const unsigned int getHeight() { return height; }
+		const unsigned int getHeight() const { return height; }
+
+		const vec2 getCenter() const { return vec2(width, height) / 2.0f; }
 
 		const double getUpdateRate() { return dt; }
 
+		void enableFullScreen(bool windowed = false);
 
-		//sptr<StateManager> getStateManager() { return sm; }
+		void disableFullScreen();
 
-		//const sptr<State> getCurrentState() { return sm->getCurrentState(); };
+		void centerWindow();
+
+		void setBorderlessWindow(bool borderless);
+
+		void useVSync(bool on);
+
+		const std::unordered_map<unsigned int, std::vector<std::tuple<int, int, int>>> getVideoModes() const;
 
 	protected:
-	private:
+
+		virtual void initialization() {};
+
+		virtual void update(double dt) {};
+		
+		virtual void render() {};
 
 		unsigned int width;
 
@@ -73,9 +93,15 @@ namespace ae
 
 		double dt;
 
-		//sptr<StateManager> sm;
+		unsigned int monitorRefresh;
+
+		std::unordered_map<unsigned int, std::tuple<int, int, int>> videoModes;
+
+		bool fullscreen;
 
 	};
 
-	extern sptr<Window> MakeWindow();
+	using WindowRef = sptr<Window>;
+
+	extern WindowRef MakeWindow();
 };

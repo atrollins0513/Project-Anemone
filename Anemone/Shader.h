@@ -27,17 +27,39 @@ namespace ae
 
 		void SetVersion(unsigned int  _version);
 
-		void AddAttribute(unsigned int location, std::string data_type, std::string name);
+		void AddAttribute(unsigned int location, const std::string& data_type, const std::string& name);
 
-		void AddUniform(std::string data_type, std::string name);
+		void AddAttribute(unsigned int location, const std::string& data_type, const std::string& name, const std::string& output_name);
 
-		void AddOutput(std::string data_type, std::string name, int linked_to = -1);
+		void AddUniform(const std::string& data_type, const std::string& name);
 
-		void AddInput(std::string data_type, std::string name);
+		template<typename... Targs>
+		void AddUniform(const std::string& data_type, const std::string& name, const Targs&... targs)
+		{
+			ShaderBuilderUniform uniform;
+			uniform.data_type = data_type;
+			uniform.name = name;
+			uniforms.push_back(uniform);
+			AddUniform(data_type, targs...);
+		}
+		
+		void AddOutput(const std::string& data_type, const std::string& name, int linked_to = -1);
 
-		void AddLine(std::string line);
+		void AddInput(const std::string& data_type, const std::string& name);
 
-		void AddVariable(bool is_const, std::string data_type, std::string name, std::string value = "no value");
+		template<typename... Targs>
+		void AddInput(const std::string& data_type, const std::string& name, const Targs&... targs)
+		{
+			ShaderBuilderInput input;
+			input.data_type = data_type;
+			input.name = name;
+			inputs.push_back(input);
+			AddInput(data_type, targs...);
+		}
+
+		void AddLine(const std::string& line);
+
+		void AddVariable(bool is_const, const std::string& data_type, const std::string& name, const std::string& value = "no value");
 
 		std::string Compile() const;
 
@@ -98,7 +120,7 @@ namespace ae
 		GLenum type;
 	};
 
-	class Shader
+	class Shader : public MakeSmartExt<Shader>
 	{
 	public:
 		
@@ -144,7 +166,9 @@ namespace ae
 		void setUniform4i(const std::string& name, int v0, int v1, int v2, int v3);
 		void setUniform4ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3);
 		void setUniformMatrix3fv(const std::string& name, int count, bool transpose, const float* value);
+		void setUniformMatrix3fv(const std::string& name, int count, bool transpose, const mat4& value);
 		void setUniformMatrix4fv(const std::string& name, int count, bool transpose, const float* value);
+		void setUniformMatrix4fv(const std::string& name, int count, bool transpose, const mat4& value);
 
 	protected:
 
@@ -167,4 +191,7 @@ namespace ae
 		std::unordered_map<std::string, UNIFORM_INFO> uniforms;
 
 	};
+
+	using ShaderRef = sptr<Shader>;
+
 };

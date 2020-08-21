@@ -4,447 +4,6 @@ namespace ae
 {
 	/* 2D Vector */
 
-	float dot(const vec2& vec1, const vec2& vec2)
-	{
-		return (vec1.x * vec2.x + vec1.y * vec2.y);
-	}
-
-	vec2 normalize(const vec2& vec)
-	{
-		float mag = 1.0f / vec.length();
-		return vec2(vec.x * mag, vec.y * mag);
-	}
-
-	bool equal(const vec2& vec1, const vec2& vec2, float epsilon)
-	{
-		return fabs((double)vec1.x - (double)vec2.x) < epsilon && fabs((double)vec1.y - (double)vec2.y) < epsilon;
-	}
-
-	vec2 rotateZ(const vec2& vec, float angle)
-	{
-		float s = sinf(angle);
-		float c = cosf(angle);
-
-		return vec2(vec.x * c - vec.y * s, vec.x * s + vec.y * c);
-	}
-
-	vec2 rotateZ(const vec2& vec, double s, double c)
-	{
-		return vec2(vec.x * c - vec.y * s, vec.x * s + vec.y * c);
-	}
-
-	void print(const vec2& vec)
-	{
-		std::cout << "x: " << vec.x << " y: " << vec.y << "\n";
-	}
-
-	vec2 perpcw(const vec2& vec)
-	{
-		return vec2(vec.y, -vec.x);
-	}
-
-	vec2 perpccw(const vec2& vec)
-	{
-		return vec2(-vec.y, vec.x);
-	}
-
-	float cross(const vec2& v1, const vec2& v2)
-	{
-		return (v1.x * v2.y - v1.y * v2.x);
-	}
-
-	vec2 cross(float a, const vec2& v)
-	{
-		return vec2(-a * v.y, a * v.x);
-	}
-
-	vec2 cross(const vec2& v, float a)
-	{
-		return vec2(a * v.y, -a * v.x);
-	}
-
-	/* 3D Vector */
-
-	float dot(const vec3& vec1, const vec3& vec2)
-	{
-		return (vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z);
-	}
-
-	vec3 cross(const vec3& vec1, const vec3& vec2)
-	{
-		return vec3(vec1.y * vec2.z - vec1.z * vec2.y, vec1.z * vec2.x - vec1.x * vec2.z, vec1.x * vec2.y - vec1.y * vec2.x);
-	}
-
-	vec3 normalize(const vec3& vec)
-	{
-		float mag = 1.0f / vec.length();
-		return vec3(vec.x * mag, vec.y * mag, vec.z * mag);
-	}
-
-	bool equal(const vec3& vec1, const vec3& vec2, float epsilon)
-	{
-		return fabs((double)vec1.x - (double)vec2.x) < epsilon && fabs((double)vec1.y - (double)vec2.y) < epsilon && fabs((double)vec1.z - (double)vec2.z) < epsilon;
-	}
-
-	vec3 rotateX(const vec3& vec, float angle)
-	{
-		float s = sinf(angle);
-		float c = cosf(angle);
-
-		return vec3(vec.x, c * vec.y - s * vec.z, c * vec.z + s * vec.y);
-	}
-
-	vec3 rotateX(const vec3& vec, double s, double c)
-	{
-		return vec3(vec.x, c * vec.y - s * vec.z, c * vec.z + s * vec.y);
-	}
-
-	vec3 rotateY(const vec3& vec, float angle)
-	{
-		float s = sinf(angle);
-		float c = cosf(angle);
-
-		return vec3(c * vec.x + s * vec.z, vec.y, c * vec.z - s * vec.x);
-	}
-
-	vec3 rotateY(const vec3& vec, double s, double c)
-	{
-		return vec3(c * vec.x + s * vec.z, vec.y, c * vec.z - s * vec.x);
-	}
-
-	vec3 rotateZ(const vec3& vec, float angle)
-	{
-		float s = sinf(angle);
-		float c = cosf(angle);
-
-		return vec3(c * vec.x - s * vec.y, c * vec.y + s * vec.x, vec.z);
-	}
-
-	vec3 rotateZ(const vec3& vec, double s, double c)
-	{
-		return vec3(c * vec.x - s * vec.y, c * vec.y + s * vec.x, vec.z);
-	}
-
-	void print(const vec3& vec)
-	{
-		std::cout << "x: " << vec.x << " y: " << vec.y << " z: " << vec.z << "\n";
-	}
-
-	/* 4D Vector */
-
-	float dot(const vec4& vec1, const vec4& vec2)
-	{
-		return (vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z + vec1.w * vec2.w);
-	}
-
-	vec4 normalize(const vec4& vec)
-	{
-		float mag = 1.0f / vec.length();
-		return vec4(vec.x * mag, vec.y * mag, vec.z * mag, vec.w * mag);
-	}
-
-	bool equal(const vec4& vec1, const vec4& vec2, float epsilon)
-	{
-		return fabs((double)vec1.x - (double)vec2.x) < epsilon && fabs((double)vec1.y - (double)vec2.y) < epsilon && fabs((double)vec1.z - (double)vec2.z) && fabs((double)vec1.w - (double)vec2.w) < epsilon;
-	}
-
-	void print(const vec4& vec)
-	{
-		std::cout << "x: " << vec.x << " y: " << vec.y << " z: " << vec.z << " w: " << vec.w << "\n";
-	}
-
-	/* 3x3 Matrix */
-
-	mat3 multiply(const mat3& mat1, const mat3& mat2)
-	{
-		mat3 result;
-
-		result[0] = mat1[0] * mat2[0] + mat1[1] * mat2[3] + mat1[2] * mat2[6];
-		result[1] = mat1[0] * mat2[1] + mat1[1] * mat2[4] + mat1[2] * mat2[7];
-		result[2] = mat1[0] * mat2[2] + mat1[1] * mat2[5] + mat1[2] * mat2[8];
-
-		result[3] = mat1[3] * mat2[0] + mat1[4] * mat2[3] + mat1[5] * mat2[6];
-		result[4] = mat1[3] * mat2[1] + mat1[4] * mat2[4] + mat1[5] * mat2[7];
-		result[5] = mat1[3] * mat2[2] + mat1[4] * mat2[5] + mat1[5] * mat2[8];
-
-		result[6] = mat1[6] * mat2[0] + mat1[7] * mat2[3] + mat1[8] * mat2[6];
-		result[7] = mat1[6] * mat2[1] + mat1[7] * mat2[4] + mat1[8] * mat2[7];
-		result[8] = mat1[6] * mat2[2] + mat1[7] * mat2[5] + mat1[8] * mat2[8];
-
-		return result;
-	}
-
-	vec3 multiply(const mat3& mat, const vec3& vec)
-	{
-		vec3 result;
-
-		result.x = mat[0] * vec.x + mat[1] * vec.y + mat[2] * vec.z;
-		result.y = mat[3] * vec.x + mat[4] * vec.y + mat[5] * vec.z;
-		result.z = mat[6] * vec.x + mat[7] * vec.y + mat[8] * vec.z;
-
-		return result;
-	}
-
-	mat3 transpose(const mat3& mat)
-	{
-		mat3 tm;
-		tm[0] = mat[0];
-		tm[1] = mat[3];
-		tm[2] = mat[6];
-		tm[3] = mat[1];
-		tm[4] = mat[4];
-		tm[5] = mat[7];
-		tm[6] = mat[2];
-		tm[7] = mat[5];
-		tm[8] = mat[8];
-		return tm;
-	}
-
-	void print(const mat3& mat)
-	{
-		std::cout << mat[0] << "\t\t" << mat[1] << "\t\t" << mat[2] << "\n";
-		std::cout << mat[3] << "\t\t" << mat[4] << "\t\t" << mat[5] << "\n";
-		std::cout << mat[6] << "\t\t" << mat[7] << "\t\t" << mat[8] << "\n";
-	}
-
-	/* 4x4 Matrix */
-
-	mat4 identity()
-	{
-		mat4 mat;
-		mat.zero();
-		mat[0] = 1.0f;
-		mat[5] = 1.0f;
-		mat[10] = 1.0f;
-		mat[15] = 1.0f;
-		return mat;
-	}
-
-	mat4 multiply(const mat4& mat1, const mat4& mat2)
-	{
-		mat4 result;
-
-		result[0] = mat1[0] * mat2[0] + mat1[4] * mat2[1] + mat1[8] * mat2[2] + mat1[12] * mat2[3];
-		result[1] = mat1[1] * mat2[0] + mat1[5] * mat2[1] + mat1[9] * mat2[2] + mat1[13] * mat2[3];
-		result[2] = mat1[2] * mat2[0] + mat1[6] * mat2[1] + mat1[10] * mat2[2] + mat1[14] * mat2[3];
-		result[3] = mat1[3] * mat2[0] + mat1[7] * mat2[1] + mat1[11] * mat2[2] + mat1[15] * mat2[3];
-
-		// Second Columat1n
-		result[4] = mat1[0] * mat2[4] + mat1[4] * mat2[5] + mat1[8] * mat2[6] + mat1[12] * mat2[7];
-		result[5] = mat1[1] * mat2[4] + mat1[5] * mat2[5] + mat1[9] * mat2[6] + mat1[13] * mat2[7];
-		result[6] = mat1[2] * mat2[4] + mat1[6] * mat2[5] + mat1[10] * mat2[6] + mat1[14] * mat2[7];
-		result[7] = mat1[3] * mat2[4] + mat1[7] * mat2[5] + mat1[11] * mat2[6] + mat1[15] * mat2[7];
-
-		// Third Columat1n
-		result[8] = mat1[0] * mat2[8] + mat1[4] * mat2[9] + mat1[8] * mat2[10] + mat1[12] * mat2[11];
-		result[9] = mat1[1] * mat2[8] + mat1[5] * mat2[9] + mat1[9] * mat2[10] + mat1[13] * mat2[11];
-		result[10] = mat1[2] * mat2[8] + mat1[6] * mat2[9] + mat1[10] * mat2[10] + mat1[14] * mat2[11];
-		result[11] = mat1[3] * mat2[8] + mat1[7] * mat2[9] + mat1[11] * mat2[10] + mat1[15] * mat2[11];
-
-		// Fourth Columat1n
-		result[12] = mat1[0] * mat2[12] + mat1[4] * mat2[13] + mat1[8] * mat2[14] + mat1[12] * mat2[15];
-		result[13] = mat1[1] * mat2[12] + mat1[5] * mat2[13] + mat1[9] * mat2[14] + mat1[13] * mat2[15];
-		result[14] = mat1[2] * mat2[12] + mat1[6] * mat2[13] + mat1[10] * mat2[14] + mat1[14] * mat2[15];
-		result[15] = mat1[3] * mat2[12] + mat1[7] * mat2[13] + mat1[11] * mat2[14] + mat1[15] * mat2[15];
-
-		return result;
-	}
-
-	vec3 multiply(const mat4& mat, const vec3& vec)
-	{
-		vec3 result;
-
-		result.x = mat[0] * vec.x + mat[1] * vec.y + mat[2] * vec.z + mat[3];
-		result.y = mat[4] * vec.x + mat[5] * vec.y + mat[6] * vec.z + mat[7];
-		result.z = mat[8] * vec.x + mat[9] * vec.y + mat[10] * vec.z + mat[11];
-
-		return result;
-	}
-
-	vec4 multiply(const mat4& mat, const vec4& vec)
-	{
-		vec4 result;
-
-		result.x = mat[0] * vec.x + mat[1] * vec.y + mat[2] * vec.z + mat[3] * vec.w;
-		result.y = mat[4] * vec.x + mat[5] * vec.y + mat[6] * vec.z + mat[7] * vec.w;
-		result.z = mat[8] * vec.x + mat[9] * vec.y + mat[10] * vec.z + mat[11] * vec.w;
-		result.w = mat[12] * vec.x + mat[13] * vec.y + mat[14] * vec.z + mat[15] * vec.w;
-
-		return result;
-	}
-
-	mat4 transpose(const mat4& mat)
-	{
-		mat4 tm;
-		tm[0] = mat[0];
-		tm[1] = mat[4];
-		tm[2] = mat[8];
-		tm[3] = mat[12];
-		tm[4] = mat[1];
-		tm[5] = mat[5];
-		tm[6] = mat[9];
-		tm[7] = mat[13];
-		tm[8] = mat[2];
-		tm[9] = mat[6];
-		tm[10] = mat[10];
-		tm[11] = mat[14];
-		tm[12] = mat[3];
-		tm[13] = mat[7];
-		tm[14] = mat[11];
-		tm[15] = mat[15];
-		return tm;
-	}
-
-	mat4 translate(float x, float y, float z)
-	{
-		mat4 trans;
-		trans[12] = x;
-		trans[13] = y;
-		trans[14] = z;
-		return trans;
-	}
-
-	mat4 translate(const vec3& vec)
-	{
-		return translate(vec.x, vec.y, vec.z);
-	}
-
-	mat4 scale(float x, float y, float z)
-	{
-		mat4 scale;
-		scale[0] = x;
-		scale[5] = y;
-		scale[10] = z;
-		return scale;
-	}
-
-	mat4 scale(const vec3& s)
-	{
-		return scale(s.x, s.y, s.z);
-	}
-
-	mat4 rotateX(float radians)
-	{
-		float c = cos(radians);
-		float s = sin(radians);
-
-		mat4 rotX;
-		rotX[5] = c;
-		rotX[6] = -s;
-		rotX[9] = s;
-		rotX[10] = c;
-		return rotX;
-	}
-
-	mat4 rotateY(float radians)
-	{
-		float c = cos(radians);
-		float s = sin(radians);
-
-		mat4 rotY;
-		rotY[0] = c;
-		rotY[2] = s;
-		rotY[8] = -s;
-		rotY[10] = c;
-
-		return rotY;
-	}
-
-	mat4 rotateZ(float radians)
-	{
-		float c = cosf(radians);
-		float s = sinf(radians);
-
-		mat4 rotZ;
-		rotZ[0] = c;
-		rotZ[1] = -s;
-		rotZ[4] = s;
-		rotZ[5] = c;
-
-		return rotZ;
-	}
-
-	mat4 Ortho(float left, float right, float bottom, float top, float near, float far)
-	{
-		float rl = right - left;
-		float tb = top - bottom;
-		float fn = far - near;
-
-		mat4 ortho;
-		ortho.set(
-			2 / rl, 0.0f, 0.0f, -(left + right) / rl,
-			0.0f, 2 / tb, 0.0f, -(top + bottom) / tb,
-			0.0f, 0.0f, -2 / fn, -(far + near) / fn,
-			0.0f, 0.0f, 0.0f, 1.0f
-		);
-		return ortho;
-	}
-
-	mat4 Frustum(float left, float right, float bottom, float top, float near, float far)
-	{
-		float rl = right - left;
-		float tb = top - bottom;
-		float fn = far - near;
-
-		mat4 frustum;
-		frustum.set(
-			(2.0f * near) / rl, 0.0f, (left + right) / rl, 0.0f,
-			0.0f, (2.0f * near) / tb, (top + bottom) / tb, 0.0f,
-			0.0f, 0.0f, (-(far + near)) / fn, (-2.0f * far * near) / fn,
-			0.0f, 0.0f, -1.0f, 0.0f
-		);
-		return frustum;
-	}
-
-	mat4 LookAt(vec3 eye, vec3 target, vec3 up)
-	{
-		vec3 zaxis = normalize(eye - target);
-		vec3 xaxis = normalize(cross(up, zaxis));
-		vec3 yaxis = cross(zaxis, xaxis);
-
-		mat4 lookAt;
-		lookAt.set(xaxis.x, yaxis.x, zaxis.x, 0,
-			xaxis.y, yaxis.y, zaxis.y, 0,
-			xaxis.z, yaxis.z, zaxis.z, 0,
-			-dot(xaxis, eye), -dot(yaxis, eye), -dot(zaxis, eye), 1
-		);
-		return lookAt;
-	}
-
-	mat4 Perspective(float fovy, float aspect, float near, float far)
-	{
-		float f = 1.0f / tanf(fovy / 2.0f);
-
-		mat4 perspective;
-		perspective.set((f / aspect), 0, 0, 0,
-			0, f, 0, 0,
-			0, 0, ((far + near) / (near - far)), ((2 * far * near) / (near - far)),
-			0, 0, -1, 0
-		);
-		return perspective;
-	}
-
-	void print(const mat4& mat)
-	{
-		std::cout << mat[0] << "\t\t" << mat[1] << "\t\t" << mat[2] << "\t\t" << mat[3] << "\n";
-		std::cout << mat[4] << "\t\t" << mat[5] << "\t\t" << mat[6] << "\t\t" << mat[7] << "\n";
-		std::cout << mat[8] << "\t\t" << mat[9] << "\t\t" << mat[10] << "\t\t" << mat[11] << "\n";
-		std::cout << mat[12] << "\t\t" << mat[13] << "\t\t" << mat[14] << "\t\t" << mat[15] << "\n";
-	}
-
-	/* Quaternion */
-
-	Quaternion multiply(const Quaternion& q1, const Quaternion& q2)
-	{
-		return Quaternion(
-			q1.values.w*q2.values.w - q1.values.x*q2.values.x - q1.values.y*q2.values.y - q1.values.z*q2.values.z,
-			q1.values.w*q2.values.x + q1.values.x*q2.values.w + q1.values.y*q2.values.z - q1.values.z*q2.values.y,
-			q1.values.w*q2.values.y + q1.values.y*q2.values.w + q1.values.z*q2.values.x - q1.values.x*q2.values.z,
-			q1.values.w*q2.values.z + q1.values.z*q2.values.w + q1.values.x*q2.values.y - q1.values.y*q2.values.x);
-	}
-
-	/* 2D Vector */
-
 	float vec2::length() const
 	{
 		return sqrtf(x * x + y * y);
@@ -581,6 +140,11 @@ namespace ae
 		return vec2(x - scalar, y - scalar);
 	}
 
+	vec2 vec2::operator-() const
+	{
+		return vec2(-x, -y);
+	}
+
 	vec2 vec2::operator*(vec2 vec) const
 	{
 		return vec2(x * vec.x, y * vec.y);
@@ -601,6 +165,46 @@ namespace ae
 		return vec2(x / scalar, y / scalar);
 	}
 
+	bool vec2::operator<(float scalar) const
+	{
+		return length() < scalar;
+	}
+
+	bool vec2::operator<(const vec2& vec) const
+	{
+		return length() < vec.length();
+	}
+
+	bool vec2::operator<=(float scalar) const
+	{
+		return length() <= scalar;
+	}
+
+	bool vec2::operator<=(const vec2& vec) const
+	{
+		return length() <= vec.length();
+	}
+
+	bool vec2::operator>(float scalar) const
+	{
+		return length() > scalar;
+	}
+
+	bool vec2::operator>(const vec2& vec) const
+	{
+		return length() > vec.length();
+	}
+
+	bool vec2::operator>=(float scalar) const
+	{
+		return length() >= scalar;
+	}
+
+	bool vec2::operator>=(const vec2& vec) const
+	{
+		return length() >= vec.length();
+	}
+
 	vec2::vec2(const vec3& other)
 	{
 		x = other.x;
@@ -611,6 +215,85 @@ namespace ae
 	{
 		x = other.x;
 		y = other.y;
+	}
+
+	float dot(const vec2& vec1, const vec2& vec2)
+	{
+		return (vec1.x * vec2.x + vec1.y * vec2.y);
+	}
+
+	vec2 normalize(const vec2& vec)
+	{
+		float mag = 1.0f / vec.length();
+		return vec2(vec.x * mag, vec.y * mag);
+	}
+
+	bool equal(const vec2& vec1, const vec2& vec2, float epsilon)
+	{
+		return fabs((double)vec1.x - (double)vec2.x) < epsilon && fabs((double)vec1.y - (double)vec2.y) < epsilon;
+	}
+
+	vec2 rotateZ(const vec2& vec, float angle)
+	{
+		float s = sinf(angle);
+		float c = cosf(angle);
+
+		return vec2(vec.x * c - vec.y * s, vec.x * s + vec.y * c);
+	}
+
+	vec2 rotateZ(const vec2& vec, double s, double c)
+	{
+		return vec2(vec.x * c - vec.y * s, vec.x * s + vec.y * c);
+	}
+
+	void print(const vec2& vec)
+	{
+		std::cout << "x: " << vec.x << " y: " << vec.y << "\n";
+	}
+
+	vec2 perpcw(const vec2& vec)
+	{
+		return vec2(vec.y, -vec.x);
+	}
+
+	vec2 perpccw(const vec2& vec)
+	{
+		return vec2(-vec.y, vec.x);
+	}
+
+	float cross(const vec2& v1, const vec2& v2)
+	{
+		return (v1.x * v2.y - v1.y * v2.x);
+	}
+
+	vec2 cross(float a, const vec2& v)
+	{
+		return vec2(-a * v.y, a * v.x);
+	}
+
+	vec2 cross(const vec2& v, float a)
+	{
+		return vec2(a * v.y, -a * v.x);
+	}
+
+	vec2 operator-(float b, const vec2& a)
+	{
+		return vec2(a.x - b, a.y - b);
+	}
+
+	vec2 operator+(float b, const vec2& a)
+	{
+		return vec2(a.x + b, a.y + b);
+	}
+
+	vec2 operator*(float b, const vec2& a)
+	{
+		return vec2(a.x * b, a.y * b);
+	}
+
+	vec2 operator/(float b, const vec2& a)
+	{
+		return vec2(a.x / b, a.y / b);
 	}
 
 	/* 3D Vector */
@@ -763,6 +446,11 @@ namespace ae
 		return vec3(x - scalar, y - scalar, z - scalar);
 	}
 
+	vec3 vec3::operator-() const
+	{
+		return vec3(-x, -y, -z);
+	}
+
 	vec3 vec3::operator*(vec3 vec) const
 	{
 		return vec3(x * vec.x, y * vec.y, z * vec.z);
@@ -781,6 +469,46 @@ namespace ae
 	vec3 vec3::operator/(float scalar) const
 	{
 		return vec3(x / scalar, y / scalar, z / scalar);
+	}
+
+	bool vec3::operator<(float scalar) const
+	{
+		return length() < scalar;
+	}
+
+	bool vec3::operator<(const vec3& vec) const
+	{
+		return length() < vec.length();
+	}
+
+	bool vec3::operator<=(float scalar) const
+	{
+		return length() <= scalar;
+	}
+
+	bool vec3::operator<=(const vec3& vec) const
+	{
+		return length() <= vec.length();
+	}
+
+	bool vec3::operator>(float scalar) const
+	{
+		return length() > scalar;
+	}
+
+	bool vec3::operator>(const vec3& vec) const
+	{
+		return length() > vec.length();
+	}
+
+	bool vec3::operator>=(float scalar) const
+	{
+		return length() >= scalar;
+	}
+
+	bool vec3::operator>=(const vec3& vec) const
+	{
+		return length() >= vec.length();
 	}
 
 	vec3::vec3(const vec2& other)
@@ -802,6 +530,91 @@ namespace ae
 		x = other.x;
 		y = other.y;
 		z = other.z;
+	}
+
+	float dot(const vec3& vec1, const vec3& vec2)
+	{
+		return (vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z);
+	}
+
+	vec3 cross(const vec3& vec1, const vec3& vec2)
+	{
+		return vec3(vec1.y * vec2.z - vec1.z * vec2.y, vec1.z * vec2.x - vec1.x * vec2.z, vec1.x * vec2.y - vec1.y * vec2.x);
+	}
+
+	vec3 normalize(const vec3& vec)
+	{
+		float mag = 1.0f / vec.length();
+		return vec3(vec.x * mag, vec.y * mag, vec.z * mag);
+	}
+
+	bool equal(const vec3& vec1, const vec3& vec2, float epsilon)
+	{
+		return fabs((double)vec1.x - (double)vec2.x) < epsilon && fabs((double)vec1.y - (double)vec2.y) < epsilon && fabs((double)vec1.z - (double)vec2.z) < epsilon;
+	}
+
+	vec3 rotateX(const vec3& vec, float angle)
+	{
+		float s = sinf(angle);
+		float c = cosf(angle);
+
+		return vec3(vec.x, c * vec.y - s * vec.z, c * vec.z + s * vec.y);
+	}
+
+	vec3 rotateX(const vec3& vec, double s, double c)
+	{
+		return vec3(vec.x, c * vec.y - s * vec.z, c * vec.z + s * vec.y);
+	}
+
+	vec3 rotateY(const vec3& vec, float angle)
+	{
+		float s = sinf(angle);
+		float c = cosf(angle);
+
+		return vec3(c * vec.x + s * vec.z, vec.y, c * vec.z - s * vec.x);
+	}
+
+	vec3 rotateY(const vec3& vec, double s, double c)
+	{
+		return vec3(c * vec.x + s * vec.z, vec.y, c * vec.z - s * vec.x);
+	}
+
+	vec3 rotateZ(const vec3& vec, float angle)
+	{
+		float s = sinf(angle);
+		float c = cosf(angle);
+
+		return vec3(c * vec.x - s * vec.y, c * vec.y + s * vec.x, vec.z);
+	}
+
+	vec3 rotateZ(const vec3& vec, double s, double c)
+	{
+		return vec3(c * vec.x - s * vec.y, c * vec.y + s * vec.x, vec.z);
+	}
+
+	vec3 operator-(float b, const vec3& a)
+	{
+		return vec3(a.x - b, a.y - b, a.z - b);
+	}
+
+	vec3 operator+(float b, const vec3& a)
+	{
+		return vec3(a.x + b, a.y + b, a.z + b);
+	}
+
+	vec3 operator*(float b, const vec3& a)
+	{
+		return vec3(a.x * b, a.y * b, a.z * b);
+	}
+
+	vec3 operator/(float b, const vec3& a)
+	{
+		return vec3(a.x / b, a.y / b, a.z / b);
+	}
+
+	void print(const vec3& vec)
+	{
+		std::cout << "x: " << vec.x << " y: " << vec.y << " z: " << vec.z << "\n";
 	}
 
 	/* 4D Vector */
@@ -966,6 +779,11 @@ namespace ae
 		return vec4(x - scalar, y - scalar, z - scalar, w - scalar);
 	}
 
+	vec4 vec4::operator-() const
+	{
+		return vec4(-x, -y, -z, -w);
+	}
+
 	vec4 vec4::operator*(vec4 vec) const
 	{
 		return vec4(x * vec.x, y * vec.y, z * vec.z, w * vec.w);
@@ -984,6 +802,46 @@ namespace ae
 	vec4 vec4::operator/(float scalar) const
 	{
 		return vec4(x / scalar, y / scalar, z / scalar, w / scalar);
+	}
+
+	bool vec4::operator<(float scalar) const
+	{
+		return length() < scalar;
+	}
+
+	bool vec4::operator<(const vec4& vec) const
+	{
+		return length() < vec.length();
+	}
+
+	bool vec4::operator<=(float scalar) const
+	{
+		return length() <= scalar;
+	}
+
+	bool vec4::operator<=(const vec4& vec) const
+	{
+		return length() <= vec.length();
+	}
+
+	bool vec4::operator>(float scalar) const
+	{
+		return length() > scalar;
+	}
+
+	bool vec4::operator>(const vec4& vec) const
+	{
+		return length() > vec.length();
+	}
+
+	bool vec4::operator>=(float scalar) const
+	{
+		return length() >= scalar;
+	}
+
+	bool vec4::operator>=(const vec4& vec) const
+	{
+		return length() >= vec.length();
 	}
 
 	vec4::vec4(const vec2& other)
@@ -1008,6 +866,98 @@ namespace ae
 		y = other.y;
 		z = other.z;
 		w = other.w;
+	}
+
+	float dot(const vec4& vec1, const vec4& vec2)
+	{
+		return (vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z + vec1.w * vec2.w);
+	}
+
+	vec4 normalize(const vec4& vec)
+	{
+		float mag = 1.0f / vec.length();
+		return vec4(vec.x * mag, vec.y * mag, vec.z * mag, vec.w * mag);
+	}
+
+	bool equal(const vec4& vec1, const vec4& vec2, float epsilon)
+	{
+		return fabs((double)vec1.x - (double)vec2.x) < epsilon && fabs((double)vec1.y - (double)vec2.y) < epsilon && fabs((double)vec1.z - (double)vec2.z) && fabs((double)vec1.w - (double)vec2.w) < epsilon;
+	}
+
+	vec4 operator-(float b, const vec4& a)
+	{
+		return vec4(a.x - b, a.y - b, a.z - b, a.w - b);
+	}
+
+	vec4 operator+(float b, const vec4& a)
+	{
+		return vec4(a.x + b, a.y + b, a.z + b, a.w + b);
+	}
+
+	vec4 operator*(float b, const vec4& a)
+	{
+		return vec4(a.x * b, a.y * b, a.z * b, a.w * b);
+	}
+
+	vec4 operator/(float b, const vec4& a)
+	{
+		return vec4(a.x / b, a.y / b, a.z / b, a.w / b);
+	}
+
+	void print(const vec4& vec)
+	{
+		std::cout << "x: " << vec.x << " y: " << vec.y << " z: " << vec.z << " w: " << vec.w << "\n";
+	}
+
+	/* 2x2 Matrix */
+
+	mat2::mat2()
+	{
+		set(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+
+	mat2::mat2(float m1, float m2, float m3, float m4)
+	{
+		set(m1, m2, m3, m4);
+	}
+
+	void mat2::set(float _m0, float _m1, float _m2, float _m3)
+	{
+		mat[0] = _m0;
+		mat[1] = _m1;
+		mat[2] = _m2;
+		mat[3] = _m3;
+	}
+
+	float& mat2::operator[](std::size_t index)
+	{
+		return mat[index];
+	}
+
+	const float& mat2::operator[](std::size_t index) const
+	{
+		return mat[index];
+	}
+
+	void mat2::operator=(const mat2& other)
+	{
+		mat[0] = other[0];
+		mat[1] = other[1];
+		mat[2] = other[2];
+		mat[3] = other[3];
+	}
+
+	ae::vec3 mat2::operator*(const ae::vec3& pos)
+	{
+		return { mat[0] * pos.x + mat[1] * pos.y, mat[2] * pos.x + mat[3] * pos.y, 1.0f };
+	}
+
+	mat2 rotateZ2(float radians)
+	{
+		float c = cosf(radians);
+		float s = sinf(radians);
+
+		return mat2(c, -s, s, c);
 	}
 
 	/* 3x3 Matrix */
@@ -1077,6 +1027,288 @@ namespace ae
 		mat[8] = mat4[10];
 	}
 
+	mat3 multiply(const mat3& mat1, const mat3& mat2)
+	{
+		mat3 result;
+
+		result[0] = mat1[0] * mat2[0] + mat1[1] * mat2[3] + mat1[2] * mat2[6];
+		result[1] = mat1[0] * mat2[1] + mat1[1] * mat2[4] + mat1[2] * mat2[7];
+		result[2] = mat1[0] * mat2[2] + mat1[1] * mat2[5] + mat1[2] * mat2[8];
+
+		result[3] = mat1[3] * mat2[0] + mat1[4] * mat2[3] + mat1[5] * mat2[6];
+		result[4] = mat1[3] * mat2[1] + mat1[4] * mat2[4] + mat1[5] * mat2[7];
+		result[5] = mat1[3] * mat2[2] + mat1[4] * mat2[5] + mat1[5] * mat2[8];
+
+		result[6] = mat1[6] * mat2[0] + mat1[7] * mat2[3] + mat1[8] * mat2[6];
+		result[7] = mat1[6] * mat2[1] + mat1[7] * mat2[4] + mat1[8] * mat2[7];
+		result[8] = mat1[6] * mat2[2] + mat1[7] * mat2[5] + mat1[8] * mat2[8];
+
+		return result;
+	}
+
+	vec3 multiply(const mat3& mat, const vec3& vec)
+	{
+		vec3 result;
+
+		result.x = mat[0] * vec.x + mat[1] * vec.y + mat[2] * vec.z;
+		result.y = mat[3] * vec.x + mat[4] * vec.y + mat[5] * vec.z;
+		result.z = mat[6] * vec.x + mat[7] * vec.y + mat[8] * vec.z;
+
+		return result;
+	}
+
+	mat3 transpose(const mat3& mat)
+	{
+		mat3 tm;
+		tm[0] = mat[0];
+		tm[1] = mat[3];
+		tm[2] = mat[6];
+		tm[3] = mat[1];
+		tm[4] = mat[4];
+		tm[5] = mat[7];
+		tm[6] = mat[2];
+		tm[7] = mat[5];
+		tm[8] = mat[8];
+		return tm;
+	}
+
+	void print(const mat3& mat)
+	{
+		std::cout << mat[0] << "\t\t" << mat[1] << "\t\t" << mat[2] << "\n";
+		std::cout << mat[3] << "\t\t" << mat[4] << "\t\t" << mat[5] << "\n";
+		std::cout << mat[6] << "\t\t" << mat[7] << "\t\t" << mat[8] << "\n";
+	}
+
+	/* 4x4 Matrix */
+
+	mat4 identity()
+	{
+		mat4 mat;
+		mat.zero();
+		mat[0] = 1.0f;
+		mat[5] = 1.0f;
+		mat[10] = 1.0f;
+		mat[15] = 1.0f;
+		return mat;
+	}
+
+	mat4 multiply(const mat4& mat1, const mat4& mat2)
+	{
+		mat4 result;
+
+		result[0] = mat1[0] * mat2[0] + mat1[4] * mat2[1] + mat1[8] * mat2[2] + mat1[12] * mat2[3];
+		result[1] = mat1[1] * mat2[0] + mat1[5] * mat2[1] + mat1[9] * mat2[2] + mat1[13] * mat2[3];
+		result[2] = mat1[2] * mat2[0] + mat1[6] * mat2[1] + mat1[10] * mat2[2] + mat1[14] * mat2[3];
+		result[3] = mat1[3] * mat2[0] + mat1[7] * mat2[1] + mat1[11] * mat2[2] + mat1[15] * mat2[3];
+
+		// Second Columat1n
+		result[4] = mat1[0] * mat2[4] + mat1[4] * mat2[5] + mat1[8] * mat2[6] + mat1[12] * mat2[7];
+		result[5] = mat1[1] * mat2[4] + mat1[5] * mat2[5] + mat1[9] * mat2[6] + mat1[13] * mat2[7];
+		result[6] = mat1[2] * mat2[4] + mat1[6] * mat2[5] + mat1[10] * mat2[6] + mat1[14] * mat2[7];
+		result[7] = mat1[3] * mat2[4] + mat1[7] * mat2[5] + mat1[11] * mat2[6] + mat1[15] * mat2[7];
+
+		// Third Columat1n
+		result[8] = mat1[0] * mat2[8] + mat1[4] * mat2[9] + mat1[8] * mat2[10] + mat1[12] * mat2[11];
+		result[9] = mat1[1] * mat2[8] + mat1[5] * mat2[9] + mat1[9] * mat2[10] + mat1[13] * mat2[11];
+		result[10] = mat1[2] * mat2[8] + mat1[6] * mat2[9] + mat1[10] * mat2[10] + mat1[14] * mat2[11];
+		result[11] = mat1[3] * mat2[8] + mat1[7] * mat2[9] + mat1[11] * mat2[10] + mat1[15] * mat2[11];
+
+		// Fourth Columat1n
+		result[12] = mat1[0] * mat2[12] + mat1[4] * mat2[13] + mat1[8] * mat2[14] + mat1[12] * mat2[15];
+		result[13] = mat1[1] * mat2[12] + mat1[5] * mat2[13] + mat1[9] * mat2[14] + mat1[13] * mat2[15];
+		result[14] = mat1[2] * mat2[12] + mat1[6] * mat2[13] + mat1[10] * mat2[14] + mat1[14] * mat2[15];
+		result[15] = mat1[3] * mat2[12] + mat1[7] * mat2[13] + mat1[11] * mat2[14] + mat1[15] * mat2[15];
+
+		return result;
+	}
+
+	vec3 multiply(const mat4& mat, const vec3& vec)
+	{
+		vec3 result;
+
+		result.x = mat[0] * vec.x + mat[1] * vec.y + mat[2] * vec.z + mat[3];
+		result.y = mat[4] * vec.x + mat[5] * vec.y + mat[6] * vec.z + mat[7];
+		result.z = mat[8] * vec.x + mat[9] * vec.y + mat[10] * vec.z + mat[11];
+
+		return result;
+	}
+
+	vec4 multiply(const mat4& mat, const vec4& vec)
+	{
+		vec4 result;
+
+		result.x = mat[0] * vec.x + mat[1] * vec.y + mat[2] * vec.z + mat[3] * vec.w;
+		result.y = mat[4] * vec.x + mat[5] * vec.y + mat[6] * vec.z + mat[7] * vec.w;
+		result.z = mat[8] * vec.x + mat[9] * vec.y + mat[10] * vec.z + mat[11] * vec.w;
+		result.w = mat[12] * vec.x + mat[13] * vec.y + mat[14] * vec.z + mat[15] * vec.w;
+
+		return result;
+	}
+
+	mat4 transpose(const mat4& mat)
+	{
+		mat4 tm;
+		tm[0] = mat[0];
+		tm[1] = mat[4];
+		tm[2] = mat[8];
+		tm[3] = mat[12];
+		tm[4] = mat[1];
+		tm[5] = mat[5];
+		tm[6] = mat[9];
+		tm[7] = mat[13];
+		tm[8] = mat[2];
+		tm[9] = mat[6];
+		tm[10] = mat[10];
+		tm[11] = mat[14];
+		tm[12] = mat[3];
+		tm[13] = mat[7];
+		tm[14] = mat[11];
+		tm[15] = mat[15];
+		return tm;
+	}
+
+	mat4 translate(float x, float y, float z)
+	{
+		mat4 trans;
+		trans[3] = x;
+		trans[7] = y;
+		trans[11] = z;
+		return trans;
+	}
+
+	mat4 translate(const vec3& vec)
+	{
+		return translate(vec.x, vec.y, vec.z);
+	}
+
+	mat4 scale(float x, float y, float z)
+	{
+		mat4 scale;
+		scale[0] = x;
+		scale[5] = y;
+		scale[10] = z;
+		return scale;
+	}
+
+	mat4 scale(const vec3& s)
+	{
+		return scale(s.x, s.y, s.z);
+	}
+
+	mat4 rotateX(float radians)
+	{
+		float c = cos(radians);
+		float s = sin(radians);
+
+		mat4 rotX;
+		rotX[5] = c;
+		rotX[6] = -s;
+		rotX[9] = s;
+		rotX[10] = c;
+		return rotX;
+	}
+
+	mat4 rotateY(float radians)
+	{
+		float c = cos(radians);
+		float s = sin(radians);
+
+		mat4 rotY;
+		rotY[0] = c;
+		rotY[2] = s;
+		rotY[8] = -s;
+		rotY[10] = c;
+
+		return rotY;
+	}
+
+	mat4 rotateZ(float radians)
+	{
+		float c = cosf(radians);
+		float s = sinf(radians);
+
+		mat4 rotZ;
+		rotZ[0] = c;
+		rotZ[1] = -s;
+		rotZ[4] = s;
+		rotZ[5] = c;
+
+		return rotZ;
+	}
+
+	mat4 Ortho(float left, float right, float bottom, float top, float near, float far)
+	{
+		float rl = right - left;
+		float tb = top - bottom;
+		float fn = far - near;
+
+		mat4 ortho;
+		ortho.set(
+			2 / rl, 0.0f, 0.0f, -(left + right) / rl,
+			0.0f, 2 / tb, 0.0f, -(top + bottom) / tb,
+			0.0f, 0.0f, -2 / fn, -(far + near) / fn,
+			0.0f, 0.0f, 0.0f, 1.0f
+		);
+		return ortho;
+	}
+
+	mat4 Ortho(float width, float height)
+	{
+		return Ortho(0.0f, width, 0.0f, height, 1.0f, -1.0f);
+	}
+
+	mat4 Frustum(float left, float right, float bottom, float top, float near, float far)
+	{
+		float rl = right - left;
+		float tb = top - bottom;
+		float fn = far - near;
+
+		mat4 frustum;
+		frustum.set(
+			(2.0f * near) / rl, 0.0f, (left + right) / rl, 0.0f,
+			0.0f, (2.0f * near) / tb, (top + bottom) / tb, 0.0f,
+			0.0f, 0.0f, (-(far + near)) / fn, (-2.0f * far * near) / fn,
+			0.0f, 0.0f, -1.0f, 0.0f
+		);
+		return frustum;
+	}
+
+	mat4 LookAt(vec3 eye, vec3 target, vec3 up)
+	{
+		vec3 zaxis = normalize(eye - target);
+		vec3 xaxis = normalize(cross(up, zaxis));
+		vec3 yaxis = cross(zaxis, xaxis);
+
+		mat4 lookAt;
+		lookAt.set(xaxis.x, yaxis.x, zaxis.x, 0,
+			xaxis.y, yaxis.y, zaxis.y, 0,
+			xaxis.z, yaxis.z, zaxis.z, 0,
+			-dot(xaxis, eye), -dot(yaxis, eye), -dot(zaxis, eye), 1
+		);
+		return lookAt;
+	}
+
+	mat4 Perspective(float fovy, float aspect, float near, float far)
+	{
+		float f = 1.0f / tanf(fovy / 2.0f);
+
+		mat4 perspective;
+		perspective.set((f / aspect), 0, 0, 0,
+			0, f, 0, 0,
+			0, 0, ((far + near) / (near - far)), ((2 * far * near) / (near - far)),
+			0, 0, -1, 0
+		);
+		return perspective;
+	}
+
+	void print(const mat4& mat)
+	{
+		std::cout << mat[0] << "\t\t" << mat[1] << "\t\t" << mat[2] << "\t\t" << mat[3] << "\n";
+		std::cout << mat[4] << "\t\t" << mat[5] << "\t\t" << mat[6] << "\t\t" << mat[7] << "\n";
+		std::cout << mat[8] << "\t\t" << mat[9] << "\t\t" << mat[10] << "\t\t" << mat[11] << "\n";
+		std::cout << mat[12] << "\t\t" << mat[13] << "\t\t" << mat[14] << "\t\t" << mat[15] << "\n";
+	}
+
 	/* 4x4 Matrix */
 
 	mat4::mat4()
@@ -1134,12 +1366,17 @@ namespace ae
 		return multiply(*this, other);
 	}
 
-	/* Quaternion */
-
-	Quaternion::Quaternion()
+	vec3 mat4::operator*(const vec3& other)
 	{
-
+		return multiply(*this, other);
 	}
+
+	vec4 mat4::operator*(const vec4& other)
+	{
+		return multiply(*this, other);
+	}
+
+	/* Quaternion */
 
 	Quaternion::Quaternion(float _x, float _y, float _z, float _w)
 	{
@@ -1191,6 +1428,15 @@ namespace ae
 		return multiply(mat, mat);
 	}
 
+	Quaternion multiply(const Quaternion& q1, const Quaternion& q2)
+	{
+		return Quaternion(
+			q1.values.w * q2.values.w - q1.values.x * q2.values.x - q1.values.y * q2.values.y - q1.values.z * q2.values.z,
+			q1.values.w * q2.values.x + q1.values.x * q2.values.w + q1.values.y * q2.values.z - q1.values.z * q2.values.y,
+			q1.values.w * q2.values.y + q1.values.y * q2.values.w + q1.values.z * q2.values.x - q1.values.x * q2.values.z,
+			q1.values.w * q2.values.z + q1.values.z * q2.values.w + q1.values.x * q2.values.y - q1.values.y * q2.values.x);
+	}
+
 	/* Misc Functions */
 
 	std::pair<bool, vec2> lineLineCollision(vec2 p1, vec2 p2, vec2 p3, vec2 p4)
@@ -1212,6 +1458,16 @@ namespace ae
 		float c = (p2 - p3).length();
 		float s = (a + b + c) / 2.0f;
 		return sqrtf(s * (s - a) * (s - b) * (s - c));
+	}
+
+	vec2 idCoordinate(unsigned int id, unsigned int size)
+	{
+		return ae::vec2(id % size, id / size);
+	}
+
+	float normalize(float scalar) // just a abs wrapper for template types
+	{
+		return (scalar > 0.0f ? 1.0f : -1.0f);
 	}
 
 };

@@ -19,7 +19,7 @@ namespace ae
 		version = _version;
 	}
 
-	void ShaderBuilder::AddAttribute(unsigned int location, std::string data_type, std::string name)
+	void ShaderBuilder::AddAttribute(unsigned int location, const std::string& data_type, const std::string& name)
 	{
 		ShaderBuilderAttrib attrib;
 		attrib.location = location;
@@ -28,7 +28,18 @@ namespace ae
 		attributes.push_back(attrib);
 	}
 
-	void ShaderBuilder::AddUniform(std::string data_type, std::string name)
+	void ShaderBuilder::AddAttribute(unsigned int location, const std::string& data_type, const std::string& name, const std::string& output_name)
+	{
+		ShaderBuilderAttrib attrib;
+		attrib.location = location;
+		attrib.data_type = data_type;
+		attrib.name = name;
+		attributes.push_back(attrib);
+
+		AddOutput(data_type, output_name, location);
+	}
+
+	void ShaderBuilder::AddUniform(const std::string& data_type, const std::string& name)
 	{
 		ShaderBuilderUniform uniform;
 		uniform.data_type = data_type;
@@ -36,7 +47,7 @@ namespace ae
 		uniforms.push_back(uniform);
 	}
 
-	void ShaderBuilder::AddOutput(std::string data_type, std::string name, int linked_to)
+	void ShaderBuilder::AddOutput(const std::string& data_type, const std::string& name, int linked_to)
 	{
 		ShaderBuilderOutput output;
 		output.data_type = data_type;
@@ -45,7 +56,7 @@ namespace ae
 		outputs.push_back(output);
 	}
 
-	void ShaderBuilder::AddInput(std::string data_type, std::string name)
+	void ShaderBuilder::AddInput(const std::string& data_type, const std::string& name)
 	{
 		ShaderBuilderInput input;
 		input.data_type = data_type;
@@ -53,12 +64,12 @@ namespace ae
 		inputs.push_back(input);
 	}
 
-	void ShaderBuilder::AddLine(std::string line)
+	void ShaderBuilder::AddLine(const std::string& line)
 	{
 		lines.push_back(line);
 	}
 
-	void ShaderBuilder::AddVariable(bool is_const, std::string data_type, std::string name, std::string value)
+	void ShaderBuilder::AddVariable(bool is_const, const std::string& data_type, const std::string& name, const std::string& value)
 	{
 		ShaderBuilderVariable variable;
 		variable.is_const = is_const;
@@ -244,16 +255,16 @@ namespace ae
 		if (length > 0)
 		{
 			// Failed to validate shader
-			char log_buffer[8192];
-			sprintf(log_buffer, "%s%s%s%s", "Failed to validate the ", name, " shader: ", buffer);
-			log("Shader", log_buffer);
+			std::stringstream ss;
+			ss << "Failed to validate the " << name << " shader: " << buffer;
+			log("Shader", ss.str());
 
-			delete buffer;
+			delete[] buffer;
 
 			return false;
 		}
 
-		delete buffer;
+		delete[] buffer;
 
 		return true;
 	}
@@ -268,16 +279,16 @@ namespace ae
 		if (length > 0)
 		{
 			// Program link error
-			char log_buffer[8192];
-			sprintf(log_buffer, "%s%s", "Program link error: ", buffer);
-			log("Shader", log_buffer);
+			std::stringstream ss;
+			ss << "Program link error: " << buffer;
+			log("Shader", ss.str());
 
-			delete buffer;
+			delete[] buffer;
 
 			return false;
 		}
 
-		delete buffer;
+		delete[] buffer;
 
 		glValidateProgram(program_id);
 
@@ -405,9 +416,19 @@ namespace ae
 		glUniformMatrix3fv(uniforms[name].id, count, transpose, value);
 	}
 
+	void Shader::setUniformMatrix3fv(const std::string& name, int count, bool transpose, const mat4& value)
+	{
+		glUniformMatrix3fv(uniforms[name].id, count, transpose, value.get());
+	}
+
 	void Shader::setUniformMatrix4fv(const std::string& name, int count, bool transpose, const float* value)
 	{
 		glUniformMatrix4fv(uniforms[name].id, count, transpose, value);
+	}
+
+	void Shader::setUniformMatrix4fv(const std::string& name, int count, bool transpose, const mat4& value)
+	{
+		glUniformMatrix4fv(uniforms[name].id, count, transpose, value.get());
 	}
 
 };

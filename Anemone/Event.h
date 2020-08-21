@@ -1,5 +1,9 @@
 #pragma once
 
+#include "includes/glfw3.h"
+
+#include "Math.h"
+
 namespace ae
 {
 	enum class EventType
@@ -87,19 +91,32 @@ namespace ae
 
 	struct MouseMoveEvent : public Event
 	{
-		float xpos, ypos;
+		double xpos, ypos;
 
-		MouseMoveEvent(float _xpos, float _ypos) : xpos(_xpos), ypos(_ypos) {}
+		MouseMoveEvent(double _xpos, double _ypos) : xpos(_xpos), ypos(_ypos) {}
 
 		EVENT_TYPE(MouseMove);
 	};
 
 	struct MouseScrollEvent : public Event
 	{
-		float x_offset, y_offset;
+		double x_offset, y_offset;
 
-		MouseScrollEvent(float _x_offset, float _y_offset) : x_offset(_x_offset), y_offset(_y_offset) {}
+		MouseScrollEvent(double _x_offset, double _y_offset) : x_offset(_x_offset), y_offset(_y_offset) {}
 
 		EVENT_TYPE(MouseScroll);
 	};
-}
+
+	namespace Input
+	{
+		namespace
+		{
+			extern vec2 mouse_pos;
+			extern bool keys[GLFW_KEY_LAST];
+		};
+
+		extern const vec2& getMousePos();
+		extern const void setMousePos(const ae::vec2& new_mouse_pos);
+		extern const bool keyIsDown(unsigned int key);
+	};
+};

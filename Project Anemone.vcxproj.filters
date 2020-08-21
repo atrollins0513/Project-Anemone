@@ -7,9 +7,6 @@
     <ClInclude Include="Anemone\Anemone.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="Anemone\Animation.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="Anemone\BufferObject.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -43,6 +40,27 @@
     <ClInclude Include="Anemone\Event.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="Anemone\utilities\QuadTree.h">
+      <Filter>include\utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\utilities\Noise.h">
+      <Filter>include\utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\utilities\Pathfinding.h">
+      <Filter>include\utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\utilities\ECS.h">
+      <Filter>include\utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\utilities\Animation.h">
+      <Filter>include\utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\Manager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Anemone\Camera.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -51,11 +69,14 @@
     <Filter Include="src">
       <UniqueIdentifier>{db506a2c-e21b-4b0b-8663-46ee4ac7ce9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\utilites">
+      <UniqueIdentifier>{dd246fa8-af81-493f-946f-1de8c2c37555}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\utilites">
+      <UniqueIdentifier>{0ccfb968-7ec1-4d18-a514-f9a089c1bce3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Animation.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\BufferObject.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -63,9 +84,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Math.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Renderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Shader.cpp">
@@ -84,6 +102,24 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Window.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\Noise.cpp">
+      <Filter>src\utilites</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\Pathfinding.cpp">
+      <Filter>src\utilites</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities\Animation.cpp">
+      <Filter>src\utilites</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Event.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

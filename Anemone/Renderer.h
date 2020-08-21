@@ -10,83 +10,87 @@
 
 namespace ae
 {
-	struct RenderInfo
+	struct Vertex
 	{
+		ae::vec3 pos;
 
-		GLenum mode;
+		#ifndef AE_VERTEX_DISABLE_TEX
+				ae::vec2 tex;
+		#endif
 
-		GLint first;
+		#ifndef AE_VERTEX_DISABLE_COLOR
+				ae::vec3 color;
+		#endif
 
-		GLsizei count;
-
-		void* indices;
-
-		GLenum type;
-
-		bool use_indices;
-
-		RenderInfo()
-		{
-			mode = first = count = type = 0;
-			indices = nullptr;
-			use_indices = false;
-		}
-
-		RenderInfo(GLenum _mode, GLint _first, GLsizei _count)
-		{
-			mode = _mode;
-			first = _first;
-			count = _count;
-			use_indices = false;
-			indices = nullptr;
-			type = 0;
-		}
-
-		RenderInfo(GLenum _mode, GLsizei _count, GLenum _type, void* _indices)
-		{
-			mode = _mode;
-			first = 0;
-			count = _count;
-			use_indices = true;
-			indices = _indices;
-			type = _type;
-		}
-
+		#if defined AE_VERTEX_ENABLE_NORMAL
+				ae::vec3 normal;
+		#endif
 	};
 
-	class Renderer
-	{
-	public:
-		
-		Renderer()
-		{
-			texture = nullptr;
-			shader = nullptr;
-			ri = RenderInfo();
-		}
+    template<typename ObjectClass, typename VertexClass>
+    class RendererInterface
+    {
+    public:
 
-		Renderer(sptr<Shader> _shader, sptr<Texture> _texture, sptr<VertexArray> _vao, RenderInfo _ri) : shader(_shader), texture(_texture)
-		{
-			AddVertexArray(_vao);
-			SetRenderInfo(_ri);
-		}
+        RendererInterface() : base(nullptr), ptr(nullptr), buffer(nullptr), vertexCount(0)
+        {
 
-		void Render();
+        }
 
-		void AddVertexArray(std::shared_ptr<VertexArray> _vao);
+        RendererInterface(int maxNumberOfVertices, ae::BufferObject* _buffer) : RendererInterface()
+        {
+            init(maxNumberOfVertices, _buffer);
+        }
 
-		void SetRenderInfo(RenderInfo _ri);
+        void init(int maxNumberOfVertices, ae::BufferObject* _buffer)
+        {
+            base = new VertexClass[maxNumberOfVertices];
+            ptr = base;
+            buffer = _buffer;
+            buffer->setData(sizeof(VertexClass), maxNumberOfVertices, nullptr);
+        }
 
-	protected:
-	private:
+        void updateBuffer()
+        {
+            uint32_t dataSize = (uint32_t)((uint8_t*)ptr - (uint8_t*)base);
+            buffer->setSubData(0, dataSize, base);
+            vertexCount = dataSize / sizeof(VertexClass);
+        }
 
-		std::vector<sptr<VertexArray>> vao;
+        virtual void add(const ObjectClass& o) = 0;
 
-		sptr<Texture> texture;
+        virtual void render() = 0;
 
-		sptr<Shader> shader;
+        void reset() { ptr = base; }
 
-		RenderInfo ri;
+        void begin() { reset(); }
 
-	};
+        void end() { updateBuffer(); }
+
+        VertexClass* getBufferBase() { return base; }
+
+        VertexClass* getBufferPtr() {  return ptr; }
+
+        ae::BufferObject* getBuffer() { return buffer; }
+
+        std::size_t getVertexCount() { return vertexCount; }
+
+        ~RendererInterface()
+        {
+            delete base;
+            delete ptr;
+            delete buffer;
+        }
+
+    protected:
+
+        VertexClass* base;
+
+        VertexClass* ptr;
+
+        ae::BufferObject* buffer;
+
+        std::size_t vertexCount;
+
+    };
 };

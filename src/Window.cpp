@@ -10,9 +10,10 @@ namespace ae
 		share = nullptr;
 		title = "";
 		dt = 0.01;
+		monitorRefresh = 60;
 		window = nullptr;
 		current_state = nullptr;
-		setStateManagerParent(this);
+		fullscreen = false;
 
 		glfwSetErrorCallback([](int error, const char* description) {
 			char log_buffer[8192];
@@ -26,12 +27,12 @@ namespace ae
 		}
 	}
 
-	bool Window::Create(const std::string& _title, unsigned int _width, unsigned int _height, sptr<State> initial_state)
+	bool Window::Create(const std::string& _title, unsigned int _width, unsigned int _height)// , sptr<State> initial_state)
 	{
 		width = _width;
 		height = _height;
 		title = _title;
-		dt = 0.01;
+		setSeed(time(NULL));
 
 		window = glfwCreateWindow(width, height, title.c_str(), monitor, share);
 		if (window == NULL)
@@ -50,6 +51,7 @@ namespace ae
 		}
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
 		glViewport(0, 0, width, height);
 
 		glfwSetWindowUserPointer(window, this);
@@ -83,7 +85,9 @@ namespace ae
 		});
 
 		glfwSetCursorPosCallback(window, [](GLFWwindow* w, double xpos, double ypos) {
-			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(MouseMoveEvent(xpos, ypos));
+			auto state = ((Window*)glfwGetWindowUserPointer(w));
+			ae::Input::setMousePos(ae::vec2(xpos, state->getHeight() - ypos));
+			state->getCurrentState()->event(MouseMoveEvent(xpos, ypos));
 		});
 
 		glfwSetMouseButtonCallback(window, [](GLFWwindow* w, int button, int action, int mods) {
@@ -116,56 +120,63 @@ namespace ae
 			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(WindowResizeEvent(width, height));
 		});
 
-		addState(initial_state);
-
-		setState(initial_state->getName(), true);
+		initialization();
 
 		return true;
 	}
 
 	void Window::Start()
 	{
-		assert(current_state != nullptr);
+		assert(current_state != nullptr, "State has not been set.");
 
-		if (window != nullptr)
+		if (!window)
 		{
-			std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
-			double accumulator = 0.0;
-			std::chrono::high_resolution_clock::time_point newTime;
-			double frameTime = 0.0;
-
-			while (!glfwWindowShouldClose(window))
-			{
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-				newTime = std::chrono::high_resolution_clock::now();
-				frameTime = std::chrono::duration<double>(newTime - currentTime).count();
-				if (frameTime > 0.25)
-					frameTime = 0.25;
-				currentTime = newTime;
-
-				accumulator += frameTime;
-
-				glfwPollEvents();
-
-				while (accumulator >= dt)
-				{
-					//sm->getCurrentState()->update(dt);
-					current_state->update(dt);
-					accumulator -= dt;
-				}
-
-				//sm->getCurrentState()->render(accumulator / dt);
-				current_state->render(accumulator / dt);
-
-				glfwSwapBuffers(window);
-			}
-			glfwDestroyWindow(window);
+			ae::log("Window", "The window's Create method has to be called before Start.");
+			return;
 		}
+
+		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
+		double accumulator = 0.0;
+		std::chrono::high_resolution_clock::time_point newTime;
+		double frameTime = 0.0;
+
+		while (!glfwWindowShouldClose(window))
+		{
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			newTime = std::chrono::high_resolution_clock::now();
+			frameTime = std::chrono::duration<double>(newTime - currentTime).count();
+			if (frameTime > 0.25)
+				frameTime = 0.25;
+			currentTime = newTime;
+
+			accumulator += frameTime;
+
+			glfwPollEvents();
+
+			while (accumulator >= dt)
+			{
+				update(dt);
+				current_state->update(dt);
+				accumulator -= dt;
+			}
+
+			current_state->render(accumulator / dt);
+			render();
+
+			glfwSwapBuffers(window);
+		}
+		glfwDestroyWindow(window);
 	}
 
 	void Window::setWindowTitle(const std::string& new_title)
 	{
+		if (!window)
+		{
+			ae::log("Window", "The window's Create method has to be called before setWindowTitle.");
+			return;
+		}
+
 		title = new_title;
 		glfwSetWindowTitle(window, title.c_str());
 	}
@@ -175,9 +186,34 @@ namespace ae
 		dt = _dt;
 	}
 
+	void Window::setScreenRefreshRate(unsigned int hertz)
+	{
+		monitorRefresh = hertz;
+	}
+
 	void Window::setPosition(int x, int y)
 	{
+		if (!window)
+		{
+			ae::log("Window", "The window's Create method has to be called before setPosition.");
+			return;
+		}
+
 		glfwSetWindowPos(window, x, y);
+	}
+
+	void Window::setWindowSize(unsigned int _width, unsigned int _height)
+	{
+		if (!window)
+		{
+			ae::log("Window", "The window's Create method has to be called before setWindowSize.");
+			return;
+		}
+
+		width = _width;
+		height = _height;
+		glfwSetWindowSize(window, width, height);
+		glViewport(0, 0, width, height);
 	}
 
 	void Window::setHint(int hint, int value)
@@ -195,7 +231,103 @@ namespace ae
 		share = _share;
 	}
 
-	sptr<Window> MakeWindow()
+	void Window::enableFullScreen(bool windowed)
+	{
+		if (!window)
+		{
+			ae::log("Window", "The window's Create method has to be called before enableFullScreen.");
+			return;
+		}
+
+		fullscreen = true;
+		monitor = glfwGetPrimaryMonitor();
+		if (windowed)
+		{
+			const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+			setHint(GLFW_RED_BITS, mode->redBits);
+			setHint(GLFW_GREEN_BITS, mode->greenBits);
+			setHint(GLFW_BLUE_BITS, mode->blueBits);
+			setHint(GLFW_REFRESH_RATE, mode->refreshRate);
+			glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+		}
+		else
+		{
+			glfwSetWindowMonitor(window, monitor, 0, 0, width, height, GL_DONT_CARE);
+		}
+	}
+
+	void Window::disableFullScreen()
+	{
+		if (!window)
+		{
+			ae::log("Window", "The window's Create method has to be called before disableFullScreen.");
+			return;
+		}
+
+		fullscreen = false;
+		int monitorX, monitorY, windowWidth, windowHeight;
+		glfwGetMonitorPos(monitor, &monitorX, &monitorY);
+		glfwGetWindowSize(window, &windowWidth, &windowHeight);
+		glfwSetWindowMonitor(window, nullptr, monitorX + (width - windowWidth) / 2, monitorY + (height - windowHeight) / 2, width, height, GLFW_DONT_CARE);
+	}
+
+	void Window::centerWindow()
+	{
+		if (!window)
+		{
+			ae::log("Window", "The window's Create method has to be called before centerWindow.");
+			return;
+		}
+
+		const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		if (!mode) { return; }
+
+		int monitorX, monitorY;
+		glfwGetMonitorPos(glfwGetPrimaryMonitor(), &monitorX, &monitorY);
+		setPosition(monitorX + (mode->width - width) / 2, monitorY + (mode->height - height) / 2);
+	}
+
+	void Window::setBorderlessWindow(bool borderless)
+	{
+		setHint(GLFW_DECORATED, !borderless);
+	}
+
+	void Window::useVSync(bool on)
+	{
+		glfwSwapInterval(on);
+	}
+
+	const std::unordered_map<unsigned int, std::vector<std::tuple<int, int, int>>> Window::getVideoModes() const
+	{
+		std::unordered_map<unsigned int, std::vector<std::tuple<int, int, int>>> videoModes;
+
+		int monitorCount, modeCount;
+		auto monitors = glfwGetMonitors(&monitorCount);
+
+		for (auto m = 0; m < monitorCount; ++m)
+		{
+			auto modes = glfwGetVideoModes(monitors[m], &modeCount);
+
+			std::vector<std::tuple<int, int, int>> modeStore;
+			
+			for (auto i = 0; i <= modeCount; i++)
+			{
+
+				if (modes[i].width > 0 && modes[i].height > 0 && modes[i].refreshRate > 0)
+				{
+					modeStore.push_back(std::make_tuple(modes[i].width, modes[i].height, modes[i].refreshRate));
+				}
+
+			}
+
+			videoModes.emplace(m, modeStore);
+
+		}
+
+		return videoModes;
+	}
+
+	WindowRef MakeWindow()
 	{
 		return makeShared<Window>();
 	}

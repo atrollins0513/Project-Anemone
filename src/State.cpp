@@ -3,47 +3,51 @@
 namespace ae
 {
 
-	void StateManager::addState(sptr<State> state)
+	void StateManager::addState(unsigned int id, State* state, bool set_current, bool initialize)
 	{
-		assert(!stateExists(state->getName()));
-		state->setParent(parent);
-		states.emplace(state->getName(), state);
+		assert(!stateExists(id), "A state already exists for this id.");
+		states.emplace(id, state);
+		if (set_current) { current_state = state; }
+		if (initialize) { state->init(); }
 	}
 
-	void StateManager::removeState(const std::string& name)
+	void StateManager::removeState(unsigned int id, bool cleanup)
 	{
-		if (stateExists(name))
-		{
-			states.erase(name);
-		}
+		assert(stateExists(id), "State does not exist.");
+		states.at(id)->destroy();
+		if (cleanup) { delete states.at(id); }
+		states.erase(id);
 	}
 
-	void StateManager::setState(const std::string& name, bool initialize)
+	void StateManager::setState(unsigned int id, bool initialize)
 	{
-		if (stateExists(name))
-		{
-			current_state = states.at(name);
-
-			if (initialize)
-			{
-				current_state->init();
-			}
-		}
+		assert(stateExists(id), "State does not exist.");
+		current_state = states.at(id);
+		if (initialize) { current_state->init(); }
 	}
 
-	sptr<State> StateManager::getState(const std::string& name)
+	void StateManager::setState(unsigned int id, State* state, bool initialize)
 	{
-		return states.at(name);
+		assert(!stateExists(id), "A state already exists for this id.");
+		states.emplace(id, state);
+		current_state = state;
+		if (initialize) { current_state->init(); }
 	}
 
-	sptr<State> StateManager::getCurrentState()
+	State* StateManager::getState(unsigned int id)
+	{
+		assert(stateExists(id), "State does not exist.");
+		return states.at(id);
+	}
+
+	State* StateManager::getCurrentState()
 	{
 		return current_state;
 	}
 
-	bool StateManager::stateExists(const std::string& name)
+	bool StateManager::stateExists(unsigned int id)
 	{
-		return (states.find(name) != states.end());
+		return (states.find(id) != states.end());
 	}
 
 };

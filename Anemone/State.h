@@ -18,7 +18,12 @@
 
 namespace ae
 {
-	class Window;
+
+	struct Scene
+	{
+		virtual void update(double dt) = 0;
+		virtual void render() = 0;
+	};
 
 	class State
 	{
@@ -34,15 +39,53 @@ namespace ae
 
 		virtual void destroy() = 0;
 
-		virtual std::string getName() = 0;
+		bool addScene(unsigned int id, Scene* scene)
+		{
+			if (scenes.find(id) == scenes.end())
+			{
+				scenes.emplace(id, scene);
+				return true;
+			}
+			return false;
+		}
 
-		void setParent(Window* _parent) { parent = _parent; }
+		Scene* getScene(unsigned int id)
+		{
+			if (scenes.find(id) == scenes.end())
+			{
+				return nullptr;
+			}
+			return scenes.at(id);
+		}
 
-		Window* getParent() { return parent; }
+		void removeScene(unsigned int id)
+		{
+			if (scenes.find(id) != scenes.end())
+			{
+				delete scenes.at(id);
+				scenes.erase(id);
+			}
+		}
+
+		void updateScenes(double dt)
+		{
+			for (auto& s : scenes)
+			{
+				s.second->update(dt);
+			}
+		}
+
+		void renderScenes()
+		{
+			for (auto& s : scenes)
+			{
+				s.second->render();
+			}
+		}
 
 	protected:
 
-		Window* parent;
+		std::unordered_map<unsigned int, Scene*> scenes;
 
 	};
 	
@@ -50,48 +93,27 @@ namespace ae
 	{
 	public:
 
-		StateManager() : current_state(nullptr), parent(nullptr) { }
+		StateManager() : current_state(nullptr) {}
 
-		template<typename T, typename ... Args>
-		bool addState(Args&& ... args)
-		{
-			static_assert(std::is_base_of<State, T>::value, "T must inherit from State");
+		void addState(unsigned int id, State* state, bool set_current = false, bool initialize = false);
 
-			sptr<T> newState = makeShared<T>(std::forward<Args>(args)...);
-			newState->setParent(parent);
+		void removeState(unsigned int id, bool cleanup);
 
-			assert(newState->getName() != "");
-			assert(!stateExists(newState->getName()));
+		void setState(unsigned int id, bool initialize = false);
 
-			states.emplace(newState->getName(), newState);
+		void setState(unsigned int id, State* state, bool initialize = false);
 
-		}
+		State* getState(unsigned int id);
 
-		void addState(sptr<State> state);
+		State* getCurrentState();
 
-		void removeState(const std::string& name);
-
-		void setState(const std::string& name, bool initialize = false);
-
-		sptr<State> getState(const std::string& name);
-
-		sptr<State> getCurrentState();
-
-		bool stateExists(const std::string& name);
-
-		void setStateManagerParent(Window* _parent) { parent = _parent; }
-
-		friend Window;
+		bool stateExists(unsigned int id);
 
 	protected:
 
-		sptr<State> current_state;
+		State* current_state;
 
-		std::unordered_map<std::string, sptr<State>> states;
-
-	private:
-
-		Window* parent;
+		std::unordered_map<unsigned int, State*> states;
 
 	};
 

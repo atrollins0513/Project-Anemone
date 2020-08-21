@@ -19,45 +19,62 @@ namespace ae
 
 		VertexBuffer();
 
-		VertexBuffer(GLenum _target, GLenum _usage);
+		VertexBuffer(GLenum _target, GLenum _format, GLenum _usage);
 
-		VertexBuffer(GLenum _target, GLenum _usage, std::size_t length, const void* data);
+		VertexBuffer(unsigned int _vertex_size, unsigned int _vertex_count, const void* data, GLenum _target = GL_ARRAY_BUFFER, GLenum _format = GL_FLOAT, GLenum _usage = GL_STATIC_DRAW);
 
-		VertexBuffer(const VertexBuffer& copy);
+		VertexBuffer(const std::map<int, int>& _topology, unsigned int _vertex_size, unsigned int _vertex_count, const void* data, GLenum _target = GL_ARRAY_BUFFER, GLenum _format = GL_FLOAT, GLenum _usage = GL_STATIC_DRAW);
+
+		VertexBuffer(unsigned int attribute, unsigned int attribute_size, unsigned int _vertex_size, unsigned int _vertex_count, const void* data, GLenum _target = GL_ARRAY_BUFFER, GLenum _format = GL_FLOAT, GLenum _usage = GL_STATIC_DRAW);
+
+		void init(GLenum _target = GL_ARRAY_BUFFER, GLenum _format = GL_FLOAT, GLenum _usage = GL_STATIC_DRAW);
+
+		void bind() const;
+
+		void unbind() const;
+
+		void setData(unsigned int  _vertex_size, unsigned int _vertex_count, const void* data);
+
+		void setData(unsigned int length, const void* data);
+
+		void setSubData(unsigned int pointer, unsigned int length, const void* data);
+
+		void getSubData(unsigned int pointer, unsigned int length, void* data);
+
+		const std::map<int, int>& getTopology() const
+		{
+			return topology;
+		}
+
+		const unsigned int getID() const { return id; }
+
+		const unsigned int getVertexCount() const { return vertex_count; }
+
+		const unsigned int getVertexSize() const { return vertex_size; }
+
+		const GLenum getTarget() const { return target; }
+
+		const GLenum getFormat() const { return format; }
+
+		const GLenum getUsage() const { return usage; }
 
 		~VertexBuffer();
 
-		void init(GLenum _target, GLenum _usage);
-
-		void bind();
-
-		void unbind();
-
-		void setData(std::size_t length, const void* data);
-
-		void setSubData(std::size_t pointer, std::size_t length, const void* data);
-
-		void getSubData(std::size_t pointer, std::size_t length, void* data);
-
-		unsigned int GetId() { return id; }
-
-		unsigned int size() { return dataSize; }
-
-		unsigned int getTarget() { return target; };
-
-		unsigned int getUsage() { return usage; };
-
 	protected:
-
-		bool set;
-
-		unsigned int target;
 
 		unsigned int id;
 
-		unsigned int dataSize;
+		GLenum target;
 
-		unsigned int usage;
+		GLenum format;
+
+		GLenum usage;
+
+		std::map<int, int> topology;
+
+		unsigned int vertex_size;
+
+		unsigned int vertex_count;
 
 	private:
 	};
@@ -68,28 +85,106 @@ namespace ae
 
 		VertexArray();
 
-		VertexArray(const VertexArray& copy) { set = copy.set; id = copy.id; }
+		void init();
+
+		void bindAttribute(unsigned int attribute, VertexBuffer* buffer, GLenum type, unsigned int count, unsigned int stride, intptr_t offset);
+
+		void setIndexBuffer(VertexBuffer* indexBuffer);
+
+		void bind() const;
+
+		void unbind() const;
+
+		unsigned int getID() const { return id; }
 
 		~VertexArray();
 
-		void init();
-
-		void bindAttribute(int attribute, VertexBuffer& VertexBuffer, GLenum type, unsigned int count, unsigned int stride, intptr_t offset);
-
-		void setIndexBuffer(VertexBuffer& indexBuffer);
-
-		void bind();
-
-		void unbind();
-
-		unsigned int GetId() const { return id; }
-
-	protected:
 	private:
 
-		bool set;
-
 		unsigned int id;
+
+	};
+
+	class DynamicBuffer
+	{
+	public:
+
+		DynamicBuffer();
+
+		DynamicBuffer(bool initialize);
+
+		void init();
+
+		void add(VertexBuffer* buffer);
+
+		void setDivisors(const std::map<int, int>& topology);
+
+		void bind() const;
+
+		void unbind() const;
+
+		VertexBuffer* getBuffer(unsigned int index);
+
+		~DynamicBuffer();
+
+	private:
+
+		void update(VertexBuffer* buffer);
+
+		bool topologyCollision(const std::map<int, int>& topology);
+
+		bool initialized;
+
+		VertexArray va;
+
+		std::vector<VertexBuffer*> buffers;
+
+		VertexBuffer* index;
+
+		std::map<int, bool> attr;
+
+	};
+
+	class BufferObject : public MakeSmartExt<BufferObject>
+	{
+	public:
+
+		BufferObject();
+
+		BufferObject(const std::map<int, int>& topology, GLenum _target = GL_ARRAY_BUFFER, GLenum _format = GL_FLOAT, GLenum _usage = GL_STATIC_DRAW);
+
+		void setData(unsigned int _vertex_size, unsigned int _vertex_count, const void* data);
+
+		void setData(unsigned int length, const void* data);
+
+		void setSubData(unsigned int pointer, unsigned int length, const void* data);
+
+		void bind() const;
+
+		void unbind() const;
+
+		void setVertexCount(unsigned int _vertex_count)
+		{
+			vertex_count = _vertex_count;
+		}
+
+		const unsigned int getVertexCount() const { return vertex_count; }
+
+	private:
+
+		VertexArray va;
+
+		VertexBuffer buffer;
+
+		GLenum target;
+		
+		GLenum format;
+
+		GLenum usage;
+
+		unsigned int vertex_size;
+
+		unsigned int vertex_count;
 
 	};
 
@@ -105,11 +200,10 @@ namespace ae
 
 		void unbind();
 
-		unsigned int getId() const { return id; }
+		unsigned int getID() const { return id; }
 
-		unsigned int getTextureId() const { return texture_id; }
+		unsigned int getTextureID() const { return texture_id; }
 
-	protected:
 	private:
 
 		unsigned int id;
@@ -121,91 +215,6 @@ namespace ae
 		int width;
 
 		int height;
-
-	};
-
-	class RenderObject
-	{
-	public:
-
-		RenderObject();
-
-		RenderObject(const RenderObject& copy)
-		{
-			vao = copy.vao;
-			vbo_array = copy.vbo_array;
-			ibo = copy.ibo;
-		}
-
-		~RenderObject();
-
-		void init(unsigned int vertex_buffer_count, GLenum _target, GLenum _usage);
-
-		void setBuffer(GLenum _target, GLenum _usage, std::size_t length, const void* data);
-
-		void setIndexBuffer(GLenum _usage, std::size_t length, const void* data);
-
-		void bindAttribute(int attribute, unsigned int buffer_id, GLenum type, unsigned int count, unsigned int stride, intptr_t offset);
-
-		void bind();
-
-		void unbind();
-
-		const VertexArray& getVertexArray()
-		{
-			return vao;
-		}
-
-		const VertexBuffer& getVertexBuffer(unsigned int buffer_id)
-		{
-			return vbo_array.at(0);
-		}
-
-		const VertexBuffer& getIndexBuffer()
-		{
-			return ibo;
-		}
-
-	protected:
-	private:
-
-		VertexArray vao;
-
-		std::vector<VertexBuffer> vbo_array;
-
-		VertexBuffer ibo;
-
-	};
-
-	class BufferObject
-	{
-	public:
-
-		BufferObject();
-
-		BufferObject(std::map<int, int> topology, GLenum _type = GL_FLOAT, GLenum _target = GL_ARRAY_BUFFER, GLenum _usage = GL_STATIC_DRAW);
-
-		void setData(std::size_t length, const void* data);
-
-		void setSubData(std::size_t pointer, std::size_t length, const void* data);
-
-		void bind();
-
-		void unbind();
-
-		void setVertexCount(unsigned long _vertex_count);
-
-		unsigned long getVertexCount() { return vertex_count; }
-
-	private:
-
-		VertexArray va;
-
-		VertexBuffer buffer;
-
-		GLenum type, target, usage;
-
-		unsigned long vertex_count;
 
 	};
 };
