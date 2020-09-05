@@ -107,12 +107,12 @@ namespace ae
 
 		for (auto i : inputs)
 		{
-			ss << i.qualifier << " in " << i.data_type << " " << i.name << ";\n";
+			ss << i.qualifier << (i.qualifier == "" ? " " : "") <<  "in " << i.data_type << " " << i.name << ";\n";
 		}
 
 		for (auto o : outputs)
 		{
-			ss << o.qualifier << " out " << o.data_type << " " << o.name << ";\n";
+			ss << o.qualifier << (o.qualifier == "" ? " " : "") << "out " << o.data_type << " " << o.name << ";\n";
 		}
 
 		for (auto v : variables)
