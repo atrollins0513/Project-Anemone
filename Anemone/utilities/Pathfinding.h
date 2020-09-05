@@ -2,62 +2,50 @@
 
 #include <iostream>
 #include <vector>
+#include <deque>
+#include <mutex>
 
 #include "..\Math.h"
 
 namespace ae
 {
-
-    class Pathfinding
+    namespace Pathfinding
     {
-    private:
+        using Path = std::deque<vec2>;
 
-        struct cell
+        class BoolGrid
         {
+        public:
 
-            double f;
+            BoolGrid() : width(0), height(0), grid(nullptr) { }
 
-            double g;
+            BoolGrid(unsigned int _width, unsigned int _height, bool default_value = true);
 
-            double h;
+            void set(unsigned int x, unsigned int y, bool value);
 
-            int parent_i;
+            const bool check(unsigned int x, unsigned int y) const;
 
-            int parent_j;
+            const bool isValid(unsigned int x, unsigned int y) const;
 
-            cell() : f(FLT_MAX), g(FLT_MAX), h(FLT_MAX), parent_i(-1), parent_j(-1)
-            {
+            unsigned int getWidth() const { return width; }
 
-            }
+            unsigned int getHeight() const { return height; }
 
-            void set(double _f, double _g, double _h, int _parent_i, int _parent_j)
-            {
-                f = _f;
-                g = _g;
-                h = _h;
-                parent_i = _parent_i;
-                parent_j = _parent_j;
-            }
+            BoolGrid(const BoolGrid& copy);
+
+            ~BoolGrid();
+
+        private:
+
+            unsigned int width;
+
+            unsigned int height;
+
+            bool** grid;
+
+            std::mutex m;
 
         };
-
-    public:
-
-        Pathfinding(int row, int col);
-
-        bool search(bool** grid, const vec2& src, const vec2& dest, std::vector<vec2>& final_path, bool include_diagnols = true);
-
-    private:
-
-        bool isValid(int row, int col) const;
-
-        bool isUnBlocked(bool** grid, int row, int col) const;
-
-        bool isDestination(int row, int col, const vec2& dest) const;
-
-        double calculateHValue(int row, int col, const vec2& dest) const;
-
-        void tracePath(cell** cellDetails, const vec2& dest, std::vector<vec2>& result);
 
         const double offsets[8][3] = {
                     {-1.0, 0.0, 1.0}, // North
@@ -70,14 +58,28 @@ namespace ae
                     {1.0, -1.0, 1.414}, // South-West
         };
 
-        bool** closedList;
-        
-        cell** cellDetails;
-        
-        int rowNumber;
+        struct cell
+        {
+            double f, g, h;
+            int parent_i, parent_j;
 
-        int colNumber;
+            cell() : f(FLT_MAX), g(FLT_MAX), h(FLT_MAX), parent_i(-1), parent_j(-1) { }
+
+            void set(double _f, double _g, double _h, int _parent_i, int _parent_j)
+            {
+                f = _f;
+                g = _g;
+                h = _h;
+                parent_i = _parent_i;
+                parent_j = _parent_j;
+            }
+        };
+
+        // Functions
+
+        extern void tracePath(cell** cellDetails, const vec2& dest, Path& result, unsigned int height);
+
+        extern bool search(const BoolGrid& grid, const vec2& src, const vec2& dest, Path& final_path, bool include_diagnols);
 
     };
-
 };

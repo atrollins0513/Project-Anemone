@@ -55,7 +55,7 @@ namespace ae
 
 		const unsigned int getHeight() const { return height; }
 
-		const vec2 getCenter() const { return vec2(width, height) / 2.0f; }
+		const vec2 getCenter() const { return vec2((float)width, (float)height) / 2.0f; }
 
 		const double getUpdateRate() { return dt; }
 

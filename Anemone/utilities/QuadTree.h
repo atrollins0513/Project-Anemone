@@ -42,10 +42,10 @@ namespace ae
 			if (level < max_level)
 			{
 				vec2 hsize = size / 2.0f;
-				quads[0] = new QuadTree(pos + vec2(0.0f, hsize.y), hsize, level + 1, max_level);
-				quads[1] = new QuadTree(pos + hsize, hsize, level + 1, max_level);
-				quads[2] = new QuadTree(pos + vec2(hsize.x, 0.0f), hsize, level + 1, max_level);
-				quads[3] = new QuadTree(pos, hsize, level + 1, max_level);
+				quads[0] = new QuadTree<T>(pos + vec2(0.0f, hsize.y), hsize, level + 1, max_level);
+				quads[1] = new QuadTree<T>(pos + hsize, hsize, level + 1, max_level);
+				quads[2] = new QuadTree<T>(pos + vec2(hsize.x, 0.0f), hsize, level + 1, max_level);
+				quads[3] = new QuadTree<T>(pos, hsize, level + 1, max_level);
 			}
 		}
 
@@ -84,7 +84,7 @@ namespace ae
 
 			for (int i = 0; i < 4; i++)
 			{
-				if (quads[i]->contains(vec4(pos, { 1.0f, 1.0f })))
+				if (quads[i]->contains(vec4(pos, 1.0f, 1.0f)))
 				{
 					if (quads[i]->getElementsAtLocation(pos, result))
 					{
@@ -133,7 +133,7 @@ namespace ae
 
 	private:
 
-		QuadTree* quads[4];
+		QuadTree<T>* quads[4];
 
 		std::vector<T*> elements;
 

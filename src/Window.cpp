@@ -32,7 +32,7 @@ namespace ae
 		width = _width;
 		height = _height;
 		title = _title;
-		setSeed(time(NULL));
+		setSeed((int)time(NULL));
 
 		window = glfwCreateWindow(width, height, title.c_str(), monitor, share);
 		if (window == NULL)
@@ -86,7 +86,7 @@ namespace ae
 
 		glfwSetCursorPosCallback(window, [](GLFWwindow* w, double xpos, double ypos) {
 			auto state = ((Window*)glfwGetWindowUserPointer(w));
-			ae::Input::setMousePos(ae::vec2(xpos, state->getHeight() - ypos));
+			ae::Input::setMousePos(ae::vec2((float)xpos, (float)(state->getHeight() - ypos)));
 			state->getCurrentState()->event(MouseMoveEvent(xpos, ypos));
 		});
 

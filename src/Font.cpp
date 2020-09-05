@@ -68,7 +68,7 @@ namespace ae
 							}
 						}
 					}
-					info.dim = vec4(info.x, info.y, info.width, info.height);
+					info.dim = vec4((float)info.x, (float)info.y, (float)info.width, (float)info.height);
 					character_info[info.id] = info;
 				}
 				else if (line.substr(0, 4) == "info")
@@ -145,7 +145,7 @@ namespace ae
 							}
 						}
 					}
-					character_info[first].kernings[second] = amount;
+					character_info[first].kernings[second] = (char)amount;
 				}
 			}
 
@@ -198,7 +198,7 @@ namespace ae
 	{
 		needs_updating = true;
 		str_changed = true;
-		old_str_size = str.size();
+		old_str_size = (unsigned int)str.size();
 		str = _str;
 		update();
 	}
@@ -208,7 +208,7 @@ namespace ae
 		return pos;
 	}
 
-	const vec2& Text::getAdjustedPos()
+	const vec2 Text::getAdjustedPos()
 	{
 		return pos - (dim * offset_pos);
 	}
@@ -263,17 +263,17 @@ namespace ae
 
 	unsigned int Text::getWidth()
 	{
-		return dim.x;
+		return (unsigned int)dim.x;
 	}
 
 	unsigned int Text::getHeight()
 	{
-		return dim.y;
+		return (unsigned int)dim.y;
 	}
 
-	const unsigned int Text::getByteSize() const
+	const unsigned long Text::getByteSize() const
 	{
-		return sizeof(Text) + str.length();
+		return (unsigned long)(sizeof(Text) + str.length());
 	}
 
 	void Text::setOffset(TextOffset _offset)
@@ -299,7 +299,7 @@ namespace ae
 		dim.x = 0;
 		unsigned int newLineWidth = 0;
 		unsigned int lineCount = 1;
-		unsigned int minYOffset = UINT_MAX;
+		int minYOffset = INT_MAX;
 		for (auto it = str.begin(); it != str.end(); it++)
 		{
 			const Font::FontCharInfo& info = font->getCharacter((*it));
@@ -308,7 +308,7 @@ namespace ae
 			{
 				if (dim.x > newLineWidth)
 				{
-					newLineWidth = dim.x;
+					newLineWidth = (unsigned int)dim.x;
 				}
 				dim.x = 0;
 				lineCount++;
@@ -369,43 +369,40 @@ namespace ae
 		textArray->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
 		ShaderBuilder vs(330);
-		vs.AddAttribute(0, "vec2", "pos");
-		vs.AddAttribute(1, "vec2", "tex");
-		vs.AddAttribute(2, "vec4", "iTex");
-		vs.AddAttribute(3, "vec2", "offset");
-		vs.AddAttribute(4, "vec4", "color", "_color");
-		vs.AddAttribute(5, "float", "scale", "_scale");
-		vs.AddAttribute(6, "float", "layer", "_layer");
-		vs.AddOutput("vec2", "_tex");
-		vs.AddUniform("mat4", "proj");
-		vs.AddLine("_tex = tex.xy * iTex.zw + iTex.xy;");
-		vs.AddLine("gl_Position = proj * vec4((pos * scale * iTex.zw) + offset, 0.0, 1.0);");
+		vs.addAttribute(0, "vec2", "pos");
+		vs.addAttribute(1, "vec2", "tex");
+		vs.addAttribute(2, "vec4", "iTex");
+		vs.addAttribute(3, "vec2", "offset");
+		vs.addAttribute(4, "vec4", "color", "_color");
+		vs.addAttribute(5, "float", "scale", "_scale");
+		vs.addAttribute(6, "float", "layer", "_layer");
+		vs.addOutput("vec2", "_tex");
+		vs.addUniform("mat4", "proj");
+		vs.addLine("_tex = tex.xy * iTex.zw + iTex.xy;");
+		vs.addLine("gl_Position = proj * vec4((pos * scale * iTex.zw) + offset, 0.0, 1.0);");
 
 		ShaderBuilder fs(330);
-		fs.AddUniform("sampler2DArray", "texture_id");
-		fs.AddInput("vec2", "_tex");
-		fs.AddInput("vec4", "_color");
-		fs.AddInput("float", "_layer");
-		fs.AddInput("float", "_scale");
-		fs.AddUniform("float", "texture_size", "smoothFactor");
-		fs.AddOutput("vec4", "color");
-		fs.AddVariable(false, "float", "width", "0.55f");
-		fs.AddVariable(false, "float", "edge", "0.1f");
-		fs.AddLine("float s2 = _scale * _scale;");
-		fs.AddLine("width = -0.3021*s2 + 0.5486*_scale + 0.1537;");
-		fs.AddLine("edge = 1.0752*s2 - 1.7575*_scale + 0.8132;");
-		fs.AddLine("float distance = 1.0 - texture(texture_id, vec3(_tex / texture_size, _layer)).a;");
-		fs.AddLine("float alpha = 1.0 - smoothstep(width, width + edge, distance);");
-		fs.AddLine("if(alpha < 0.001) { discard; }");
-		fs.AddLine("color = vec4(_color.rgb, _color.a * alpha);");
+		fs.addUniform("sampler2DArray", "texture_id");
+		fs.addUniform("float", "texture_size");
+		fs.addUniform("float", "smoothFactor");
+		fs.addOutput("vec4", "color");
+		fs.addVariable(false, "float", "width", "0.55f");
+		fs.addVariable(false, "float", "edge", "0.1f");
+		fs.addLine("float s2 = _scale * _scale;");
+		fs.addLine("width = -0.3021*s2 + 0.5486*_scale + 0.1537;");
+		fs.addLine("edge = 1.0752*s2 - 1.7575*_scale + 0.8132;");
+		fs.addLine("float distance = 1.0 - texture(texture_id, vec3(_tex / texture_size, _layer)).a;");
+		fs.addLine("float alpha = 1.0 - smoothstep(width, width + edge, distance);");
+		fs.addLine("if(alpha < 0.001) { discard; }");
+		fs.addLine("color = vec4(_color.rgb, _color.a * alpha);");
 
 		shader = makeShared<Shader>(vs, fs);
 
 		glActiveTexture(GL_TEXTURE0);
 		shader->bind();
 		shader->setUniformMatrix4fv("proj", 1, GL_TRUE, Ortho(0.0f, 1280.0f, 0.0f, 720.0f, 1.0f, -1.0f).get());
-		shader->setUniform1i("texture_id", 0);
-		shader->setUniform1f("texture_size", 1024.0f);
+		shader->setUniform("texture_id", 0);
+		shader->setUniform("texture_size", 1024.0f);
 		shader->unbind();
 
 		float verts[] = {
@@ -435,7 +432,7 @@ namespace ae
 			updateTextBuffer(text);
 		}
 
-		db->getBuffer(1)->setSubData(0, buffer_ptr_back + block_capacity, base);
+		db->getBuffer(1)->setSubData(0, (unsigned int)(buffer_ptr_back + block_capacity), base);
 	}
 
 	void TextManager::updateText(TextRef text)
@@ -446,8 +443,8 @@ namespace ae
 			{
 				if (text->str_changed)
 				{
-					unsigned int new_block_count = blockCount(text->str.size());
-					unsigned int old_block_count = getTextBlocks(text).size();
+					unsigned int new_block_count = blockCount((unsigned int)text->str.size());
+					unsigned int old_block_count = (unsigned int)getTextBlocks(text).size();
 
 					if (new_block_count > old_block_count)
 					{
@@ -485,7 +482,7 @@ namespace ae
 		textArray->bind();
 		db->bind();
 
-		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, block_count * block_capacity);
+		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, (GLsizei)(block_count * block_capacity));
 
 		db->unbind();
 		textArray->unbind();
@@ -498,7 +495,7 @@ namespace ae
 
 		auto newText = makeShared<Text>(str, pos, color, scale, visible, offset, fonts.at(font_name));
 
-		for (unsigned int i = 0; i < blockCount(str.size()); i++)
+		for (unsigned int i = 0; i < blockCount((unsigned int)str.size()); i++)
 		{
 			createNewBlock(newText);
 		}
@@ -555,7 +552,7 @@ namespace ae
 				width = 0;
 			}
 			int kerning = ((it + 1) != str.end() ? info.kernings[(int)(*(it + 1))] : 0);
-			width += (info.id == 10 ? 0 : (info.xadvance + info.xoffset + kerning) * scale);
+			width += (unsigned int)(info.id == 10 ? 0 : (info.xadvance + info.xoffset + kerning) * scale);
 		}
 
 		return (newlineWidth > width ? newlineWidth : width);
@@ -567,7 +564,7 @@ namespace ae
 
 		unsigned int lineCount = 1;
 
-		unsigned int minYOffset = UINT_MAX;
+		int minYOffset = INT_MAX;
 
 		for (auto it = str.begin(); it != str.end(); it++)
 		{
@@ -586,7 +583,7 @@ namespace ae
 			}
 		}
 
-		return (fonts.at(font_name)->getBase() - minYOffset) * scale * lineCount;
+		return (unsigned int)((fonts.at(font_name)->getBase() - minYOffset) * scale * lineCount);
 
 	}
 
@@ -606,7 +603,7 @@ namespace ae
 	{
 		for (auto b : blocks)
 		{
-			db->getBuffer(1)->setSubData(b.start, block_capacity, (base + (b.start / sizeof(CharVertex))));
+			db->getBuffer(1)->setSubData((unsigned int)b.start, (unsigned int)block_capacity, (base + (b.start / sizeof(CharVertex))));
 		}
 	}
 
@@ -614,7 +611,7 @@ namespace ae
 	{
 		for (auto b : blocks[text])
 		{
-			db->getBuffer(1)->setSubData(b.start, block_capacity, (base + (b.start / sizeof(CharVertex))));
+			db->getBuffer(1)->setSubData((unsigned int)b.start, (unsigned int)block_capacity, (base + (b.start / sizeof(CharVertex))));
 		}
 	}
 
@@ -640,11 +637,11 @@ namespace ae
 	void TextManager::clearBlock(const TextManager::MemoryBlock& b)
 	{
 		BufferPtr loc = b.start / sizeof(CharVertex);
-		for (int i = loc; i < block_character_limit + loc; i++)
+		for (BufferPtr i = loc; i < block_character_limit + loc; i++)
 		{
 			(base + i)->zero();
 		}
-		db->getBuffer(1)->setSubData(b.start, block_capacity, base + loc);
+		db->getBuffer(1)->setSubData((unsigned int)b.start, (unsigned int)block_capacity, base + loc);
 		block_pool.push_back(b);
 		block_count--;
 	}
@@ -664,7 +661,7 @@ namespace ae
 		for (auto& b : textBlocks)
 		{
 			BufferPtr loc = b.start / sizeof(CharVertex);
-			for (int i = loc; i < loc + block_character_limit; i++)
+			for (BufferPtr i = loc; i < loc + block_character_limit; i++)
 			{
 				if (block_character_offset + (i - loc) >= text->characters.size() || !text->visible)
 				{
@@ -681,7 +678,7 @@ namespace ae
 
 	const unsigned int TextManager::blockCount(unsigned int str_size) const
 	{
-		return std::ceil((float)str_size / (float)block_character_limit);
+		return (unsigned int)std::ceil((float)str_size / (float)block_character_limit);
 	}
 
 	TextManager::~TextManager()

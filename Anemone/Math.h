@@ -287,6 +287,8 @@ namespace ae
 
 		constexpr vec4(const vec2& vec1, const vec2& vec2) : x(vec1.x), y(vec1.y), z(vec2.x), w(vec2.y) {}
 
+		constexpr vec4(const vec2& vec1, float _z, float _w) : x(vec1.x), y(vec1.y), z(_z), w(_w) {}
+
 		constexpr vec4(float _v) : x(_v), y(_v), z(_v), w(_v) {}
 
 		float length() const;
@@ -422,6 +424,8 @@ namespace ae
 		mat3();
 
 		void set(float _m0, float _m1, float _m2, float _m3, float _m4, float _m5, float _m6, float _m7, float _m8);
+
+		const float* get() const { return mat; }
 
 		float* get() { return mat; }
 

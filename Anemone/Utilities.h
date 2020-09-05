@@ -315,15 +315,15 @@ namespace ae
 			{
 				if (mode == EasingMode::EASE_IN)
 				{
-					return 1.0f - cos((x * PI) / 2.0f);
+					return 1.0f - (float)cos((x * PI) / 2.0f);
 				}
 				else if (mode == EasingMode::EASE_OUT)
 				{
-					return sin((x * PI) / 2.0f);
+					return (float)sin((x * PI) / 2.0f);
 				}
 				else
 				{
-					return -(cos(PI * x) - 1.0f) / 2.0f;
+					return (float)-(cos(PI * x) - 1.0f) / 2.0f;
 				}
 				break;
 			}
@@ -399,7 +399,7 @@ namespace ae
 				}
 				else if (mode == EasingMode::EASE_OUT)
 				{
-					return (x == 1.0f ? 1.0f : 1.0f - std::pow(2, -10.0f * x));
+					return (x == 1.0f ? 1.0f : 1.0f - (float)std::pow(2, -10.0f * x));
 				}
 				else
 				{
@@ -525,8 +525,8 @@ namespace ae
 		const float c1 = 1.70158f;
 		const float c2 = c1 * 1.525f;
 		const float c3 = c1 + 1.0f;
-		const float c4 = (2.0f * PI) / 3.0f;
-		const float c5 = (2.0f * PI) / 4.5f;
+		const float c4 = (float)((2.0f * PI) / 3.0f);
+		const float c5 = (float)((2.0f * PI) / 4.5f);
 		const float n1 = 7.5625f;
 		const float d1 = 2.75f;
 	};

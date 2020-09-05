@@ -253,7 +253,7 @@ namespace ae
 	{
 		for (unsigned int i = 0; i < thread_count; i++)
 		{
-			threads[i] = std::thread(&TaskManager::dispatchThread, this);
+			threads.push_back(std::thread(&TaskManager::dispatchThread, this));
 		}
 
 		quit = false;

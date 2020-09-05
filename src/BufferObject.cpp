@@ -278,6 +278,8 @@ namespace ae
 		format = target = usage = 0;
 		vertex_count = 0;
 		vertex_size = 0;
+		va = nullptr;
+		buffer = nullptr;
 	}
 
 	BufferObject::BufferObject(const std::map<int, int>& topology, GLenum _target, GLenum _format, GLenum _usage)
@@ -288,8 +290,11 @@ namespace ae
 		vertex_count = 0;
 		vertex_size = 0;
 
-		va.init();
-		buffer.init(target, format, usage);
+		va = makeShared<VertexArray>();
+		buffer = makeShared<VertexBuffer>();
+
+		va->init();
+		buffer->init(target, format, usage);
 
 		int sum = 0;
 		int offset = 0;
@@ -301,39 +306,39 @@ namespace ae
 
 		for (auto t : topology)
 		{
-			va.bindAttribute(t.first, &buffer, format, t.second, sum * sizeof(float), offset);
+			va->bindAttribute(t.first, buffer.get(), format, t.second, sum * sizeof(float), offset);
 			offset += t.second * sizeof(float);
 		}
 
-		buffer.unbind();
-		va.unbind();
+		buffer->unbind();
+		va->unbind();
 	}
 
 	void BufferObject::setData(unsigned int _vertex_size, unsigned int _vertex_count, const void* data)
 	{
 		vertex_size = _vertex_size;
 		vertex_count = _vertex_count;
-		buffer.setData(vertex_size, vertex_count, data);
+		buffer->setData(vertex_size, vertex_count, data);
 	}
 
 	void BufferObject::setData(unsigned int length, const void* data)
 	{
-		buffer.setData(length, data);
+		buffer->setData(length, data);
 	}
 
 	void BufferObject::setSubData(unsigned int pointer, unsigned int length, const void* data)
 	{
-		buffer.setSubData(pointer, length, data);
+		buffer->setSubData(pointer, length, data);
 	}
 
 	void BufferObject::bind() const
 	{
-		va.bind();
+		va->bind();
 	}
 
 	void BufferObject::unbind() const
 	{
-		va.unbind();
+		va->unbind();
 	}
 
 	/*

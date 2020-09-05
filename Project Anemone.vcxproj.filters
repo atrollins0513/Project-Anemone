@@ -83,9 +83,6 @@
     <ClCompile Include="src\Font.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Math.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\Shader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -120,6 +117,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Camera.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

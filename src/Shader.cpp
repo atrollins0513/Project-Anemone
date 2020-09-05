@@ -6,20 +6,20 @@ namespace ae
 
 	ShaderBuilder::ShaderBuilder()
 	{
-		SetVersion(330);
+		setVersion(330);
 	}
 
 	ShaderBuilder::ShaderBuilder(unsigned int _version)
 	{
-		SetVersion(_version);
+		setVersion(_version);
 	}
 
-	void ShaderBuilder::SetVersion(unsigned int _version)
+	void ShaderBuilder::setVersion(unsigned int _version)
 	{
 		version = _version;
 	}
 
-	void ShaderBuilder::AddAttribute(unsigned int location, const std::string& data_type, const std::string& name)
+	void ShaderBuilder::addAttribute(unsigned int location, const std::string& data_type, const std::string& name)
 	{
 		ShaderBuilderAttrib attrib;
 		attrib.location = location;
@@ -28,7 +28,7 @@ namespace ae
 		attributes.push_back(attrib);
 	}
 
-	void ShaderBuilder::AddAttribute(unsigned int location, const std::string& data_type, const std::string& name, const std::string& output_name)
+	void ShaderBuilder::addAttribute(unsigned int location, const std::string& data_type, const std::string& name, const std::string& output_name)
 	{
 		ShaderBuilderAttrib attrib;
 		attrib.location = location;
@@ -36,10 +36,10 @@ namespace ae
 		attrib.name = name;
 		attributes.push_back(attrib);
 
-		AddOutput(data_type, output_name, location);
+		addOutput(data_type, output_name, location);
 	}
 
-	void ShaderBuilder::AddUniform(const std::string& data_type, const std::string& name)
+	void ShaderBuilder::addUniform(const std::string& data_type, const std::string& name)
 	{
 		ShaderBuilderUniform uniform;
 		uniform.data_type = data_type;
@@ -47,29 +47,41 @@ namespace ae
 		uniforms.push_back(uniform);
 	}
 
-	void ShaderBuilder::AddOutput(const std::string& data_type, const std::string& name, int linked_to)
+	void ShaderBuilder::addOutput(const std::string& data_type, const std::string& name, int linked_to)
 	{
 		ShaderBuilderOutput output;
+		output.qualifier = "";
 		output.data_type = data_type;
 		output.name = name;
 		output.linked_to = linked_to;
 		outputs.push_back(output);
 	}
 
-	void ShaderBuilder::AddInput(const std::string& data_type, const std::string& name)
+	void ShaderBuilder::addOutput(const std::string& qualifier, const std::string& data_type, const std::string& name, int linked_to)
+	{
+		ShaderBuilderOutput output;
+		output.qualifier = qualifier;
+		output.data_type = data_type;
+		output.name = name;
+		output.linked_to = linked_to;
+		outputs.push_back(output);
+	}
+
+	void ShaderBuilder::addInput(const std::string& data_type, const std::string& name, const std::string& qualifier)
 	{
 		ShaderBuilderInput input;
+		input.qualifier = qualifier;
 		input.data_type = data_type;
 		input.name = name;
 		inputs.push_back(input);
 	}
 
-	void ShaderBuilder::AddLine(const std::string& line)
+	void ShaderBuilder::addLine(const std::string& line)
 	{
 		lines.push_back(line);
 	}
 
-	void ShaderBuilder::AddVariable(bool is_const, const std::string& data_type, const std::string& name, const std::string& value)
+	void ShaderBuilder::addVariable(bool is_const, const std::string& data_type, const std::string& name, const std::string& value)
 	{
 		ShaderBuilderVariable variable;
 		variable.is_const = is_const;
@@ -79,7 +91,7 @@ namespace ae
 		variables.push_back(variable);
 	}
 
-	std::string ShaderBuilder::Compile() const
+	std::string ShaderBuilder::compile() const
 	{
 		std::stringstream ss;
 		ss << "#version " << version << "\n";
@@ -95,12 +107,12 @@ namespace ae
 
 		for (auto i : inputs)
 		{
-			ss << "in " << i.data_type << " " << i.name << ";\n";
+			ss << i.qualifier << " in " << i.data_type << " " << i.name << ";\n";
 		}
 
 		for (auto o : outputs)
 		{
-			ss << "out " << o.data_type << " " << o.name << ";\n";
+			ss << o.qualifier << " out " << o.data_type << " " << o.name << ";\n";
 		}
 
 		for (auto v : variables)
@@ -169,9 +181,9 @@ namespace ae
 		}
 	}
 
-	Shader::Shader(const ShaderBuilder& vs, const ShaderBuilder& fs)
+	Shader::Shader(ShaderBuilder& vs, ShaderBuilder& fs, bool autoInput)
 	{
-		CreateShader(vs.Compile().c_str(), fs.Compile().c_str());
+		loadFromShaderBuilder(vs, fs, autoInput);
 	}
 
 	void Shader::loadFromFile(const std::string& vertex, const std::string& fragment)
@@ -184,9 +196,19 @@ namespace ae
 		CreateShader(vertex, fragment);
 	}
 
-	void Shader::loadFromShaderBuilder(const ShaderBuilder & vs, const ShaderBuilder & fs)
+	void Shader::loadFromShaderBuilder(ShaderBuilder & vs, ShaderBuilder & fs, bool autoInput)
 	{
-		CreateShader(vs.Compile().c_str(), fs.Compile().c_str());
+		if (autoInput)
+		{
+			const auto& outputs = vs.getOutputs();
+
+			for (const auto& o : outputs)
+			{
+				fs.addInput(o.data_type, o.name, o.qualifier);
+			}
+		}
+
+		CreateShader(vs.compile().c_str(), fs.compile().c_str());
 	}
 
 	void Shader::bind()
@@ -199,12 +221,12 @@ namespace ae
 		glUseProgram(0);
 	}
 
-	int Shader::getUniformLocation(char* name)
+	int Shader::getUniformLocation(const char* name)
 	{
 		return glGetUniformLocation(shader_id, name);
 	}
 
-	int Shader::getAttribLocation(char* name)
+	int Shader::getAttribLocation(const char* name)
 	{
 		return glGetAttribLocation(shader_id, name);
 	}
@@ -331,82 +353,82 @@ namespace ae
 	}
 
 	// uniform Shader::set functions
-	void Shader::setUniform1f(const std::string& name, float value)
+	void Shader::setUniform(const std::string& name, float value)
 	{
 		glUniform1f(uniforms[name].id, value);
 	}
 
-	void Shader::setUniform1d(const std::string& name, double value)
+	void Shader::setUniform(const std::string& name, double value)
 	{
 		glUniform1d(uniforms[name].id, value);
 	}
 
-	void Shader::setUniform1i(const std::string& name, int value)
+	void Shader::setUniform(const std::string& name, int value)
 	{
 		glUniform1i(uniforms[name].id, value);
 	}
 
-	void Shader::setUniform1ui(const std::string& name, unsigned int value)
+	void Shader::setUniform(const std::string& name, unsigned int value)
 	{
 		glUniform1ui(uniforms[name].id, value);
 	}
 
-	void Shader::setUniform2f(const std::string& name, float v0, float v1)
+	void Shader::setUniform(const std::string& name, float v0, float v1)
 	{
 		glUniform2f(uniforms[name].id, v0, v1);
 	}
 
-	void Shader::setUniform2d(const std::string& name, double v0, double v1)
+	void Shader::setUniform(const std::string& name, double v0, double v1)
 	{
 		glUniform2d(uniforms[name].id, v0, v1);
 	}
 
-	void Shader::setUniform2i(const std::string& name, int v0, int v1)
+	void Shader::setUniform(const std::string& name, int v0, int v1)
 	{
 		glUniform2i(uniforms[name].id, v0, v1);
 	}
 
-	void Shader::setUniform2ui(const std::string& name, unsigned int v0, unsigned int v1)
+	void Shader::setUniform(const std::string& name, unsigned int v0, unsigned int v1)
 	{
 		glUniform2ui(uniforms[name].id, v0, v1);
 	}
 
-	void Shader::setUniform3f(const std::string& name, float v0, float v1, float v2)
+	void Shader::setUniform(const std::string& name, float v0, float v1, float v2)
 	{
 		glUniform3f(uniforms[name].id, v0, v1, v2);
 	}
 
-	void Shader::setUniform3d(const std::string& name, double v0, double v1, double v2)
+	void Shader::setUniform(const std::string& name, double v0, double v1, double v2)
 	{
 		glUniform3d(uniforms[name].id, v0, v1, v2);
 	}
 
-	void Shader::setUniform3i(const std::string& name, int v0, int v1, int v2)
+	void Shader::setUniform(const std::string& name, int v0, int v1, int v2)
 	{
 		glUniform3i(uniforms[name].id, v0, v1, v2);
 	}
 
-	void Shader::setUniform3ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2)
+	void Shader::setUniform(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2)
 	{
 		glUniform3ui(uniforms[name].id, v0, v1, v2);
 	}
 
-	void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
+	void Shader::setUniform(const std::string& name, float v0, float v1, float v2, float v3)
 	{
 		glUniform4f(uniforms[name].id, v0, v1, v2, v3);
 	}
 
-	void Shader::setUniform4d(const std::string& name, double v0, double v1, double v2, double v3)
+	void Shader::setUniform(const std::string& name, double v0, double v1, double v2, double v3)
 	{
 		glUniform4d(uniforms[name].id, v0, v1, v2, v3);
 	}
 
-	void Shader::setUniform4i(const std::string& name, int v0, int v1, int v2, int v3)
+	void Shader::setUniform(const std::string& name, int v0, int v1, int v2, int v3)
 	{
 		glUniform4i(uniforms[name].id, v0, v1, v2, v3);
 	}
 
-	void Shader::setUniform4ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3)
+	void Shader::setUniform(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3)
 	{
 		glUniform4ui(uniforms[name].id, v0, v1, v2, v3);
 	}
@@ -416,7 +438,7 @@ namespace ae
 		glUniformMatrix3fv(uniforms[name].id, count, transpose, value);
 	}
 
-	void Shader::setUniformMatrix3fv(const std::string& name, int count, bool transpose, const mat4& value)
+	void Shader::setUniformMatrix3fv(const std::string& name, int count, bool transpose, const mat3& value)
 	{
 		glUniformMatrix3fv(uniforms[name].id, count, transpose, value.get());
 	}

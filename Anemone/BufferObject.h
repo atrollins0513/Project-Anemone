@@ -172,9 +172,9 @@ namespace ae
 
 	private:
 
-		VertexArray va;
+		sptr<VertexArray> va;
 
-		VertexBuffer buffer;
+		sptr<VertexBuffer> buffer;
 
 		GLenum target;
 		

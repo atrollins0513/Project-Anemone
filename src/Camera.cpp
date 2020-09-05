@@ -15,7 +15,7 @@ namespace ae
 
 	Camera::Camera(unsigned int width, unsigned int height) : Camera()
 	{
-		proj = Ortho(width, height);
+		proj = Ortho((float)width, (float)height);
 	}
 
 	void Camera::update(double dt)
@@ -37,7 +37,7 @@ namespace ae
 
 	void Camera::event(Event& e)
 	{
-		ae::vec2 mouse_pos = Input::getMousePos();
+		ae::vec3 mouse_pos = Input::getMousePos();
 
 		switch (e.GetType())
 		{

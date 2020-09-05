@@ -19,50 +19,6 @@ namespace ae
 {
 	class ShaderBuilder
 	{
-	public:
-
-		ShaderBuilder();
-
-		ShaderBuilder(unsigned int _version);
-
-		void SetVersion(unsigned int  _version);
-
-		void AddAttribute(unsigned int location, const std::string& data_type, const std::string& name);
-
-		void AddAttribute(unsigned int location, const std::string& data_type, const std::string& name, const std::string& output_name);
-
-		void AddUniform(const std::string& data_type, const std::string& name);
-
-		template<typename... Targs>
-		void AddUniform(const std::string& data_type, const std::string& name, const Targs&... targs)
-		{
-			ShaderBuilderUniform uniform;
-			uniform.data_type = data_type;
-			uniform.name = name;
-			uniforms.push_back(uniform);
-			AddUniform(data_type, targs...);
-		}
-		
-		void AddOutput(const std::string& data_type, const std::string& name, int linked_to = -1);
-
-		void AddInput(const std::string& data_type, const std::string& name);
-
-		template<typename... Targs>
-		void AddInput(const std::string& data_type, const std::string& name, const Targs&... targs)
-		{
-			ShaderBuilderInput input;
-			input.data_type = data_type;
-			input.name = name;
-			inputs.push_back(input);
-			AddInput(data_type, targs...);
-		}
-
-		void AddLine(const std::string& line);
-
-		void AddVariable(bool is_const, const std::string& data_type, const std::string& name, const std::string& value = "no value");
-
-		std::string Compile() const;
-
 	private:
 
 		struct ShaderBuilderAttrib
@@ -80,6 +36,7 @@ namespace ae
 
 		struct ShaderBuilderOutput
 		{
+			std::string qualifier;
 			std::string data_type;
 			std::string name;
 			int linked_to;
@@ -87,6 +44,7 @@ namespace ae
 
 		struct ShaderBuilderInput
 		{
+			std::string qualifier;
 			std::string data_type;
 			std::string name;
 		};
@@ -98,6 +56,73 @@ namespace ae
 			std::string value;
 			bool is_const;
 		};
+
+	public:
+
+		ShaderBuilder();
+
+		ShaderBuilder(unsigned int _version);
+
+		void setVersion(unsigned int  _version);
+
+		void addAttribute(unsigned int location, const std::string& data_type, const std::string& name);
+
+		void addAttribute(unsigned int location, const std::string& data_type, const std::string& name, const std::string& output_name);
+
+		void addUniform(const std::string& data_type, const std::string& name);
+
+		/*
+		template<typename... Targs>
+		void addUniform(const std::string& data_type, const std::string& name, const Targs&... targs)
+		{
+			ShaderBuilderUniform uniform;
+			uniform.data_type = data_type;
+			uniform.name = name;
+			uniforms.push_back(uniform);
+			addUniform(data_type, targs...);
+		}
+		*/
+		
+		void addOutput(const std::string& data_type, const std::string& name, int linked_to = -1);
+
+		void addOutput(const std::string& qualifier, const std::string& data_type, const std::string& name, int linked_to = -1);
+
+		void addInput(const std::string& data_type, const std::string& name, const std::string& qualifier = "");
+
+		/*
+		template<typename... Targs>
+		void addInput(const std::string& data_type, const std::string& name, const Targs&... targs)
+		{
+			ShaderBuilderInput input;
+			input.data_type = data_type;
+			input.name = name;
+			inputs.push_back(input);
+			addInput(data_type, targs...);
+		}
+		*/
+
+		void addLine(const std::string& line);
+
+		void addVariable(bool is_const, const std::string& data_type, const std::string& name, const std::string& value = "no value");
+
+		std::string compile() const;
+
+		const std::vector<ShaderBuilderAttrib>& getAttributes() const
+		{
+			return attributes;
+		}
+
+		const std::vector<ShaderBuilderOutput>& getOutputs() const
+		{
+			return outputs;
+		}
+
+		const std::vector<ShaderBuilderInput>& getInputs() const
+		{
+			return inputs;
+		}
+
+	private:
 
 		int version;
 
@@ -128,13 +153,13 @@ namespace ae
 		
 		Shader(const std::string& vertex, const std::string& fragment, bool loadFromFile);
 
-		Shader(const ShaderBuilder& vs, const ShaderBuilder& fs);
+		Shader(ShaderBuilder& vs, ShaderBuilder& fs, bool autoInput = true);
 
 		void loadFromFile(const std::string& vertex, const std::string& fragment);
 
 		void loadFromMemory(const std::string& vertex, const std::string& fragment);
 
-		void loadFromShaderBuilder(const ShaderBuilder& vs, const ShaderBuilder& fs);
+		void loadFromShaderBuilder(ShaderBuilder& vs, ShaderBuilder& fs, bool autoInput = true);
 
 		unsigned int id() const { return shader_id; }
 
@@ -142,31 +167,31 @@ namespace ae
 
 		void unbind();
 
-		int getUniformLocation(char* name);
+		int getUniformLocation(const char* name);
 
-		int getAttribLocation(char* name);
+		int getAttribLocation(const char* name);
 
 		~Shader();
 
 		// uniform set functions
-		void setUniform1f(const std::string& name, float value);
-		void setUniform1d(const std::string& name, double value);
-		void setUniform1i(const std::string& name, int value);
-		void setUniform1ui(const std::string& name, unsigned int value);
-		void setUniform2f(const std::string& name, float v0, float v1);
-		void setUniform2d(const std::string& name, double v0, double v1);
-		void setUniform2i(const std::string& name, int v0, int v1);
-		void setUniform2ui(const std::string& name, unsigned int v0, unsigned int v1);
-		void setUniform3f(const std::string& name, float v0, float v1, float v2);
-		void setUniform3d(const std::string& name, double v0, double v1, double v2);
-		void setUniform3i(const std::string& name, int v0, int v1, int v2);
-		void setUniform3ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2);
-		void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
-		void setUniform4d(const std::string& name, double v0, double v1, double v2, double v3);
-		void setUniform4i(const std::string& name, int v0, int v1, int v2, int v3);
-		void setUniform4ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3);
+		void setUniform(const std::string& name, float value);
+		void setUniform(const std::string& name, double value);
+		void setUniform(const std::string& name, int value);
+		void setUniform(const std::string& name, unsigned int value);
+		void setUniform(const std::string& name, float v0, float v1);
+		void setUniform(const std::string& name, double v0, double v1);
+		void setUniform(const std::string& name, int v0, int v1);
+		void setUniform(const std::string& name, unsigned int v0, unsigned int v1);
+		void setUniform(const std::string& name, float v0, float v1, float v2);
+		void setUniform(const std::string& name, double v0, double v1, double v2);
+		void setUniform(const std::string& name, int v0, int v1, int v2);
+		void setUniform(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2);
+		void setUniform(const std::string& name, float v0, float v1, float v2, float v3);
+		void setUniform(const std::string& name, double v0, double v1, double v2, double v3);
+		void setUniform(const std::string& name, int v0, int v1, int v2, int v3);
+		void setUniform(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3);
 		void setUniformMatrix3fv(const std::string& name, int count, bool transpose, const float* value);
-		void setUniformMatrix3fv(const std::string& name, int count, bool transpose, const mat4& value);
+		void setUniformMatrix3fv(const std::string& name, int count, bool transpose, const mat3& value);
 		void setUniformMatrix4fv(const std::string& name, int count, bool transpose, const float* value);
 		void setUniformMatrix4fv(const std::string& name, int count, bool transpose, const mat4& value);
 

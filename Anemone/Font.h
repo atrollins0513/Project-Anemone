@@ -86,16 +86,16 @@ namespace ae
 		vec2 pos;
 		vec4 color;
 		float scale;
-		float texture_layer;
+		unsigned int texture_layer;
 
-		CharVertex() : tex(0.0f), pos(0.0f), color(0.0f), scale(0.0f), texture_layer(0.0f) { }
+		CharVertex() : tex(0.0f), pos(0.0f), color(0.0f), scale(0.0f), texture_layer(0) { }
 
-		CharVertex(vec4 _tex, vec2 _pos, vec4 _color, float _scale, float _texture_layer)
+		CharVertex(vec4 _tex, vec2 _pos, vec4 _color, float _scale, unsigned int _texture_layer)
 		{
 			set(_tex, _pos, _color, _scale, _texture_layer);
 		}
 
-		void set(vec4 _tex, vec2 _pos, vec4 _color, float _scale, float _texture_layer)
+		void set(vec4 _tex, vec2 _pos, vec4 _color, float _scale, unsigned int _texture_layer)
 		{
 			tex = _tex;
 			pos = _pos;
@@ -119,7 +119,7 @@ namespace ae
 			pos = 0.0f;
 			color = 0.0f;
 			scale = 0.0f;
-			texture_layer = 0.0f;
+			texture_layer = 0;
 		}
 
 		CharVertex(const CharVertex& p2)
@@ -174,7 +174,7 @@ namespace ae
 
 		const vec2& getPos();
 
-		const vec2& getAdjustedPos();
+		const vec2 getAdjustedPos();
 
 		void setColor(const vec4& _color);
 
@@ -196,7 +196,7 @@ namespace ae
 
 		unsigned int getHeight();
 
-		const unsigned int getByteSize() const;
+		const unsigned long getByteSize() const;
 
 		void setOffset(TextOffset _offset);
 
@@ -335,7 +335,7 @@ namespace ae
 
 		unsigned int block_count;
 
-		unsigned int block_capacity;
+		BufferPtr block_capacity;
 
 		unsigned int character_limit;
 
