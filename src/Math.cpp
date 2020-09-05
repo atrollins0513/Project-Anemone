@@ -952,7 +952,7 @@ namespace ae
 		return { mat[0] * pos.x + mat[1] * pos.y, mat[2] * pos.x + mat[3] * pos.y, 1.0f };
 	}
 
-	mat2 rotateZ2(float radians)
+	mat2 rotateMatrix2(float radians)
 	{
 		float c = cosf(radians);
 		float s = sinf(radians);

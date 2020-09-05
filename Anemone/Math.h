@@ -413,7 +413,7 @@ namespace ae
 
 	};
 
-	extern mat2 rotateZ2(float radians);
+	extern mat2 rotateMatrix2(float radians);
 
 	/* 3x3 Matrix */
 
