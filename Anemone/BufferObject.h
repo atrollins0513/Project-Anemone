@@ -13,11 +13,31 @@
 
 namespace ae
 {
+	enum class BufferType : unsigned int
+	{
+		VERTEX = 0,
+		ARRAY,
+		FRAME,
+		TEXTURE
+	};
+
+	class BufferHandle
+	{
+	public:
+		const unsigned int get() const;
+		unsigned int get();
+		static ae::sptr<BufferHandle> make(BufferType _type = BufferType::VERTEX);
+		~BufferHandle();
+	protected:
+		unsigned int id = 0;
+		BufferType type = BufferType::VERTEX;
+	};
+
 	class VertexBuffer
 	{
 	public:
 
-		VertexBuffer();
+		VertexBuffer() = default;
 
 		VertexBuffer(GLenum _target, GLenum _format, GLenum _usage);
 
@@ -46,7 +66,7 @@ namespace ae
 			return topology;
 		}
 
-		const unsigned int getID() const { return id; }
+		const unsigned int id() const { return handle->get(); }
 
 		const unsigned int getVertexCount() const { return vertex_count; }
 
@@ -58,23 +78,17 @@ namespace ae
 
 		const GLenum getUsage() const { return usage; }
 
-		~VertexBuffer();
-
 	protected:
 
-		unsigned int id;
+		//unsigned int id;
 
-		GLenum target;
-
-		GLenum format;
-
-		GLenum usage;
-
+		sptr<BufferHandle> handle		{ nullptr };
+		GLenum target					{ GL_ARRAY_BUFFER };
+		GLenum format					{ GL_FLOAT };
+		GLenum usage					{ GL_STATIC_DRAW };
+		unsigned int vertex_size		{ 0 };
+		unsigned int vertex_count		{ 0 };
 		std::map<int, int> topology;
-
-		unsigned int vertex_size;
-
-		unsigned int vertex_count;
 
 	private:
 	};
@@ -82,8 +96,6 @@ namespace ae
 	class VertexArray
 	{
 	public:
-
-		VertexArray();
 
 		void init();
 
@@ -95,23 +107,17 @@ namespace ae
 
 		void unbind() const;
 
-		unsigned int getID() const { return id; }
-
-		~VertexArray();
+		const unsigned int id() const { return handle->get(); }
 
 	private:
 
-		unsigned int id;
+		sptr<BufferHandle> handle;
 
 	};
 
 	class DynamicBuffer
 	{
 	public:
-
-		DynamicBuffer();
-
-		DynamicBuffer(bool initialize);
 
 		void init();
 
@@ -133,14 +139,10 @@ namespace ae
 
 		bool topologyCollision(const std::map<int, int>& topology);
 
-		bool initialized;
-
+		VertexBuffer* index		{ nullptr };
+		bool initialized		{ false };
 		VertexArray va;
-
 		std::vector<VertexBuffer*> buffers;
-
-		VertexBuffer* index;
-
 		std::map<int, bool> attr;
 
 	};
@@ -192,29 +194,27 @@ namespace ae
 	{
 	public:
 
-		FrameBuffer();
+		FrameBuffer() = default;
 
-		bool create(int _width, int _height);
+		FrameBuffer(unsigned int _width, unsigned int _height);
+
+		bool create(unsigned int _width, unsigned int _height);
 
 		void bind();
 
 		void unbind();
 
-		unsigned int getID() const { return id; }
+		const unsigned int id() const { return handle->get(); }
 
 		unsigned int getTextureID() const { return texture_id; }
 
 	private:
 
-		unsigned int id;
-
-		unsigned int texture_id;
-
-		unsigned int depth_buffer_id;
-
-		int width;
-
-		int height;
+		sptr<BufferHandle> handle;
+		unsigned int texture_id			{ 0 };
+		unsigned int depth_buffer_id	{ 0 };
+		unsigned int width				{ 0 };
+		unsigned int height				{ 0 };
 
 	};
 };

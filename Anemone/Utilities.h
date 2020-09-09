@@ -31,7 +31,7 @@ namespace ae
 	template<typename T>
 	using sptr = std::shared_ptr<T>;
 	template<typename T, typename ... Args>
-	constexpr sptr<T> makeShared(Args&& ... args)
+	constexpr sptr<T> makes(Args&& ... args)
 	{
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
@@ -39,7 +39,7 @@ namespace ae
 	template<typename T>
 	using uptr = std::unique_ptr<T>;
 	template<typename T, typename ... Args>
-	constexpr uptr<T> makeUnique(Args&& ... args)
+	constexpr uptr<T> makeu(Args&& ... args)
 	{
 		return std::make_unique<T>(std::forward<Args>(args)...);
 	}
@@ -50,13 +50,13 @@ namespace ae
 		template<typename ... Args>
 		static ae::sptr<T> Create(Args&& ... args)
 		{
-			return ae::makeShared<T>(std::forward<Args>(args)...);
+			return ae::makes<T>(std::forward<Args>(args)...);
 		}
 
 		template<typename ... Args>
 		static ae::uptr<T> CreateU(Args&& ... args)
 		{
-			return ae::makeUnique<T>(std::forward<Args>(args)...);
+			return ae::makeu<T>(std::forward<Args>(args)...);
 		}
 	};
 
@@ -65,6 +65,8 @@ namespace ae
 	extern void log(const std::string& identifier, const std::string& message);
 
 	extern void log(const std::string& identifier, const std::string& message, const std::string& message_two);
+
+	extern void toss(bool trigger, const std::string& msg);
 
 	// File Utilities
 

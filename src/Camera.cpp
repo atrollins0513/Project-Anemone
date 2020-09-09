@@ -2,16 +2,6 @@
 
 namespace ae
 {
-	Camera::Camera()
-	{
-		proj = identity();
-		view = identity();
-		mouse_down = false;
-		translation = 0.0f;
-		total_zoom = 1.0f;
-		drag_button = GLFW_MOUSE_BUTTON_MIDDLE;
-		tracked = nullptr;
-	}
 
 	Camera::Camera(unsigned int width, unsigned int height) : Camera()
 	{

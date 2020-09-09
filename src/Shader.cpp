@@ -162,13 +162,6 @@ namespace ae
 
 	/* Shader */
 
-	Shader::Shader()
-	{
-		shader_id = 0;
-		vertex_id = 0;
-		fragment_id = 0;
-	}
-
 	Shader::Shader(const std::string& vertex, const std::string& fragment, bool loadFromFile)
 	{
 		if (loadFromFile)
@@ -433,22 +426,22 @@ namespace ae
 		glUniform4ui(uniforms[name].id, v0, v1, v2, v3);
 	}
 
-	void Shader::setUniformMatrix3fv(const std::string& name, int count, bool transpose, const float* value)
+	void Shader::setUniformMatrix3v(const std::string& name, int count, bool transpose, const float* value)
 	{
 		glUniformMatrix3fv(uniforms[name].id, count, transpose, value);
 	}
 
-	void Shader::setUniformMatrix3fv(const std::string& name, int count, bool transpose, const mat3& value)
+	void Shader::setUniformMatrix(const std::string& name, int count, bool transpose, const mat3& value)
 	{
 		glUniformMatrix3fv(uniforms[name].id, count, transpose, value.get());
 	}
 
-	void Shader::setUniformMatrix4fv(const std::string& name, int count, bool transpose, const float* value)
+	void Shader::setUniformMatrix4v(const std::string& name, int count, bool transpose, const float* value)
 	{
 		glUniformMatrix4fv(uniforms[name].id, count, transpose, value);
 	}
 
-	void Shader::setUniformMatrix4fv(const std::string& name, int count, bool transpose, const mat4& value)
+	void Shader::setUniformMatrix(const std::string& name, int count, bool transpose, const mat4& value)
 	{
 		glUniformMatrix4fv(uniforms[name].id, count, transpose, value.get());
 	}

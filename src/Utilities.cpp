@@ -7,7 +7,7 @@ namespace ae
 
 	void log(const std::string& identifier, const std::string& message)
 	{
-		std::ofstream file("log.txt", std::ios::out | std::ios::app);
+		std::ofstream file("log.txt", std::ios::out);
 		if (file.is_open())
 		{
 			time_t rawtime;
@@ -23,7 +23,7 @@ namespace ae
 
 	void log(const std::string& identifier, const std::string& message, const std::string& message_two)
 	{
-		std::ofstream file("log.txt", std::ios::out | std::ios::app);
+		std::ofstream file("log.txt", std::ios::out);
 		if (file.is_open())
 		{
 			time_t rawtime;
@@ -35,6 +35,11 @@ namespace ae
 			file << buffer << "[" << identifier << "]" << "[" << message << message_two << "]" << std::endl;
 			file.close();
 		}
+	}
+
+	void toss(bool trigger, const std::string& msg)
+	{
+		if (trigger) { throw msg; }
 	}
 
 	// File Utilities

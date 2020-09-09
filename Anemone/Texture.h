@@ -12,6 +12,7 @@
 
 #include "stb_image.h"
 #include "Utilities.h"
+#include "BufferObject.h"
 
 namespace ae
 {
@@ -23,7 +24,7 @@ namespace ae
 	{
 	public:
 
-		Texture();
+		Texture() = default;
 
 		Texture(unsigned char* data, int length, bool mipmaps, bool flip = true, GLint mag_filter = GL_NEAREST, GLint min_filter = GL_NEAREST);
 
@@ -39,13 +40,11 @@ namespace ae
 
 		void unbind() const;
 
-		unsigned int id() const { return texture_id; }
+		const unsigned int id() const { return handle->get(); }
 
-		int width() const { return texture_width; }
+		const int width() const { return texture_width; }
 
-		int height() const { return texture_height; }
-
-		~Texture();
+		const int height() const { return texture_height; }
 
 	protected:
 
@@ -53,11 +52,9 @@ namespace ae
 
 	private:
 
-		int texture_width;
-
-		int texture_height;
-
-		unsigned int texture_id;
+		int texture_width			{ 0 };
+		int texture_height			{ 0 };
+		sptr<BufferHandle> handle	{ nullptr };
 
 	};
 
@@ -65,7 +62,7 @@ namespace ae
 	{
 	public:
 
-		TextureArray();
+		TextureArray() = default;
 
 		TextureArray(unsigned int _width, unsigned int _height, unsigned int _depth, unsigned int _bpp);
 
@@ -81,7 +78,7 @@ namespace ae
 
 		void unbind() const;
 
-		unsigned int id() const { return texture_id; }
+		const unsigned int id() const { return handle->get(); }
 
 		~TextureArray();
 
@@ -91,26 +88,15 @@ namespace ae
 
 		bool verifyTexture(unsigned int _width, unsigned int _height, unsigned int _bpp);
 
-		unsigned int width;
-
-		unsigned int height;
-
-		unsigned int bpp;
-
-		unsigned int depth;
-
-		GLenum internalFormat;
-
-		GLenum format;
-
-		unsigned int texture_id;
-
-		unsigned int current_layer;
+		unsigned int width			{ 0 };
+		unsigned int height			{ 0 };
+		unsigned int depth			{ 0 };
+		unsigned int bpp			{ 32 };
+		unsigned int current_layer	{ 0 };
+		GLenum internalFormat		{ GL_RGBA8 };
+		GLenum format				{ GL_RGBA };
+		sptr<BufferHandle> handle	{ nullptr };
 
 	};
-
-	using TextureRef = sptr<Texture>;
-
-	using TextureArrayRef = sptr<TextureArray>;
 
 };

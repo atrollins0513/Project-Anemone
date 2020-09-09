@@ -10,7 +10,7 @@ namespace ae
 	{
 	public:
 
-		Camera();
+		Camera() = default;
 
 		Camera(unsigned int width, unsigned int height);
 
@@ -36,7 +36,7 @@ namespace ae
 
 		Tween<vec3>& getTween();
 
-		void operator=(const Camera& other)
+		Camera(const Camera& other)
 		{
 			proj = other.proj;
 			view = other.view;
@@ -51,23 +51,15 @@ namespace ae
 
 	private:
 		
-		mat4 proj;
-
-		mat4 view;
-
-		bool mouse_down;
-
 		vec3 old_position;
-
 		vec3 translation;
-
-		float total_zoom;
-
-		int drag_button;
-
-		TweenList<vec3> tweenList;
-
 		vec3* tracked;
+		mat4 proj;
+		mat4 view;
+		bool mouse_down		{ false };
+		float total_zoom	{ 1.0f };
+		int drag_button		{ GLFW_MOUSE_BUTTON_MIDDLE };
+		TweenList<vec3> tweenList;
 
 	};
 };

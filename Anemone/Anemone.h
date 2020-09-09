@@ -330,3 +330,10 @@
 #include "Window.h"
 #include "Manager.h"
 #include "Camera.h"
+
+/* Smart Pointer References */
+using BufferHandleRef	= ae::sptr<ae::BufferHandle>;
+using ShaderRef			= ae::sptr<ae::Shader>;
+using TextureRef		= ae::sptr<ae::Texture>;
+using TextureArrayRef	= ae::sptr<ae::TextureArray>;
+using WindowRef			= ae::sptr<ae::Window>;

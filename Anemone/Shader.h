@@ -149,7 +149,7 @@ namespace ae
 	{
 	public:
 		
-		Shader();
+		Shader() = default;
 		
 		Shader(const std::string& vertex, const std::string& fragment, bool loadFromFile);
 
@@ -161,7 +161,7 @@ namespace ae
 
 		void loadFromShaderBuilder(ShaderBuilder& vs, ShaderBuilder& fs, bool autoInput = true);
 
-		unsigned int id() const { return shader_id; }
+		const unsigned int id() const { return shader_id; }
 
 		void bind();
 
@@ -190,10 +190,10 @@ namespace ae
 		void setUniform(const std::string& name, double v0, double v1, double v2, double v3);
 		void setUniform(const std::string& name, int v0, int v1, int v2, int v3);
 		void setUniform(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3);
-		void setUniformMatrix3fv(const std::string& name, int count, bool transpose, const float* value);
-		void setUniformMatrix3fv(const std::string& name, int count, bool transpose, const mat3& value);
-		void setUniformMatrix4fv(const std::string& name, int count, bool transpose, const float* value);
-		void setUniformMatrix4fv(const std::string& name, int count, bool transpose, const mat4& value);
+		void setUniformMatrix3v(const std::string& name, int count, bool transpose, const float* value);
+		void setUniformMatrix(const std::string& name, int count, bool transpose, const mat3& value);
+		void setUniformMatrix4v(const std::string& name, int count, bool transpose, const float* value);
+		void setUniformMatrix(const std::string& name, int count, bool transpose, const mat4& value);
 
 	protected:
 
@@ -207,16 +207,11 @@ namespace ae
 
 	private:
 
-		unsigned int shader_id;
-
-		unsigned int vertex_id;
-
-		unsigned int fragment_id;
-
+		unsigned int shader_id		{ 0 };
+		unsigned int vertex_id		{ 0 };
+		unsigned int fragment_id	{ 0 };
 		std::unordered_map<std::string, UNIFORM_INFO> uniforms;
 
 	};
-
-	using ShaderRef = sptr<Shader>;
 
 };

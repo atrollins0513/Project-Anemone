@@ -2,7 +2,7 @@
 
 namespace ae
 {
-	void Animation::update(double dt)
+	bool Animation::update(double dt)
 	{
 		time += dt;
 
@@ -20,7 +20,10 @@ namespace ae
 			{
 				frame_index = 0;
 			}
+
+			return true;
 		}
+		return false;
 	}
 
 	void Animation::addFrame(Frame frame)

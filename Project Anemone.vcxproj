@@ -26,6 +26,7 @@
     <ClInclude Include="Anemone\Font.h" />
     <ClInclude Include="Anemone\Manager.h" />
     <ClInclude Include="Anemone\Math.h" />
+    <ClInclude Include="Anemone\Particle.h" />
     <ClInclude Include="Anemone\Renderer.h" />
     <ClInclude Include="Anemone\ResourceManager.h" />
     <ClInclude Include="Anemone\Shader.h" />
@@ -47,6 +48,7 @@
     <ClCompile Include="src\Font.cpp" />
     <ClCompile Include="src\Manager.cpp" />
     <ClCompile Include="src\Math.cpp" />
+    <ClCompile Include="src\Particle.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\State.cpp" />
     <ClCompile Include="src\stb_image.cpp" />

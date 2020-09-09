@@ -27,8 +27,6 @@ namespace ae
 	{
 	public:
 
-		Window();
-		
 		bool Create(const std::string& _title, unsigned int _width, unsigned int _height);
 		
 		virtual void Start();
@@ -79,29 +77,16 @@ namespace ae
 		
 		virtual void render() {};
 
-		unsigned int width;
-
-		unsigned int height;
-
-		std::string title;
-
-		GLFWmonitor* monitor;
-
-		GLFWwindow* share;
-
-		GLFWwindow* window;
-
-		double dt;
-
-		unsigned int monitorRefresh;
-
+		std::string title			{ "" };
+		unsigned int width			{ 1280 };
+		unsigned int height			{ 720 };
+		GLFWmonitor* monitor		{ nullptr };
+		GLFWwindow* share			{ nullptr };
+		GLFWwindow* window			{ nullptr };
+		bool fullscreen				{ false };
+		double dt					{ 0.01 };
+		unsigned int monitorRefresh	{ 60 };
 		std::unordered_map<unsigned int, std::tuple<int, int, int>> videoModes;
 
-		bool fullscreen;
-
 	};
-
-	using WindowRef = sptr<Window>;
-
-	extern WindowRef MakeWindow();
 };

@@ -4,13 +4,6 @@ namespace ae
 {
 	/* Texture */
 
-	Texture::Texture()
-	{
-		texture_width = 0;
-		texture_height = 0;
-		texture_id = 0;
-	}
-
 	Texture::Texture(unsigned char* data, int length, bool mipmaps, bool flip, GLint mag_filter, GLint min_filter) : Texture()
 	{
 		load(data, length, mipmaps, flip, mag_filter, min_filter);
@@ -48,7 +41,7 @@ namespace ae
 
 	void Texture::bind() const
 	{
-		glBindTexture(GL_TEXTURE_2D, texture_id);
+		glBindTexture(GL_TEXTURE_2D, handle->get());
 	}
 
 	void Texture::unbind() const
@@ -67,7 +60,7 @@ namespace ae
 			int format = (bpp == 32 ? GL_RGBA : GL_RGB);
 
 			// Generate the OpenGL texture id
-			glGenTextures(1, &texture_id);
+			handle = BufferHandle::make(BufferType::TEXTURE);
 
 			bind();
 
@@ -87,26 +80,9 @@ namespace ae
 		}
 	}
 
-	Texture::~Texture()
-	{
-		glDeleteTextures(1, &texture_id);
-	}
-
 	/* Texture Array */
 
-	TextureArray::TextureArray()
-	{
-		width = 0;
-		height = 0;
-		depth = 0;
-		bpp = 32;
-		internalFormat = GL_RGBA8;
-		format = GL_RGBA;
-		texture_id = 0;
-		current_layer = 0;
-	}
-
-	TextureArray::TextureArray(unsigned int _width, unsigned int _height, unsigned int _depth, unsigned int _bpp) : TextureArray()
+	TextureArray::TextureArray(unsigned int _width, unsigned int _height, unsigned int _depth, unsigned int _bpp)
 	{
 		init(_width, _height, _depth, _bpp);
 	}
@@ -118,7 +94,7 @@ namespace ae
 		depth = _depth;
 		bpp = _bpp;
 
-		glGenTextures(1, &texture_id);
+		handle = BufferHandle::make(BufferType::TEXTURE);
 
 		internalFormat = (bpp == 32 ? GL_RGBA8 : GL_RGB8);
 		format = (bpp == 32 ? GL_RGBA : GL_RGB);
@@ -188,7 +164,7 @@ namespace ae
 
 	void TextureArray::bind() const
 	{
-		glBindTexture(GL_TEXTURE_2D_ARRAY, texture_id);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, handle->get());
 	}
 
 	void TextureArray::unbind() const
@@ -200,7 +176,7 @@ namespace ae
 	{
 		if (current_layer >= depth)
 		{
-			log("TextureArray", "Failed to add new texture to the TextureArray because the layer depth has been exceeding. Try increasing the depth specified when the TextureArray was created.");
+			toss(true, "Failed to add the new texture to the TextureArray because the layer depth has been exceeded. Try increasing the depth specified when the TextureArray was created.");
 			return -1;
 		}
 		else
@@ -217,10 +193,5 @@ namespace ae
 	bool TextureArray::verifyTexture(unsigned int _width, unsigned int _height, unsigned int _bpp)
 	{
 		return !(width != _width || height != _height || bpp != _bpp);
-	}
-
-	TextureArray::~TextureArray()
-	{
-		glDeleteTextures(1, &texture_id);
 	}
 };

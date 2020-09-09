@@ -2,17 +2,60 @@
 
 namespace ae
 {
-	// Vertex Buffer //
+	// Buffer Handle //
 
-	VertexBuffer::VertexBuffer()
+	const unsigned int BufferHandle::get() const
 	{
-		id = 0;
-		target = GL_ARRAY_BUFFER;
-		format = GL_FLOAT;
-		usage = GL_STATIC_DRAW;
-		vertex_size = 0;
-		vertex_count = 0;
+		return id;
 	}
+
+	unsigned int BufferHandle::get()
+	{
+		return id;
+	}
+
+	ae::sptr<BufferHandle> BufferHandle::make(BufferType _type)
+	{
+		ae::sptr<BufferHandle> handle = ae::makes<BufferHandle>();
+		handle->type = _type;
+		switch (handle->type)
+		{
+		case BufferType::VERTEX:
+			glGenBuffers(1, &handle->id);
+			break;
+		case BufferType::ARRAY:
+			glGenVertexArrays(1, &handle->id);
+			break;
+		case BufferType::FRAME:
+			glGenFramebuffers(1, &handle->id);
+			break;
+		case BufferType::TEXTURE:
+			glGenTextures(1, &handle->id);
+			break;
+		}
+		return handle;
+	}
+
+	BufferHandle::~BufferHandle()
+	{
+		switch (type)
+		{
+		case BufferType::VERTEX:
+			glDeleteBuffers(1, &id);
+			break;
+		case BufferType::ARRAY:
+			glDeleteVertexArrays(1, &id);
+			break;
+		case BufferType::FRAME:
+			glDeleteFramebuffers(1, &id);
+			break;
+		case BufferType::TEXTURE:
+			glDeleteTextures(1, &id);
+			break;
+		}
+	}
+
+	// Vertex Buffer //
 
 	VertexBuffer::VertexBuffer(GLenum _target, GLenum _format, GLenum _usage)
 	{
@@ -44,12 +87,15 @@ namespace ae
 		target = _target;
 		format = _format;
 		usage = _usage;
-		glGenBuffers(1, &id);
+		if (handle == nullptr)
+		{
+			handle = BufferHandle::make(BufferType::VERTEX);
+		}
 	}
 
 	void VertexBuffer::bind() const
 	{
-		glBindBuffer(target, id);
+		glBindBuffer(target, handle->get());
 	}
 
 	void VertexBuffer::unbind() const
@@ -83,21 +129,14 @@ namespace ae
 		glGetBufferSubData(target, pointer, length, data);
 	}
 
-	VertexBuffer::~VertexBuffer()
-	{
-		glDeleteBuffers(1, &id);
-	}
-
 	// Vertex Array //
-
-	VertexArray::VertexArray()
-	{
-		id = 0;
-	}
 
 	void VertexArray::init()
 	{
-		glGenVertexArrays(1, &id);
+		if (handle == nullptr)
+		{
+			handle = BufferHandle::make(BufferType::ARRAY);
+		}
 	}
 
 	void VertexArray::bindAttribute(unsigned int attribute, VertexBuffer* buffer, GLenum type, unsigned int count, unsigned int stride, intptr_t offset)
@@ -116,7 +155,7 @@ namespace ae
 
 	void VertexArray::bind() const
 	{
-		glBindVertexArray(id);
+		glBindVertexArray(handle->get());
 	}
 
 	void VertexArray::unbind() const
@@ -124,36 +163,11 @@ namespace ae
 		glBindVertexArray(0);
 	}
 
-	VertexArray::~VertexArray()
-	{
-		glDeleteVertexArrays(1, &id);
-	}
-
 	// Dynamic Buffer //
-
-	DynamicBuffer::DynamicBuffer()
-	{
-		index = nullptr;
-		initialized = false;
-	}
-
-	DynamicBuffer::DynamicBuffer(bool initialize)
-	{
-		index = nullptr;
-		initialized = false;
-		if (initialize)
-		{
-			init();
-		}
-	}
 
 	void DynamicBuffer::init()
 	{
-		if (!initialized)
-		{
-			initialized = true;
-			va.init();
-		}
+		va.init();
 	}
 
 	void DynamicBuffer::add(VertexBuffer* buffer)
@@ -171,7 +185,7 @@ namespace ae
 			}
 			else
 			{
-				ae::log("DynamicBuffer", "Buffer has already been added.");
+				toss(true, "Buffer has already been added.");
 			}
 		}
 	}
@@ -199,25 +213,6 @@ namespace ae
 	VertexBuffer* DynamicBuffer::getBuffer(unsigned int index)
 	{
 		return buffers.at(index);
-	}
-
-	DynamicBuffer::~DynamicBuffer()
-	{
-		for (auto it = buffers.begin(); it != buffers.end();)
-		{
-			if ((*it))
-			{
-				delete (*it);
-				it = buffers.erase(it);
-			}
-			++it;
-		}
-
-		if (index)
-		{
-			delete index;
-			index = nullptr;
-		}
 	}
 
 	void DynamicBuffer::update(VertexBuffer* buffer)
@@ -248,7 +243,7 @@ namespace ae
 				}
 				else
 				{
-					ae::log("DynamicBuffer", "Collision in topology attributes.");
+					toss(true, "Collision in topology attributed.");
 				}
 			}
 		}
@@ -271,6 +266,25 @@ namespace ae
 		return false;
 	}
 
+	DynamicBuffer::~DynamicBuffer()
+	{
+		for (auto it = buffers.begin(); it != buffers.end();)
+		{
+			if ((*it))
+			{
+				delete (*it);
+				it = buffers.erase(it);
+			}
+			++it;
+		}
+
+		if (index)
+		{
+			delete index;
+			index = nullptr;
+		}
+	}
+
 	// Buffer Object //
 
 	BufferObject::BufferObject()
@@ -290,8 +304,8 @@ namespace ae
 		vertex_count = 0;
 		vertex_size = 0;
 
-		va = makeShared<VertexArray>();
-		buffer = makeShared<VertexBuffer>();
+		va = makes<VertexArray>();
+		buffer = makes<VertexBuffer>();
 
 		va->init();
 		buffer->init(target, format, usage);
@@ -587,24 +601,21 @@ namespace ae
 
 	/* Frame Buffer Object */
 
-	FrameBuffer::FrameBuffer()
+	FrameBuffer::FrameBuffer(unsigned int _width, unsigned int _height)
 	{
-		width = 0;
-		height = 0;
-		id = 0;
-		depth_buffer_id = 0;
-		texture_id = 0;
+		create(_width, _height);
 	}
 
-	bool FrameBuffer::create(int _width, int _height)
+	bool FrameBuffer::create(unsigned int _width, unsigned int _height)
 	{
 		width = _width;
 		height = _height;
 
-		glGenFramebuffers(1, &id);
-		glBindFramebuffer(GL_FRAMEBUFFER, id);
+		handle = BufferHandle::make(BufferType::FRAME);
 
-		glGenTextures(1, &texture_id);
+		glBindFramebuffer(GL_FRAMEBUFFER, handle->get());
+
+		bind();
 		glBindTexture(GL_TEXTURE_2D, texture_id);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
@@ -623,11 +634,11 @@ namespace ae
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{
-			log("Framebuffer", "Failed to create the frame buffer");
+			toss(true, "Failed to create the frame buffer.");
 			return false;
 		}
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		unbind();
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		return true;
@@ -635,7 +646,7 @@ namespace ae
 
 	void FrameBuffer::bind()
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, id);
+		glBindFramebuffer(GL_FRAMEBUFFER, handle->get());
 	}
 
 	void FrameBuffer::unbind()

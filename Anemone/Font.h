@@ -23,17 +23,16 @@ namespace ae
 
 		struct FontCharInfo
 		{
-			int id;
-			int x;
-			int y;
-			int width;
-			int height;
-			int xoffset;
-			int yoffset;
-			int xadvance;
+			int id				{ 0 };
+			int x				{ 0 };
+			int y				{ 0 };
+			int width			{ 0 };
+			int height			{ 0 };
+			int xoffset			{ 0 };
+			int yoffset			{ 0 };
+			int xadvance		{ 0 };
+			char kernings[128]	{ 0 };
 			vec4 dim;
-			char kernings[128]{ 0 };
-			FontCharInfo() : id(0), x(0), y(0), width(0), height(0), xoffset(0), yoffset(0), xadvance(0), dim(0.0f) { }
 		};
 
 		Font() : size(0), lineHeight(0), base(0), scaleW(0), scaleH(0), texture_id(0) { }
@@ -58,21 +57,14 @@ namespace ae
 
 	private:
 
+		int size					{ 0 };
+		int lineHeight				{ 0 };
+		int base					{ 0 };
+		int scaleW					{ 0 };
+		int scaleH					{ 0 };
+		FontTextureID texture_id	{ 0 };
+		std::string name			{ "" };
 		FontCharInfo character_info[256];
-
-		int size;
-
-		int lineHeight;
-
-		int base;
-
-		int scaleW;
-
-		int scaleH;
-
-		std::string name;
-
-		FontTextureID texture_id;
 
 	};
 
@@ -82,11 +74,11 @@ namespace ae
 
 	struct CharVertex
 	{
-		vec4 tex;
 		vec2 pos;
+		vec4 tex;
 		vec4 color;
-		float scale;
-		unsigned int texture_layer;
+		float scale					{ 0.0f };
+		unsigned int texture_layer	{ 0 };
 
 		CharVertex() : tex(0.0f), pos(0.0f), color(0.0f), scale(0.0f), texture_layer(0) { }
 
@@ -145,20 +137,7 @@ namespace ae
 	{
 	public:
 
-		Text()
-		{
-			str = "";
-			pos = 0.0f;
-			color = 0.0f;
-			scale = 1.0f;
-			dim = 0.0f;
-			visible = false;
-			font = nullptr;
-			offset = TextOffset::center;
-			needs_updating = true;
-			str_changed = true;
-			old_str_size = 0;
-		}
+		Text() = default;
 		
 		Text(const std::string& _str, const vec2& _pos, const vec4& _color, float _scale, bool _visible, TextOffset _offset, FontRef _font) :
 			str(_str), pos(_pos), color(_color), scale(_scale), visible(_visible), font(_font)
@@ -206,31 +185,19 @@ namespace ae
 
 	private:
 
-		std::vector<CharVertex> characters;
-
-		std::string str;
-
-		vec2 pos;
-
-		vec4 color;
-
-		float scale;
-
+		std::string str				{ "" };
+		sptr<Font> font				{ nullptr };
+		TextOffset offset			{ TextOffset::center };
+		bool visible				{ false };
+		bool needs_updating			{ true };
+		bool str_changed			{ true };
+		float scale					{ 1.0f };
+		unsigned int old_str_size	{ 0 };
 		vec2 dim;
-
-		bool visible;
-
-		FontRef font;
-
-		TextOffset offset;
-
+		vec2 pos;
 		vec2 offset_pos;
-
-		bool needs_updating;
-
-		bool str_changed;
-
-		unsigned int old_str_size;
+		vec4 color;
+		std::vector<CharVertex> characters;
 
 	};
 
@@ -241,16 +208,6 @@ namespace ae
 	class TextManager
 	{
 	public:
-
-		TextManager()
-		{
-			base = nullptr;
-			buffer_ptr_back = 0;
-			block_character_limit = 0;
-			character_limit = 0;
-			block_count = 0;
-			block_capacity = 0;
-		}
 
 		void init(unsigned int _block_character_limit = 4, unsigned int _character_limit = 100000, unsigned int texture_array_size = 1024, unsigned int texture_array_depth = 16);
 
@@ -276,7 +233,7 @@ namespace ae
 
 		void setTextProjection(mat4& _proj);
 
-		ShaderRef getShader()
+		sptr<Shader> getShader()
 		{
 			return shader;
 		}
@@ -315,31 +272,19 @@ namespace ae
 
 		const unsigned int blockCount(unsigned int str_size) const;
 
+		CharVertex* base					{ nullptr };
+		sptr<Shader> shader					{ nullptr };
+		sptr<TextureArray> textArray		{ nullptr };
+		sptr<DynamicBuffer> db				{ nullptr };
+		BufferPtr buffer_ptr_back			{ 0 };
+		BufferPtr block_capacity			{ 0 };
+		unsigned int block_count			{ 0 };
+		unsigned int character_limit		{ 0 };
+		unsigned int block_character_limit	{ 0 };
 		std::vector<TextRef> texts;
-
 		std::unordered_map<std::string, FontRef> fonts;
-
-		ShaderRef shader;
-
-		TextureArrayRef textArray;
-
-		CharVertex* base;
-
-		ae::sptr<DynamicBuffer> db;
-
 		std::unordered_map<TextRef, std::vector<MemoryBlock>> blocks;
-
 		std::list<MemoryBlock> block_pool;
-
-		BufferPtr buffer_ptr_back;
-
-		unsigned int block_count;
-
-		BufferPtr block_capacity;
-
-		unsigned int character_limit;
-
-		unsigned int block_character_limit;
 
 	};
 

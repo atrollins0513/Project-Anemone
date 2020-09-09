@@ -32,17 +32,14 @@ namespace ae
     {
     public:
 
-        RendererInterface() : base(nullptr), ptr(nullptr), buffer(nullptr), vertexCount(0)
-        {
+        RendererInterface() = default;
 
-        }
-
-        RendererInterface(int maxNumberOfVertices, ae::BufferObject* _buffer) : RendererInterface()
+        RendererInterface(int maxNumberOfVertices, BufferObject _buffer) : RendererInterface()
         {
             init(maxNumberOfVertices, _buffer);
         }
 
-        void init(int maxNumberOfVertices, ae::BufferObject* _buffer)
+        void init(int maxNumberOfVertices, BufferObject _buffer)
         {
             base = new VertexClass[maxNumberOfVertices];
             ptr = base;
@@ -79,18 +76,14 @@ namespace ae
         {
             delete base;
             delete ptr;
-            delete buffer;
         }
 
     protected:
 
-        VertexClass* base;
-
-        VertexClass* ptr;
-
-        ae::BufferObject* buffer;
-
-        std::size_t vertexCount;
+        VertexClass* base       { nullptr };
+        VertexClass* ptr        { nullptr };
+        std::size_t vertexCount { 0 };
+        BufferObject buffer;
 
     };
 };

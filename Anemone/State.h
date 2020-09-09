@@ -93,8 +93,6 @@ namespace ae
 	{
 	public:
 
-		StateManager() : current_state(nullptr) {}
-
 		void addState(unsigned int id, State* state, bool set_current = false, bool initialize = false);
 
 		void removeState(unsigned int id, bool cleanup);
@@ -111,8 +109,7 @@ namespace ae
 
 	protected:
 
-		State* current_state;
-
+		State* current_state	{ nullptr };
 		std::unordered_map<unsigned int, State*> states;
 
 	};

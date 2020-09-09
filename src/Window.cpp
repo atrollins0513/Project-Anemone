@@ -2,33 +2,11 @@
 
 namespace ae
 {
-	Window::Window()
-	{
-		width = 1280;
-		height = 720;
-		monitor = nullptr;
-		share = nullptr;
-		title = "";
-		dt = 0.01;
-		monitorRefresh = 60;
-		window = nullptr;
-		current_state = nullptr;
-		fullscreen = false;
-
-		glfwSetErrorCallback([](int error, const char* description) {
-			char log_buffer[8192];
-			printf(log_buffer, "%s%s", "Error: ", description);
-			log("Window", log_buffer);
-		});
-
-		if (!glfwInit())
-		{
-			log("Window", "Failed to initialize GLFW");
-		}
-	}
-
 	bool Window::Create(const std::string& _title, unsigned int _width, unsigned int _height)// , sptr<State> initial_state)
 	{
+		glfwSetErrorCallback([](int error, const char* description) { log("Window", description); });
+		toss(!glfwInit(), "Failed to initialize GLFW.");
+
 		width = _width;
 		height = _height;
 		title = _title;
@@ -37,23 +15,17 @@ namespace ae
 		window = glfwCreateWindow(width, height, title.c_str(), monitor, share);
 		if (window == NULL)
 		{
-			log("Window", "Failed to open GLFW window.");
+			toss(true, "Failed to open GLFW window.");
 			glfwTerminate();
 			return false;
 		}
 
 		glfwMakeContextCurrent(window);
 		glewExperimental = true;
-		if (glewInit() != GLEW_OK)
-		{
-			log("Window", "Failed to initialize GLEW");
-			return false;
-		}
+		toss(glewInit() != GLEW_OK, "Failed to initialize GLFW.");
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
 		glViewport(0, 0, width, height);
-
 		glfwSetWindowUserPointer(window, this);
 
 		glfwSetKeyCallback(window, [](GLFWwindow* w, int key, int scancode, int action, int mods) {
@@ -171,12 +143,7 @@ namespace ae
 
 	void Window::setWindowTitle(const std::string& new_title)
 	{
-		if (!window)
-		{
-			ae::log("Window", "The window's Create method has to be called before setWindowTitle.");
-			return;
-		}
-
+		toss(!window, "Window title cannot be set because the window has not been initialized.");
 		title = new_title;
 		glfwSetWindowTitle(window, title.c_str());
 	}
@@ -193,22 +160,13 @@ namespace ae
 
 	void Window::setPosition(int x, int y)
 	{
-		if (!window)
-		{
-			ae::log("Window", "The window's Create method has to be called before setPosition.");
-			return;
-		}
-
+		toss(!window, "Window position cannot be set because the window has not been initialized.");
 		glfwSetWindowPos(window, x, y);
 	}
 
 	void Window::setWindowSize(unsigned int _width, unsigned int _height)
 	{
-		if (!window)
-		{
-			ae::log("Window", "The window's Create method has to be called before setWindowSize.");
-			return;
-		}
+		toss(!window, "Window size cannot be set because the window has not been initialized.");
 
 		width = _width;
 		height = _height;
@@ -233,11 +191,7 @@ namespace ae
 
 	void Window::enableFullScreen(bool windowed)
 	{
-		if (!window)
-		{
-			ae::log("Window", "The window's Create method has to be called before enableFullScreen.");
-			return;
-		}
+		toss(!window, "Fullscreen cannot be enabled because the window has not been initialized.");
 
 		fullscreen = true;
 		monitor = glfwGetPrimaryMonitor();
@@ -258,11 +212,7 @@ namespace ae
 
 	void Window::disableFullScreen()
 	{
-		if (!window)
-		{
-			ae::log("Window", "The window's Create method has to be called before disableFullScreen.");
-			return;
-		}
+		toss(!window, "Fullscreen cannot be disabled because the window has not been initialized.");
 
 		fullscreen = false;
 		int monitorX, monitorY, windowWidth, windowHeight;
@@ -273,11 +223,7 @@ namespace ae
 
 	void Window::centerWindow()
 	{
-		if (!window)
-		{
-			ae::log("Window", "The window's Create method has to be called before centerWindow.");
-			return;
-		}
+		toss(!window, "Window cannot be centered because the window has not been initialized.");
 
 		const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		if (!mode) { return; }
@@ -325,10 +271,5 @@ namespace ae
 		}
 
 		return videoModes;
-	}
-
-	WindowRef MakeWindow()
-	{
-		return makeShared<Window>();
 	}
 };

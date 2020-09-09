@@ -364,7 +364,7 @@ namespace ae
 		block_character_limit = _block_character_limit;
 		block_capacity = block_character_limit * sizeof(CharVertex);
 		character_limit = _character_limit;
-		textArray = makeShared<TextureArray>(texture_array_size, texture_array_size, texture_array_depth, 32);
+		textArray = makes<TextureArray>(texture_array_size, texture_array_size, texture_array_depth, 32);
 		textArray->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		textArray->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
@@ -396,11 +396,11 @@ namespace ae
 		fs.addLine("if(alpha < 0.001) { discard; }");
 		fs.addLine("color = vec4(_color.rgb, _color.a * alpha);");
 
-		shader = makeShared<Shader>(vs, fs);
+		shader = makes<Shader>(vs, fs);
 
 		glActiveTexture(GL_TEXTURE0);
 		shader->bind();
-		shader->setUniformMatrix4fv("proj", 1, GL_TRUE, Ortho(0.0f, 1280.0f, 0.0f, 720.0f, 1.0f, -1.0f).get());
+		shader->setUniformMatrix4v("proj", 1, GL_TRUE, Ortho(0.0f, 1280.0f, 0.0f, 720.0f, 1.0f, -1.0f).get());
 		shader->setUniform("texture_id", 0);
 		shader->setUniform("texture_size", 1024.0f);
 		shader->unbind();
@@ -414,7 +414,7 @@ namespace ae
 
 		unsigned int indices[] = { 0, 2, 1, 0, 3, 2 };
 
-		db = ae::makeShared<DynamicBuffer>();
+		db = ae::makes<DynamicBuffer>();
 		db->init();
 		db->add(new VertexBuffer({ { 0, 2 }, {1, 2} }, 4 * sizeof(float), 4, verts));
 		db->add(new VertexBuffer(sizeof(unsigned int), 6, indices, GL_ELEMENT_ARRAY_BUFFER, GL_UNSIGNED_INT));
@@ -478,6 +478,9 @@ namespace ae
 
 	void TextManager::render()
 	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		shader->bind();
 		textArray->bind();
 		db->bind();
@@ -491,9 +494,9 @@ namespace ae
 
 	TextRef TextManager::addText(const std::string& str, const vec2& pos, const vec4& color, float scale, bool visible, const std::string& font_name, const TextOffset offset)
 	{
-		assert(fonts.find(font_name) != fonts.end(), "Failed to find the specificed font, check the spelling possibly.");
+		toss(fonts.find(font_name) == fonts.end(), "Failed to find the specificed font, possibly check the spelling.");
 
-		auto newText = makeShared<Text>(str, pos, color, scale, visible, offset, fonts.at(font_name));
+		auto newText = makes<Text>(str, pos, color, scale, visible, offset, fonts.at(font_name));
 
 		for (unsigned int i = 0; i < blockCount((unsigned int)str.size()); i++)
 		{
@@ -517,15 +520,10 @@ namespace ae
 
 	void TextManager::addFont(const std::string& name, const std::string& font_file, const std::string& font_texture)
 	{
-		if (fonts.find(name) == fonts.end())
-		{
-			FontTextureID id = textArray->load(font_texture, false);
-			fonts.emplace(name, makeShared<Font>(name, font_file, id));
-		}
-		else
-		{
-			log("TextManager", "Failed to load font " + name + ".");
-		}
+		toss(fonts.find(name) != fonts.end(), "The font \"" + name + "\" has already been added.");
+
+		FontTextureID id = textArray->load(font_texture, false);
+		fonts.emplace(name, makes<Font>(name, font_file, id));
 	}
 
 	bool TextManager::textExists(TextRef text)
@@ -590,7 +588,7 @@ namespace ae
 	void TextManager::setTextProjection(mat4& _proj)
 	{
 		shader->bind();
-		shader->setUniformMatrix4fv("proj", 1, GL_TRUE, _proj);
+		shader->setUniformMatrix("proj", 1, GL_TRUE, _proj);
 		shader->unbind();
 	}
 

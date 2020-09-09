@@ -4,6 +4,8 @@
 
 #include "Math.h"
 
+#define EVENT_TYPE(type) EventType GetType() const override { return EventType::type; }
+
 namespace ae
 {
 	enum class EventType
@@ -13,8 +15,6 @@ namespace ae
 		MouseDown, MouseRelease, MouseMove, MouseScroll
 	};
 	
-	#define EVENT_TYPE(type) EventType GetType() const override { return EventType::type; }
-
 	struct Event
 	{
 		virtual EventType GetType() const = 0;

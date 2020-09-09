@@ -61,6 +61,9 @@
     <ClInclude Include="Anemone\Camera.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="Anemone\Particle.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -120,6 +123,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Math.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
