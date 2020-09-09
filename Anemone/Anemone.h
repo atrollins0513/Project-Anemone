@@ -330,6 +330,7 @@
 #include "Window.h"
 #include "Manager.h"
 #include "Camera.h"
+#include "Particle.h"
 
 /* Smart Pointer References */
 using BufferHandleRef	= ae::sptr<ae::BufferHandle>;

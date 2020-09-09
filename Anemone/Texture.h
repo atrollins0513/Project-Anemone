@@ -80,8 +80,6 @@ namespace ae
 
 		const unsigned int id() const { return handle->get(); }
 
-		~TextureArray();
-
 	private:
 
 		int add(const unsigned char* data);
