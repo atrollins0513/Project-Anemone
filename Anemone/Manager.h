@@ -1,11 +1,33 @@
 #pragma once
 
-#include "Font.h"
+#include <iostream>
+#include <string>
+#include <vector>
+#include <chrono>
+
+//#include "Font.h"
 #include "Utilities.h"
+#include "Base.h"
 #include "Window.h"
 
 namespace ae
 {
+    struct Manager
+    {
+        friend class Window;
+        static sptr<Window> window;
+
+        static void add(ae::sptr<Base> base);
+        static void remove(ae::sptr<Base> base);
+        static void Initiate(const std::string& title, unsigned int width, unsigned int height);
+    protected:
+        static void update(double dt);
+        static void render();
+    private:
+        static std::vector<ae::sptr<Base>> bases;
+    };
+
+    /*
     template<typename T>
     class ApplicationManager : public T
     {
@@ -61,7 +83,7 @@ namespace ae
 
         // Event Queue Functions
 
-        void addEvent(double delay, double duration, bool repeat, std::function<void()> callback);
+        void addEvent(double delay, double duration, bool repeat, std::function<bool()> callback);
 
         // Task Manager Functions
 
@@ -89,10 +111,12 @@ namespace ae
         EventQueue* eventQueue;
 
         TaskManager* taskManager;
+
     };
 
     ApplicationManager<DefaultManager>* ApplicationManager<DefaultManager>::instance = nullptr;
 
     extern ApplicationManager<DefaultManager>* Manager;// = ApplicationManager<DefaultManager>::getInstance();
+    */
 
 };

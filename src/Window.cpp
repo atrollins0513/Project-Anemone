@@ -2,28 +2,55 @@
 
 namespace ae
 {
-	bool Window::Create(const std::string& _title, unsigned int _width, unsigned int _height)// , sptr<State> initial_state)
-	{
-		glfwSetErrorCallback([](int error, const char* description) { log("Window", description); });
-		toss(!glfwInit(), "Failed to initialize GLFW.");
 
+	Window::Window(const std::string& _title, unsigned int _width, unsigned int _height)
+	{
 		width = _width;
 		height = _height;
 		title = _title;
 		setSeed((int)time(NULL));
 
+		std::ofstream log_file("log.txt");
+		if (log_file.is_open()) {
+			log_file.close();
+		}
+
+		// Initialize GLFW
+		glfwSetErrorCallback([](int error, const char* description) { log("Window", description); });
+		if (!glfwInit()) {
+			log("Window", "Failed to initialize GLFW");
+			return;
+		}
+
+		// If GLFW Initializes, then create the Window
 		window = glfwCreateWindow(width, height, title.c_str(), monitor, share);
 		if (window == NULL)
 		{
-			toss(true, "Failed to open GLFW window.");
+			log("Window", "Failed to open GLFW window.");
 			glfwTerminate();
-			return false;
+			return;
 		}
 
+		// Set GLFW to point to the current window
 		glfwMakeContextCurrent(window);
-		glewExperimental = true;
-		toss(glewInit() != GLEW_OK, "Failed to initialize GLFW.");
 
+		// Initialize GLEW
+		//glewExperimental = true;
+		//if (glfwInit != GLEW_OK)
+		if(gl3wInit())
+		{
+			log("Window", "Failed to initialize GL3W");
+			glfwTerminate();
+			return;
+		}
+		if (!gl3wIsSupported(3, 2))
+		{
+			log("Window", "System must support OpenGL version 3.2 or newer");
+			glfwTerminate();
+			return;
+		}
+
+		// If every initializes properly, then setup some basic OpenGL stuff and set event callbacks
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glViewport(0, 0, width, height);
 		glfwSetWindowUserPointer(window, this);
@@ -92,20 +119,12 @@ namespace ae
 			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(WindowResizeEvent(width, height));
 		});
 
-		initialization();
-
-		return true;
 	}
 
 	void Window::Start()
 	{
-		assert(current_state != nullptr, "State has not been set.");
-
-		if (!window)
-		{
-			ae::log("Window", "The window's Create method has to be called before Start.");
-			return;
-		}
+		toss(current_state == nullptr, "State has not been set.");
+		toss(window == nullptr, "Window has to been created before you can start.");
 
 		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 		double accumulator = 0.0;
@@ -128,13 +147,13 @@ namespace ae
 
 			while (accumulator >= dt)
 			{
-				update(dt);
+				Manager::update(dt);
 				current_state->update(dt);
 				accumulator -= dt;
 			}
 
 			current_state->render(accumulator / dt);
-			render();
+			Manager::render();
 
 			glfwSwapBuffers(window);
 		}

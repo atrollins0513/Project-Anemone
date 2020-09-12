@@ -281,15 +281,15 @@ namespace ae
 		offset = _offset;
 		switch (offset)
 		{
-		case TextOffset::top_left: {		offset_pos = vec2(0.0f, 1.0f); break; }
-		case TextOffset::middle_left: {		offset_pos = vec2(0.0f, 0.5f); break; }
-		case TextOffset::bottom_left: {		offset_pos = 0.0f; break; }
-		case TextOffset::center_top: {		offset_pos = vec2(0.5f, 1.0f); break; }
-		case TextOffset::center: {			offset_pos = vec2(0.5f, 0.5f); break; }
-		case TextOffset::center_bottom: {	offset_pos = vec2(0.5f, 0.0f); break; }
-		case TextOffset::top_right: {		offset_pos = vec2(1.0f, 1.0f); break; }
-		case TextOffset::middle_right: {	offset_pos = vec2(1.0f, 0.5f); break; }
-		case TextOffset::bottom_right: {	offset_pos = vec2(1.0f, 0.0f); break; }
+		case TextOffset::top_left:		{	offset_pos = vec2(0.0f, 1.0f);	break; }
+		case TextOffset::middle_left:	{	offset_pos = vec2(0.0f, 0.5f);	break; }
+		case TextOffset::bottom_left:	{	offset_pos = 0.0f;				break; }
+		case TextOffset::center_top:	{	offset_pos = vec2(0.5f, 1.0f);	break; }
+		case TextOffset::center:		{	offset_pos = vec2(0.5f, 0.5f);	break; }
+		case TextOffset::center_bottom: {	offset_pos = vec2(0.5f, 0.0f);	break; }
+		case TextOffset::top_right:		{	offset_pos = vec2(1.0f, 1.0f);	break; }
+		case TextOffset::middle_right:	{	offset_pos = vec2(1.0f, 0.5f);	break; }
+		case TextOffset::bottom_right:	{	offset_pos = vec2(1.0f, 0.0f);	break; }
 		}
 	}
 
@@ -300,14 +300,11 @@ namespace ae
 		unsigned int newLineWidth = 0;
 		unsigned int lineCount = 1;
 		int minYOffset = INT_MAX;
-		for (auto it = str.begin(); it != str.end(); it++)
-		{
+		for (auto it = str.begin(); it != str.end(); it++) {
 			const Font::FontCharInfo& info = font->getCharacter((*it));
 
-			if (info.id == 10)
-			{
-				if (dim.x > newLineWidth)
-				{
+			if (info.id == 10) {
+				if (dim.x > newLineWidth) {
 					newLineWidth = (unsigned int)dim.x;
 				}
 				dim.x = 0;
@@ -315,8 +312,7 @@ namespace ae
 			}
 			else if (info.id != 32)
 			{
-				if (info.yoffset < minYOffset)
-				{
+				if (info.yoffset < minYOffset) {
 					minYOffset = info.yoffset;
 				}
 			}
@@ -328,16 +324,15 @@ namespace ae
 		dim.y = (font->getBase() - minYOffset) * scale * lineCount;
 		dim.x = (newLineWidth > dim.x ? newLineWidth : dim.x);
 
+
 		vec2 local_pos = pos - (dim * offset_pos);
 
 		local_pos.y += (font->getBase() - minYOffset) * scale * (lineCount - 1.0f);
 
-		for (auto it = str.begin(); it != str.end(); it++)
-		{
+		for (auto it = str.begin(); it != str.end(); it++) {
 			const Font::FontCharInfo& info = font->getCharacter((*it));
 
-			if (info.id == '\n')
-			{
+			if (info.id == '\n') {
 				local_pos.y -= (font->getBase() - minYOffset) * scale;
 				local_pos.x = pos.x - (dim.x * offset_pos.x);
 			}
@@ -350,7 +345,7 @@ namespace ae
 				scale,
 				font->getTextureID()
 			));
-
+			
 			int kerning = ((it + 1) != str.end() ? info.kernings[(int)(*(it + 1))] : 0);
 			local_pos.x += (info.id == 10 ? 0 : (info.xadvance + info.xoffset + kerning) * scale);
 		}
@@ -358,7 +353,7 @@ namespace ae
 
 	// TextManager
 
-	void TextManager::init(unsigned int _block_character_limit, unsigned int _character_limit, unsigned int texture_array_size, unsigned int texture_array_depth)
+	TextManager::TextManager(unsigned int _block_character_limit, unsigned int _character_limit, unsigned int texture_array_size, unsigned int texture_array_depth)
 	{
 		block_count = 0;
 		block_character_limit = _block_character_limit;
@@ -368,7 +363,7 @@ namespace ae
 		textArray->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		textArray->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-		ShaderBuilder vs(330);
+		ShaderBuilder vs;
 		vs.addAttribute(0, "vec2", "pos");
 		vs.addAttribute(1, "vec2", "tex");
 		vs.addAttribute(2, "vec4", "iTex");
@@ -381,13 +376,13 @@ namespace ae
 		vs.addLine("_tex = tex.xy * iTex.zw + iTex.xy;");
 		vs.addLine("gl_Position = proj * vec4((pos * scale * iTex.zw) + offset, 0.0, 1.0);");
 
-		ShaderBuilder fs(330);
+		ShaderBuilder fs;
 		fs.addUniform("sampler2DArray", "texture_id");
 		fs.addUniform("float", "texture_size");
 		fs.addUniform("float", "smoothFactor");
-		fs.addOutput("vec4", "color");
 		fs.addVariable(false, "float", "width", "0.55f");
 		fs.addVariable(false, "float", "edge", "0.1f");
+		fs.addOutput("vec4", "color");
 		fs.addLine("float s2 = _scale * _scale;");
 		fs.addLine("width = -0.3021*s2 + 0.5486*_scale + 0.1537;");
 		fs.addLine("edge = 1.0752*s2 - 1.7575*_scale + 0.8132;");
@@ -396,11 +391,11 @@ namespace ae
 		fs.addLine("if(alpha < 0.001) { discard; }");
 		fs.addLine("color = vec4(_color.rgb, _color.a * alpha);");
 
-		shader = makes<Shader>(vs, fs);
+		shader = makes<Shader>(vs, fs, true);
 
 		glActiveTexture(GL_TEXTURE0);
 		shader->bind();
-		shader->setUniformMatrix4v("proj", 1, GL_TRUE, Ortho(0.0f, 1280.0f, 0.0f, 720.0f, 1.0f, -1.0f).get());
+		shader->setUniformMatrix("proj", 1, GL_TRUE, Ortho(1280.0f, 720.0f));
 		shader->setUniform("texture_id", 0);
 		shader->setUniform("texture_size", 1024.0f);
 		shader->unbind();
@@ -414,56 +409,50 @@ namespace ae
 
 		unsigned int indices[] = { 0, 2, 1, 0, 3, 2 };
 
-		db = ae::makes<DynamicBuffer>();
+		db = makes<DynamicBuffer>();
 		db->init();
-		db->add(new VertexBuffer({ { 0, 2 }, {1, 2} }, 4 * sizeof(float), 4, verts));
-		db->add(new VertexBuffer(sizeof(unsigned int), 6, indices, GL_ELEMENT_ARRAY_BUFFER, GL_UNSIGNED_INT));
-		db->add(new VertexBuffer({ {2, 4}, {3, 2}, {4, 4}, {5, 1}, {6,1} }, sizeof(CharVertex), character_limit, nullptr));
+		db->add(VertexBuffer({ { 0, 2 }, {1, 2} }, 4 * sizeof(float), 4, verts));
+		db->add(VertexBuffer({ {2, 4}, {3, 2}, {4, 4}, {5, 1}, {6,1} }, sizeof(CharVertex), character_limit, nullptr));
+		db->add(VertexBuffer(sizeof(unsigned int), 6, indices, GL_ELEMENT_ARRAY_BUFFER, GL_UNSIGNED_INT));
 		db->setDivisors({ {0,0},{1,0},{2,1},{3,1},{4,1},{5,1},{6,1} });
 
 		base = new CharVertex[character_limit];
-
 	}
 
 	void TextManager::updateAll()
 	{
-		for (auto text : texts)
-		{
+		for (auto text : texts) {
 			updateTextBuffer(text);
 		}
 
-		db->getBuffer(1)->setSubData(0, (unsigned int)(buffer_ptr_back + block_capacity), base);
+		db->getBuffer(1).setSubData(0, (unsigned int)(buffer_ptr_back + block_capacity), base);
 	}
 
 	void TextManager::updateText(TextRef text)
 	{
-		if (textExists(text))
-		{
-			if (text->needs_updating)
-			{
-				if (text->str_changed)
-				{
+		if (textExists(text)) {
+			if (text->needs_updating) {
+				if (text->str_changed) {
+
 					unsigned int new_block_count = blockCount((unsigned int)text->str.size());
 					unsigned int old_block_count = (unsigned int)getTextBlocks(text).size();
 
-					if (new_block_count > old_block_count)
-					{
+					if (new_block_count > old_block_count) {
 						createNewBlock(text);
-					}
-					else if (new_block_count < old_block_count)
-					{
-						clearBlock(blocks[text].back());
-						blocks[text].pop_back();
+					} else if (new_block_count < old_block_count) {
+						while (new_block_count < old_block_count) {
+							clearBlock(blocks[text].back());
+							blocks[text].pop_back();
+							new_block_count--;
+						}
 					}
 
-					//updateTextBuffer(text);
 					text->str_changed = false;
 				}
 
 				updateTextBuffer(text);
 				updateBlocks(text);
 				text->needs_updating = false;
-
 			}
 		}
 	}
@@ -494,12 +483,13 @@ namespace ae
 
 	TextRef TextManager::addText(const std::string& str, const vec2& pos, const vec4& color, float scale, bool visible, const std::string& font_name, const TextOffset offset)
 	{
-		toss(fonts.find(font_name) == fonts.end(), "Failed to find the specificed font, possibly check the spelling.");
+		if (fonts.find(font_name) == fonts.end()) {
+			log("Font", "Failed to find the font: " + font_name + " for string: " + str);
+		}
 
 		auto newText = makes<Text>(str, pos, color, scale, visible, offset, fonts.at(font_name));
 
-		for (unsigned int i = 0; i < blockCount((unsigned int)str.size()); i++)
-		{
+		for (unsigned int i = 0; i < blockCount((unsigned int)str.size()); i++) {
 			createNewBlock(newText);
 		}
 
@@ -511,8 +501,7 @@ namespace ae
 
 	void TextManager::removeText(TextRef text)
 	{
-		if (textExists(text))
-		{
+		if (textExists(text)) {
 			clearTextBlocks(text);
 			texts.erase(std::find(texts.begin(), texts.end(), text));
 		}
@@ -538,13 +527,10 @@ namespace ae
 
 		auto font = fonts.at(font_name);
 
-		for (auto it = str.begin(); it != str.end(); it++)
-		{
+		for (auto it = str.begin(); it != str.end(); it++) {
 			const Font::FontCharInfo& info = font->getCharacter((*it));
-			if (info.id == 10)
-			{
-				if (width > newlineWidth)
-				{
+			if (info.id == 10) {
+				if (width > newlineWidth) {
 					newlineWidth = width;
 				}
 				width = 0;
@@ -568,14 +554,10 @@ namespace ae
 		{
 			const Font::FontCharInfo& info = fonts.at(font_name)->getCharacter((*it));
 
-			if (info.id == 10)
-			{
+			if (info.id == 10) {
 				lineCount++;
-			}
-			else if (info.id != 32)
-			{
-				if (info.yoffset < minYOffset)
-				{
+			} else if (info.id != 32) {
+				if (info.yoffset < minYOffset) {
 					minYOffset = info.yoffset;
 				}
 			}
@@ -599,9 +581,8 @@ namespace ae
 
 	void TextManager::updateBlocks(const std::vector<TextManager::MemoryBlock>& blocks)
 	{
-		for (auto b : blocks)
-		{
-			db->getBuffer(1)->setSubData((unsigned int)b.start, (unsigned int)block_capacity, (base + (b.start / sizeof(CharVertex))));
+		for (auto b : blocks) {
+			db->getBuffer(1).setSubData((unsigned int)b.start, (unsigned int)block_capacity, (base + (unsigned int)(b.start / sizeof(CharVertex))));
 		}
 	}
 
@@ -609,21 +590,18 @@ namespace ae
 	{
 		for (auto b : blocks[text])
 		{
-			db->getBuffer(1)->setSubData((unsigned int)b.start, (unsigned int)block_capacity, (base + (b.start / sizeof(CharVertex))));
+			db->getBuffer(1).setSubData((unsigned int)b.start, (unsigned int)block_capacity, (base + (unsigned int)(b.start / sizeof(CharVertex))));
 		}
 	}
 
 	void TextManager::createNewBlock(TextRef text)
 	{
-		TextManager::MemoryBlock b;
+		MemoryBlock b;
 
-		if (block_pool.size() > 0)
-		{
+		if (block_pool.size() > 0) {
 			b = block_pool.front();
 			block_pool.pop_front();
-		}
-		else
-		{
+		} else {
 			b.start = buffer_ptr_back;
 			buffer_ptr_back += block_capacity;
 		}
@@ -635,19 +613,17 @@ namespace ae
 	void TextManager::clearBlock(const TextManager::MemoryBlock& b)
 	{
 		BufferPtr loc = b.start / sizeof(CharVertex);
-		for (BufferPtr i = loc; i < block_character_limit + loc; i++)
-		{
+		for (BufferPtr i = loc; i < block_character_limit + loc; i++) {
 			(base + i)->zero();
 		}
-		db->getBuffer(1)->setSubData((unsigned int)b.start, (unsigned int)block_capacity, base + loc);
+		db->getBuffer(1).setSubData((unsigned int)b.start, (unsigned int)block_capacity, base + loc);
 		block_pool.push_back(b);
 		block_count--;
 	}
 
 	void TextManager::clearTextBlocks(TextRef text)
 	{
-		for (auto b : blocks[text])
-		{
+		for (auto b : blocks[text]) {
 			clearBlock(b);
 		}
 	}
@@ -661,12 +637,9 @@ namespace ae
 			BufferPtr loc = b.start / sizeof(CharVertex);
 			for (BufferPtr i = loc; i < loc + block_character_limit; i++)
 			{
-				if (block_character_offset + (i - loc) >= text->characters.size() || !text->visible)
-				{
+				if (block_character_offset + (i - loc) >= text->characters.size() || !text->visible) {
 					(base + i)->zero();
-				}
-				else
-				{
+				} else {
 					(base + i)->set(text->characters[block_character_offset + (i - loc)]);
 				}
 			}

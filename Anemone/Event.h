@@ -107,16 +107,14 @@ namespace ae
 		EVENT_TYPE(MouseScroll);
 	};
 
-	namespace Input
+	struct Input
 	{
-		namespace
-		{
-			extern vec2 mouse_pos;
-			extern bool keys[GLFW_KEY_LAST];
-		};
+	public:
+		static bool keys[GLFW_KEY_LAST];
+		static vec2 mouse_pos;
 
-		extern const vec2& getMousePos();
-		extern const void setMousePos(const ae::vec2& new_mouse_pos);
-		extern const bool keyIsDown(unsigned int key);
+		static const vec2& getMousePos();
+		static const bool keyIsDown(unsigned int key);
+	private:
 	};
 };

@@ -1,13 +1,14 @@
 #pragma once
 
-#ifndef GLEW_STATIC
-#define GLEW_STATIC
-#endif
+//#ifndef GLEW_STATIC
+//#define GLEW_STATIC
+//#endif
 
 #include <Windows.h>
 #include <string>
 #include <unordered_map>
-#include "includes\glew.h"
+//#include "includes\glew.h"
+#include "includes\gl3w.h"
 #include <gl\GL.h>
 #include <gl\GLU.h>
 #include <cassert>
@@ -107,6 +108,8 @@ namespace ae
 
 		std::string compile() const;
 
+		void dump(const std::string& file_name);
+
 		const std::vector<ShaderBuilderAttrib>& getAttributes() const
 		{
 			return attributes;
@@ -153,7 +156,7 @@ namespace ae
 		
 		Shader(const std::string& vertex, const std::string& fragment, bool loadFromFile);
 
-		Shader(ShaderBuilder& vs, ShaderBuilder& fs, bool autoInput = true);
+		Shader(ShaderBuilder& vs, ShaderBuilder& fs, bool autoInput = false);
 
 		void loadFromFile(const std::string& vertex, const std::string& fragment);
 

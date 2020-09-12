@@ -6,6 +6,7 @@
 #include <sstream>
 #include <map>
 
+#include "Base.h"
 #include "Utilities.h"
 #include "BufferObject.h"
 #include "Shader.h"
@@ -32,10 +33,10 @@ namespace ae
 			int yoffset			{ 0 };
 			int xadvance		{ 0 };
 			char kernings[128]	{ 0 };
-			vec4 dim;
+			vec4 dim			{ 0.0f };
 		};
 
-		Font() : size(0), lineHeight(0), base(0), scaleW(0), scaleH(0), texture_id(0) { }
+		Font() = default;
 
 		Font(const std::string& _name, const std::string& _font_file, FontTextureID _texture_id);
 
@@ -74,13 +75,13 @@ namespace ae
 
 	struct CharVertex
 	{
-		vec2 pos;
 		vec4 tex;
+		vec2 pos;
 		vec4 color;
 		float scale					{ 0.0f };
 		unsigned int texture_layer	{ 0 };
 
-		CharVertex() : tex(0.0f), pos(0.0f), color(0.0f), scale(0.0f), texture_layer(0) { }
+		CharVertex() = default;
 
 		CharVertex(vec4 _tex, vec2 _pos, vec4 _color, float _scale, unsigned int _texture_layer)
 		{
@@ -205,11 +206,15 @@ namespace ae
 
 	// TextManager
 
-	class TextManager
+	class TextManager : public Base
 	{
 	public:
 
-		void init(unsigned int _block_character_limit = 4, unsigned int _character_limit = 100000, unsigned int texture_array_size = 1024, unsigned int texture_array_depth = 16);
+		TextManager() = default;
+
+		TextManager(unsigned int _block_character_limit, unsigned int _character_limit, unsigned int texture_array_size = 1024, unsigned int texture_array_depth = 16);
+
+		//void init(unsigned int _block_character_limit = 4, unsigned int _character_limit = 100000, unsigned int texture_array_size = 1024, unsigned int texture_array_depth = 16);
 
 		void updateAll();
 
@@ -243,17 +248,9 @@ namespace ae
 	private:
 
 		using BufferPtr = unsigned long long;
-
 		struct MemoryBlock
 		{
-			BufferPtr start;
-
-			MemoryBlock() : start(0) { }
-
-			MemoryBlock(const MemoryBlock& block) { start = block.start; }
-
-			void operator=(const MemoryBlock& block) { start = block.start; }
-
+			BufferPtr start	{ 0 };
 		};
 
 		const std::vector<MemoryBlock>& getTextBlocks(TextRef text);

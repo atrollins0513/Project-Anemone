@@ -37,6 +37,11 @@ namespace ae
 		y *= -1.0f;
 	}
 
+	vec2 vec2::random(unsigned int min, unsigned int max, bool normalize)
+	{
+		return vec2((float)(rand() % (max - min) + min) / (normalize ? (float)max : 1.0f), (float)(rand() % (max - min) + min) / (normalize ? (float)max : 1.0f));
+	}
+
 	vec2& vec2::operator=(const vec2& vec)
 	{
 		if (this == &vec)
@@ -331,6 +336,11 @@ namespace ae
 		x *= -1.0f;
 		y *= -1.0f;
 		z *= -1.0f;
+	}
+
+	vec3 vec3::random(unsigned int min, unsigned int max, bool normalize)
+	{
+		return vec3((float)(rand() % (max - min) + min) / (normalize ? (float)max : 1.0f), (float)(rand() % (max - min) + min) / (normalize ? (float)max : 1.0f), (float)(rand() % (max - min) + min) / (normalize ? (float)max : 1.0f));
 	}
 
 	vec3& vec3::operator=(const vec3& vec)
@@ -654,6 +664,11 @@ namespace ae
 		y *= -1.0f;
 		z *= -1.0f;
 		w *= -1.0f;
+	}
+
+	vec4 vec4::random(unsigned int min, unsigned int max, bool normalize)
+	{
+		return vec4((float)(rand() % (max - min) + min) / (normalize ? (float)max : 1.0f), (float)(rand() % (max - min) + min) / (normalize ? (float)max : 1.0f), (float)(rand() % (max - min) + min) / (normalize ? (float)max : 1.0f), (float)(rand() % (max - min) + min) / (normalize ? (float)max : 1.0f));
 	}
 
 	vec4& vec4::operator=(const vec4& vec)

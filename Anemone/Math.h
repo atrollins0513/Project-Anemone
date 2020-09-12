@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <string>
 #include <utility>
-
+#include <random>
 
 namespace ae
 {
@@ -54,6 +54,8 @@ namespace ae
 		void normalize();
 
 		void inverse();
+
+		static vec2 random(unsigned int min = 0, unsigned int max = 255, bool normalize = true);
 
 		vec2& operator=(const vec2& vec);
 
@@ -174,6 +176,8 @@ namespace ae
 		void normalize();
 
 		void inverse();
+
+		static vec3 random(unsigned int min = 0, unsigned int max = 255, bool normalize = true);
 
 		vec3& operator=(const vec3& vec);
 
@@ -302,6 +306,8 @@ namespace ae
 		void normalize();
 
 		void inverse();
+
+		static vec4 random(unsigned int min = 0, unsigned int max = 255, bool normalize = true);
 
 		vec4& operator=(const vec4& vec);
 

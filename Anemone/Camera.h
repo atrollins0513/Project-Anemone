@@ -36,19 +36,6 @@ namespace ae
 
 		Tween<vec3>& getTween();
 
-		Camera(const Camera& other)
-		{
-			proj = other.proj;
-			view = other.view;
-			mouse_down = other.mouse_down;
-			old_position = other.old_position;
-			translation = other.translation;
-			total_zoom = other.total_zoom;
-			drag_button = other.drag_button;
-			tweenList = other.tweenList;
-			tracked = other.tracked;
-		}
-
 	private:
 		
 		vec3 old_position;

@@ -160,6 +160,17 @@ namespace ae
 		return ss.str().c_str();
 	}
 
+	void ShaderBuilder::dump(const std::string& file_name)
+	{
+		std::ofstream file(file_name);
+		if (file.is_open())
+		{
+			auto data = compile();
+			file << data;
+			file.close();
+		}
+	}
+
 	/* Shader */
 
 	Shader::Shader(const std::string& vertex, const std::string& fragment, bool loadFromFile)
@@ -191,12 +202,8 @@ namespace ae
 
 	void Shader::loadFromShaderBuilder(ShaderBuilder & vs, ShaderBuilder & fs, bool autoInput)
 	{
-		if (autoInput)
-		{
-			const auto& outputs = vs.getOutputs();
-
-			for (const auto& o : outputs)
-			{
+		if (autoInput) {
+			for (const auto& o : vs.getOutputs()) {
 				fs.addInput(o.data_type, o.name, o.qualifier);
 			}
 		}

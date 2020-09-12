@@ -1,13 +1,13 @@
 #pragma once
 
-#ifndef GLEW_STATIC
-#define GLEW_STATIC
-#endif
+//#ifndef GLEW_STATIC
+//#define GLEW_STATIC
+//#endif
 
 #include <string>
 
 #include <Windows.h>
-#include "includes\glew.h"
+#include "includes\gl3w.h"
 #include <gl\GL.h>
 
 #include "stb_image.h"

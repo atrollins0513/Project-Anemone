@@ -87,8 +87,7 @@ namespace ae
 		target = _target;
 		format = _format;
 		usage = _usage;
-		if (handle == nullptr)
-		{
+		if (handle == nullptr) {
 			handle = BufferHandle::make(BufferType::VERTEX);
 		}
 	}
@@ -133,24 +132,23 @@ namespace ae
 
 	void VertexArray::init()
 	{
-		if (handle == nullptr)
-		{
+		if (handle == nullptr) {
 			handle = BufferHandle::make(BufferType::ARRAY);
 		}
 	}
 
-	void VertexArray::bindAttribute(unsigned int attribute, VertexBuffer* buffer, GLenum type, unsigned int count, unsigned int stride, intptr_t offset)
+	void VertexArray::bindAttribute(unsigned int attribute, const VertexBuffer& buffer, GLenum type, unsigned int count, unsigned int stride, intptr_t offset)
 	{
 		bind();
-		buffer->bind();
+		buffer.bind();
 		glEnableVertexAttribArray(attribute);
 		glVertexAttribPointer(attribute, count, type, GL_FALSE, stride, (const GLvoid*)offset);
 	}
 
-	void VertexArray::setIndexBuffer(VertexBuffer* indexBuffer)
+	void VertexArray::setIndexBuffer(const VertexBuffer& indexBuffer)
 	{
 		bind();
-		indexBuffer->bind();
+		indexBuffer.bind();
 	}
 
 	void VertexArray::bind() const
@@ -170,21 +168,16 @@ namespace ae
 		va.init();
 	}
 
-	void DynamicBuffer::add(VertexBuffer* buffer)
+	void DynamicBuffer::add(VertexBuffer buffer)
 	{
-		if (buffer->getTarget() == GL_ELEMENT_ARRAY_BUFFER)
-		{
+		if (buffer.getTarget() == GL_ELEMENT_ARRAY_BUFFER) {
 			index = buffer;
-		}
-		else
-		{
-			if (std::find(buffers.begin(), buffers.end(), buffer) == buffers.end())
-			{
+			update(buffer);
+		} else {
+			if (std::find(buffers.begin(), buffers.end(), buffer) == buffers.end()) {
 				buffers.push_back(buffer);
 				update(buffer);
-			}
-			else
-			{
+			} else {
 				toss(true, "Buffer has already been added.");
 			}
 		}
@@ -193,8 +186,7 @@ namespace ae
 	void DynamicBuffer::setDivisors(const std::map<int, int>& topology)
 	{
 		va.bind();
-		for (auto t : topology)
-		{
+		for (auto t : topology) {
 			glVertexAttribDivisor(t.first, t.second);
 		}
 		va.unbind();
@@ -210,79 +202,46 @@ namespace ae
 		va.unbind();
 	}
 
-	VertexBuffer* DynamicBuffer::getBuffer(unsigned int index)
+	VertexBuffer& DynamicBuffer::getBuffer(unsigned int index)
 	{
 		return buffers.at(index);
 	}
 
-	void DynamicBuffer::update(VertexBuffer* buffer)
+	void DynamicBuffer::update(VertexBuffer buffer)
 	{
 		init();
 
 		int sum = 0;
 		int offset = 0;
 
-		if (buffer->getTarget() == GL_ARRAY_BUFFER)
-		{
-			auto topology = buffer->getTopology();
-			if (topology.size() > 0)
-			{
-				if (!topologyCollision(topology))
-				{
-					for (auto t : topology)
-					{
-						attr.emplace(t.first, true);
-						sum += t.second;
-					}
+		if (buffer.getTarget() == GL_ARRAY_BUFFER) {
+			auto topology = buffer.getTopology();
+			if (topology.size() > 0) {
+				toss(topologyCollision(topology), "Collision in attribute topology.");
 
-					for (auto t : topology)
-					{
-						va.bindAttribute(t.first, buffer, buffer->getFormat(), t.second, buffer->getVertexSize(), offset);
-						offset += t.second * (sum == 0 ? 1 : (buffer->getVertexSize() / sum));
-					}
+				for (auto t : topology) {
+					attr.emplace(t.first, true);
+					sum += t.second;
 				}
-				else
-				{
-					toss(true, "Collision in topology attributed.");
+
+				for (auto t : topology) {
+					va.bindAttribute(t.first, buffer, buffer.getFormat(), t.second, buffer.getVertexSize(), offset);
+					offset += t.second * (sum == 0 ? 1 : (buffer.getVertexSize() / sum));
 				}
 			}
-		}
-		else if (buffer->getTarget() == GL_ELEMENT_ARRAY_BUFFER)
-		{
+		} else if (buffer.getTarget() == GL_ELEMENT_ARRAY_BUFFER) {
 			va.setIndexBuffer(buffer);
 		}
 	}
 
 	bool DynamicBuffer::topologyCollision(const std::map<int, int>& topology)
 	{
-		for (auto t : topology)
-		{
-			bool collision = (attr.find(t.first) != attr.end());
-			if (collision)
-			{
+		for (auto t : topology) {
+			if ((attr.find(t.first) != attr.end())) {
 				return true;
 			}
 		}
 		return false;
-	}
-
-	DynamicBuffer::~DynamicBuffer()
-	{
-		for (auto it = buffers.begin(); it != buffers.end();)
-		{
-			if ((*it))
-			{
-				delete (*it);
-				it = buffers.erase(it);
-			}
-			++it;
-		}
-
-		if (index)
-		{
-			delete index;
-			index = nullptr;
-		}
 	}
 
 	// Buffer Object //
@@ -320,7 +279,7 @@ namespace ae
 
 		for (auto t : topology)
 		{
-			va->bindAttribute(t.first, buffer.get(), format, t.second, sum * sizeof(float), offset);
+			va->bindAttribute(t.first, *buffer, format, t.second, sum * sizeof(float), offset);
 			offset += t.second * sizeof(float);
 		}
 

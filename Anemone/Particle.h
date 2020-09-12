@@ -1,9 +1,11 @@
 #pragma once
 
+#include "Base.h"
 #include "Math.h"
 #include "utilities/Animation.h"
 #include "BufferObject.h"
 #include "Shader.h"
+#include "Utilities.h"
 
 namespace ae
 {
@@ -32,9 +34,7 @@ namespace ae
 	{
 	public:
 
-		virtual void emit(ParticleSystem* system) = 0;
-
-		bool update(double dt);
+		virtual void emit(ae::ParticleSystem* system) = 0;
 
 		// Getters and Setters
 		void setEmitRate(double _emit_rate) { emit_rate = _emit_rate; }
@@ -45,9 +45,13 @@ namespace ae
 		const double getClock() const { return clock; }
 		void resetClock() { clock = 0.0; }
 
+		friend class ParticleSystem;
+
 	protected:
 
 		ae::vec2 pos;
+
+		bool update(double dt);
 
 	private:
 
@@ -58,7 +62,7 @@ namespace ae
 
 	};
 
-	struct ParticleSystem
+	class ParticleSystem : public Base
 	{
 	public:
 
@@ -111,7 +115,7 @@ namespace ae
 
 		void render();
 
-		const unsigned int getParticleCount() const { return particles.size(); }
+		const unsigned int getParticleCount() const { return (unsigned int)particles.size(); }
 
 		const unsigned int getMaxParticleCount() const { return max_particles; }
 
@@ -153,17 +157,20 @@ namespace ae
 
 			ae::ShaderBuilder fs;
 			fs.addUniform("sampler2D", "texture");
+			fs.addUniform("bool", "disableTexture");
 			fs.addOutput("vec4", "color");
+			fs.addLine("if(disableTexture){ color = vec4(_color, 1.0); } else {");
 			fs.addLine("ivec2 texSize = textureSize(texture, 0);");
 			fs.addLine("vec4 texel = texture2D(texture, _tex / texSize);");
 			fs.addLine("if (texel.a < 0.01) { discard; }");
-			fs.addLine("color = texel * vec4(_color, 1.0);");
+			fs.addLine("color = texel * vec4(_color, 1.0); }");
 
 			loadFromShaderBuilder(vs, fs);
 			bind();
 			setUniformMatrix("proj", 1, true, proj);
 			setUniformMatrix("view", 1, true, view);
 			setUniform("texture", 0);
+			setUniform("disableTexture", false);
 			unbind();
 		}
 	};

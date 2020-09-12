@@ -7,7 +7,7 @@ namespace ae
 
 	void log(const std::string& identifier, const std::string& message)
 	{
-		std::ofstream file("log.txt", std::ios::out);
+		std::ofstream file("log.txt", std::ios::out | std::ios::app);
 		if (file.is_open())
 		{
 			time_t rawtime;
@@ -16,14 +16,14 @@ namespace ae
 			time(&rawtime);
 			timeinfo = localtime(&rawtime);
 			strftime(buffer, 25, "[%F %H:%M:%S]", timeinfo);
-			file << buffer << "[" << identifier << "]" << "[" << message << "]" << std::endl;
+			file << buffer << "[" << identifier << "]\n" << "[" << message << "]" << std::endl;
 			file.close();
 		}
 	}
 
 	void log(const std::string& identifier, const std::string& message, const std::string& message_two)
 	{
-		std::ofstream file("log.txt", std::ios::out);
+		std::ofstream file("log.txt", std::ios::out | std::ios::app);
 		if (file.is_open())
 		{
 			time_t rawtime;
@@ -32,14 +32,15 @@ namespace ae
 			time(&rawtime);
 			timeinfo = localtime(&rawtime);
 			strftime(buffer, 25, "[%F %H:%M:%S]", timeinfo);
-			file << buffer << "[" << identifier << "]" << "[" << message << message_two << "]" << std::endl;
+			file << buffer << "[" << identifier << "]\n" << "[" << message << message_two << "]" << std::endl;
 			file.close();
 		}
 	}
 
-	void toss(bool trigger, const std::string& msg)
+	bool toss(bool trigger, const std::string& msg)
 	{
-		if (trigger) { throw msg; }
+		if (trigger) { throw std::runtime_error(msg); }
+		return trigger;
 	}
 
 	// File Utilities
@@ -112,105 +113,80 @@ namespace ae
 		return (rand() % (upper_limit - lower_limit)) + lower_limit;
 	}
 
-	vec2 randVec2(unsigned int min, unsigned int max)
-	{
-		return vec2((float)random(min, max), (float)random(min, max));
-	}
-
-	vec3 randVec3(unsigned int min, unsigned int max)
-	{
-		return vec3((float)random(min, max), (float)random(min, max), (float)random(min, max));
-	}
-
-	vec4 randVec4(unsigned int min, unsigned int max)
-	{
-		return vec4((float)random(min, max), (float)random(min, max), (float)random(min, max), (float)random(min, max));
-	}
-
 	// Timer
 
-	namespace timer
+	std::chrono::steady_clock::time_point timer::begin	{ std::chrono::high_resolution_clock::now() };
+	std::chrono::steady_clock::time_point timer::end	{ std::chrono::high_resolution_clock::now() };
+
+	void timer::start()
 	{
+		begin = std::chrono::high_resolution_clock::now();
+	}
 
-		namespace
-		{
-			std::chrono::steady_clock::time_point clock_start = std::chrono::high_resolution_clock::now();
-			std::chrono::steady_clock::time_point clock_end = std::chrono::high_resolution_clock::now();
-		}
+	void timer::stop()
+	{
+		end = std::chrono::high_resolution_clock::now();
+	}
 
-		void begin()
-		{
-			clock_start = std::chrono::high_resolution_clock::now();
-		}
+	long long timer::nano()
+	{
+		return std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count();
+	}
 
-		void stop()
-		{
-			clock_end = std::chrono::high_resolution_clock::now();
-		}
+	long long timer::micro()
+	{
+		return std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count();
+	}
 
-		long long getNanoSeconds()
-		{
-			return std::chrono::duration_cast<std::chrono::nanoseconds>(clock_end - clock_start).count();
-		}
+	long long timer::milli()
+	{
+		return std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+	}
 
-		long long getMicroSeconds()
-		{
-			return std::chrono::duration_cast<std::chrono::microseconds>(clock_end - clock_start).count();
-		}
+	void timer::basic(std::function<void()> func)
+	{
+		auto tbegin = std::chrono::high_resolution_clock::now();
+		func();
+		auto tend = std::chrono::high_resolution_clock::now() - tbegin;
+		auto t = std::chrono::duration_cast<std::chrono::nanoseconds>(tend).count();
+		std::cout << "[" << t << " ns]\t[";
+		std::cout << t / 1000.0 << " mus]\t[";
+		std::cout << t / 1000.0 / 1000.0 << " ms]\n";
+	}
 
-		long long getMilliSeconds()
-		{
-			return std::chrono::duration_cast<std::chrono::milliseconds>(clock_end - clock_start).count();
-		}
-
-		void basic(std::function<void()> func)
-		{
-			std::chrono::steady_clock::time_point start, end;
-			start = std::chrono::high_resolution_clock::now();
-			func();
-			end = std::chrono::high_resolution_clock::now();
-			auto t = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
-			std::cout << "[" << t << " ns]\t[";
-			std::cout << t / 1000.0 << " mus]\t[";
-			std::cout << t / 1000.0 / 1000.0 << " ms]\n";
-		}
-
-		void basic(const std::string& log_msg, std::function<void()> func)
-		{
-			std::cout << log_msg << "\n\t";
-			basic(func);
-		}
-
-	};
+	void timer::basic(const std::string& log_msg, std::function<void()> func)
+	{
+		std::cout << log_msg << "\n\t";
+		basic(func);
+	}
 
 	// FPS Counter
 
-	bool FPSCounter::update(double dt)
+	double fps::timer = 0.0;
+	unsigned int count = 0;
+	unsigned int last_fps = 0;
+
+	bool fps::update(double dt)
 	{
-		fps_timer += dt;
-		if (fps_timer >= 1.0)
+		timer += dt;
+		if (timer >= 1.0)
 		{
-			fps_timer = 0;
-			last_fps = fps;
-			fps = 0;
+			timer = 0;
+			last_fps = count;
+			count = 0;
 			return true;
 		}
 		return false;
 	}
 
-	const unsigned int FPSCounter::get() const
+	const unsigned int fps::get()
 	{
 		return last_fps;
 	}
 
-	void FPSCounter::operator++()
+	void fps::tick()
 	{
-		fps++;
-	}
-
-	void FPSCounter::operator++(int unused)
-	{
-		fps++;
+		count++;
 	}
 
 	// Event Queue
@@ -223,8 +199,8 @@ namespace ae
 
 			if ((e.timer += dt) >= e.delay + e.duration)
 			{
-				e.callback();
-				if (e.repeat)
+				bool remove = e.callback();
+				if (e.repeat && !remove)
 				{
 					e.timer = e.delay;
 					++it;
@@ -241,7 +217,7 @@ namespace ae
 		}
 	}
 
-	void EventQueue::addEvent(double delay, double duration, bool repeat, std::function<void()> callback)
+	void EventQueue::addEvent(double delay, double duration, bool repeat, std::function<bool()> callback)
 	{
 		EventQueueEvent e;
 		e.timer = 0.0;
@@ -254,9 +230,9 @@ namespace ae
 
 	// Task Manager
 
-	TaskManager::TaskManager(unsigned int thread_count) : threads(thread_count)
+	TaskManager::TaskManager(unsigned int thread_count)
 	{
-		for (unsigned int i = 0; i < thread_count; i++)
+		for (unsigned int i = 0; i < thread_count; ++i)
 		{
 			threads.push_back(std::thread(&TaskManager::dispatchThread, this));
 		}

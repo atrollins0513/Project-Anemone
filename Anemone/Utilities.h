@@ -14,14 +14,17 @@
 #include <mutex>
 #include <atomic>
 #include <queue>
+#include <exception>
 
+#include "Base.h"
 #include "Math.h"
-
 #include "utilities/QuadTree.h"
 #include "utilities/Noise.h"
 #include "utilities/Pathfinding.h"
 #include "utilities/ECS.h"
 #include "utilities/Animation.h"
+
+#define CANNOT_ALLOW(condition, why) assert((why, condition));
 
 namespace ae
 {
@@ -48,13 +51,13 @@ namespace ae
 	struct MakeSmartExt
 	{
 		template<typename ... Args>
-		static ae::sptr<T> Create(Args&& ... args)
+		static ae::sptr<T> makes(Args&& ... args)
 		{
 			return ae::makes<T>(std::forward<Args>(args)...);
 		}
 
 		template<typename ... Args>
-		static ae::uptr<T> CreateU(Args&& ... args)
+		static ae::uptr<T> makeu(Args&& ... args)
 		{
 			return ae::makeu<T>(std::forward<Args>(args)...);
 		}
@@ -66,7 +69,7 @@ namespace ae
 
 	extern void log(const std::string& identifier, const std::string& message, const std::string& message_two);
 
-	extern void toss(bool trigger, const std::string& msg);
+	extern bool toss(bool trigger, const std::string& msg);
 
 	// File Utilities
 
@@ -84,12 +87,6 @@ namespace ae
 
 	extern int random(unsigned int lower_limit, unsigned int upper_limit);
 
-	extern vec2 randVec2(unsigned int min = 0, unsigned int max = 255);
-
-	extern vec3 randVec3(unsigned int min = 0, unsigned int max = 255);
-
-	extern vec4 randVec4(unsigned int min = 0, unsigned int max = 255);
-
 	// Color Utilities
 
 	constexpr vec3 hexToRGB(int hex)
@@ -99,78 +96,54 @@ namespace ae
 
 	// Timer
 
-	namespace timer
+	struct timer
 	{
-
-		namespace
-		{
-			extern std::chrono::steady_clock::time_point clock_start;
-			extern std::chrono::steady_clock::time_point clock_end;
-		}
-
-		extern void begin();
-
-		extern void stop();
-
-		extern long long getNanoSeconds();
-
-		extern long long getMicroSeconds();
-
-		extern long long getMilliSeconds();
-
-		extern void basic(std::function<void()> func);
-
-		extern void basic(const std::string& log_msg, std::function<void()> func);
-
+	public:
+		static void start();
+		static void stop();
+		static long long nano();
+		static long long micro();
+		static long long milli();
+		static void basic(std::function<void()> func);
+		static void basic(const std::string& log_msg, std::function<void()> func);
+	private:
+		static std::chrono::steady_clock::time_point begin;
+		static std::chrono::steady_clock::time_point end;
 	};
 
 	// FPS Counter
 
-	class FPSCounter
+	struct fps
 	{
 	public:
-
-		FPSCounter() : fps(0), last_fps(0), fps_timer(0.0) { }
-
-		bool update(double dt);
-
-		const unsigned int get() const;
-
-		void operator++();
-
-		void operator++(int unused);
-
+		static bool update(double dt);
+		static const unsigned int get();
+		static void tick();
 	private:
-
-		unsigned int fps;
-
-		unsigned int last_fps;
-
-		double fps_timer;
-
+		static double timer;
+		static unsigned int count;
+		static unsigned int last_fps;
 	};
 
 	// Event Queue
 
-	class EventQueue
+	class EventQueue : public Base
 	{
 	public:
 
-		EventQueue() { }
-
 		void update(double dt);
 
-		void addEvent(double delay, double duration, bool repeat, std::function<void()> callback);
+		void addEvent(double delay, double duration, bool repeat, std::function<bool()> callback);
 
 	private:
 
 		struct EventQueueEvent
 		{
-			double timer;
-			double delay;
-			double duration;
-			bool repeat;
-			std::function<void()> callback;
+			double timer		{ 0.0 };
+			double delay		{ 0.0 };
+			double duration		{ 0.0 };
+			bool repeat			{ false };
+			std::function<bool()> callback;
 		};
 
 		std::vector<EventQueueEvent> events;
@@ -188,7 +161,7 @@ namespace ae
 	{
 	public:
 
-		Tween() : pos(0), target(0), ease(0.0f), delta(0.0f), speed(0.001f), complete(true), epsilon(0.1), type(EasingType::SINE), mode(EasingMode::EASE_INOUT) { }
+		Tween() = default;
 
 		Tween(T _pos, T _target, float _ease) : Tween(), pos(_pos), target(_target), ease(_ease) { }
 
@@ -290,21 +263,6 @@ namespace ae
 		void setUpdateCallback(std::function<void(T)> _update_callback)
 		{
 			update_callback = _update_callback;
-		}
-
-		void operator=(const Tween<T> other)
-		{
-			pos = other.pos;
-			target = other.target;
-			ease = other.ease;
-			delta = other.delta;
-			speed = other.speed;
-			finished_callback = other.finished_callback;
-			update_callback = other.update_callback;
-			complete = other.complete;
-			type = other.type;
-			mode = other.mode;
-			epsilon = other.epsilon;
 		}
 
 	private:
@@ -502,35 +460,24 @@ namespace ae
 			}
 		}
 
+		bool complete		{ true };
+		float ease			{ 0.0f };
+		float delta			{ 0.0f };
+		float speed			{ 0.0f };
+		double epsilon		{ 0.0 };
+		EasingType type		{ EasingType::SINE };
+		EasingMode mode		{ EasingMode::EASE_INOUT };
+		const float c1		{ 1.70158f };
+		const float c2		{ c1 * 1.525f };
+		const float c3		{ c1 + 1.0f };
+		const float c4		{ (float)((2.0f * PI) / 3.0f) };
+		const float c5		{ (float)((2.0f * PI) / 4.5f) };
+		const float n1		{ 7.5625f };
+		const float d1		{ 2.75f };
 		T pos;
-
 		T target;
-
-		float ease;
-
-		float delta;
-
-		float speed;
-
 		std::function<void()> finished_callback;
-
 		std::function<void(T)> update_callback;
-
-		bool complete;
-
-		EasingType type;
-
-		EasingMode mode;
-
-		double epsilon;
-
-		const float c1 = 1.70158f;
-		const float c2 = c1 * 1.525f;
-		const float c3 = c1 + 1.0f;
-		const float c4 = (float)((2.0f * PI) / 3.0f);
-		const float c5 = (float)((2.0f * PI) / 4.5f);
-		const float n1 = 7.5625f;
-		const float d1 = 2.75f;
 	};
 
 	template<typename T>
@@ -538,7 +485,7 @@ namespace ae
 	{
 	public:
 
-		TweenList() : repeat(false), complete(true) { }
+		TweenList() = default;
 
 		TweenList(const std::vector<T>& _list, bool _repeat)
 		{
@@ -592,15 +539,6 @@ namespace ae
 			return complete;
 		}
 
-		void operator=(const TweenList<T> other)
-		{
-			tween = other.tween;
-			list = other.list;
-			backup = other.backup;
-			repeat = other.repeat;
-			complete = other.complete;
-		}
-
 		Tween<T>& getTween()
 		{
 			return tween;
@@ -608,15 +546,11 @@ namespace ae
 
 	private:
 
+		bool repeat		{ false };
+		bool complete	{ true };
 		Tween<T> tween;
-
 		std::vector<T> list;
-
 		std::vector<T> backup;
-
-		bool repeat;
-
-		bool complete;
 
 	};
 
@@ -638,14 +572,10 @@ namespace ae
 
 	private:
 
+		bool quit	{ false };
 		std::mutex lock;
-
 		std::condition_variable cv;
-
-		bool quit;
-
 		std::vector<std::thread> threads;
-
 		std::queue<FuncPtr> tasks;
 
 	};

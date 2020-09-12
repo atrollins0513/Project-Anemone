@@ -64,6 +64,9 @@
     <ClInclude Include="Anemone\Particle.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="Anemone\Base.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -126,6 +129,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Particle.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gl3w.c">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,8 +1,8 @@
 #pragma once
 
-#ifndef GLEW_STATIC
-#define GLEW_STATIC
-#endif
+//#ifndef GLEW_STATIC
+//#define GLEW_STATIC
+//#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,13 +11,16 @@
 #include <string>
 #include <unordered_map>
 #include <tuple>
+#include <fstream>
 
-#include "includes\glew.h"
+//#include "includes\glew.h"
+#include "includes\gl3w.h"
 #include "includes\glfw3.h"
 
 #include "Utilities.h"
 #include "Event.h"
 #include "State.h"
+#include "Manager.h"
 
 namespace ae
 {
@@ -27,7 +30,11 @@ namespace ae
 	{
 	public:
 
-		bool Create(const std::string& _title, unsigned int _width, unsigned int _height);
+		Window() = default;
+
+		Window(const std::string& _title, unsigned int _width, unsigned int _height);
+
+		//bool Create(const std::string& _title, unsigned int _width, unsigned int _height);
 		
 		virtual void Start();
 
@@ -71,11 +78,11 @@ namespace ae
 
 	protected:
 
-		virtual void initialization() {};
-
-		virtual void update(double dt) {};
-		
-		virtual void render() {};
+		//virtual void initialization() {};
+		//
+		//virtual void update(double dt) {};
+		//
+		//virtual void render() {};
 
 		std::string title			{ "" };
 		unsigned int width			{ 1280 };

@@ -2,27 +2,16 @@
 
 namespace ae
 {
-	namespace Input
+	vec2 Input::mouse_pos			= 0.0f;
+	bool Input::keys[GLFW_KEY_LAST]	{ false };
+
+	const vec2& Input::getMousePos()
 	{
-		namespace
-		{
-			vec2 mouse_pos;
-			bool keys[GLFW_KEY_LAST];
-		};
+		return mouse_pos;
+	}
 
-		const vec2& getMousePos()
-		{
-			return mouse_pos;
-		}
-
-		const void setMousePos(const ae::vec2& new_mouse_pos)
-		{
-			mouse_pos = new_mouse_pos;
-		}
-
-		const bool keyIsDown(unsigned int key)
-		{
-			return keys[key];
-		}
-	};
+	const bool Input::keyIsDown(unsigned int key)
+	{
+		return keys[key];
+	}
 };

@@ -2,6 +2,46 @@
 
 namespace ae
 {
+    std::vector<ae::sptr<Base>> Manager::bases;
+    sptr<Window> Manager::window = nullptr;
+
+    void Manager::add(ae::sptr<Base> base)
+    {
+        toss(std::find(bases.begin(), bases.end(), base) != bases.end(), "This class has already been added to the Manager.");
+        bases.push_back(base);
+    }
+
+    void Manager::remove(ae::sptr<Base> base)
+    {
+        auto itr = std::find(bases.begin(), bases.end(), base);
+        if (itr != bases.end()) {
+            bases.erase(itr);
+        }
+    }
+
+    void Manager::Initiate(const std::string& title, unsigned int width, unsigned int height)
+    {
+        toss(window != nullptr, "Window has already been initialized.");
+        window = makes<Window>(title, width, height);
+    }
+
+    void Manager::update(double dt)
+    {
+        for (auto& b : bases)
+        {
+            b->update(dt);
+        }
+    }
+
+    void Manager::render()
+    {
+        for (auto& b : bases)
+        {
+            b->render();
+        }
+    }
+
+    /*
     ApplicationManager<DefaultManager>* Manager = ApplicationManager<DefaultManager>::getInstance();
 
     DefaultManager::DefaultManager() : Window()
@@ -70,7 +110,7 @@ namespace ae
 
     // Event Queue Functions
 
-    void DefaultManager::addEvent(double delay, double duration, bool repeat, std::function<void()> callback)
+    void DefaultManager::addEvent(double delay, double duration, bool repeat, std::function<bool()> callback)
     {
         eventQueue->addEvent(delay, duration, repeat, callback);
     }
@@ -81,4 +121,5 @@ namespace ae
     {
         taskManager->addTask(func);
     }
+    */
 };

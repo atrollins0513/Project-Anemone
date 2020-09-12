@@ -1,13 +1,14 @@
 #pragma once
 
-#ifndef GLEW_STATIC
-#define GLEW_STATIC
-#endif
+//#ifndef GLEW_STATIC
+//#define GLEW_STATIC
+//#endif
 
 #include <vector>
 #include <map>
 
-#include "includes\glew.h"
+//#include "includes\glew.h"
+#include "includes\gl3w.h"
 
 #include "Utilities.h"
 
@@ -78,9 +79,12 @@ namespace ae
 
 		const GLenum getUsage() const { return usage; }
 
-	protected:
+		bool operator==(const VertexBuffer& other)
+		{
+			return this == &other;
+		}
 
-		//unsigned int id;
+	protected:
 
 		sptr<BufferHandle> handle		{ nullptr };
 		GLenum target					{ GL_ARRAY_BUFFER };
@@ -99,9 +103,9 @@ namespace ae
 
 		void init();
 
-		void bindAttribute(unsigned int attribute, VertexBuffer* buffer, GLenum type, unsigned int count, unsigned int stride, intptr_t offset);
+		void bindAttribute(unsigned int attribute, const VertexBuffer& buffer, GLenum type, unsigned int count, unsigned int stride, intptr_t offset);
 
-		void setIndexBuffer(VertexBuffer* indexBuffer);
+		void setIndexBuffer(const VertexBuffer& indexBuffer);
 
 		void bind() const;
 
@@ -111,7 +115,7 @@ namespace ae
 
 	private:
 
-		sptr<BufferHandle> handle;
+		sptr<BufferHandle> handle	{ nullptr };
 
 	};
 
@@ -121,7 +125,7 @@ namespace ae
 
 		void init();
 
-		void add(VertexBuffer* buffer);
+		void add(VertexBuffer buffer);
 
 		void setDivisors(const std::map<int, int>& topology);
 
@@ -129,25 +133,22 @@ namespace ae
 
 		void unbind() const;
 
-		VertexBuffer* getBuffer(unsigned int index);
-
-		~DynamicBuffer();
+		VertexBuffer& getBuffer(unsigned int index);
 
 	private:
 
-		void update(VertexBuffer* buffer);
+		void update(VertexBuffer buffer);
 
 		bool topologyCollision(const std::map<int, int>& topology);
 
-		VertexBuffer* index		{ nullptr };
-		bool initialized		{ false };
 		VertexArray va;
-		std::vector<VertexBuffer*> buffers;
+		VertexBuffer index;
+		std::vector<VertexBuffer> buffers;
 		std::map<int, bool> attr;
 
 	};
 
-	class BufferObject : public MakeSmartExt<BufferObject>
+	class BufferObject
 	{
 	public:
 

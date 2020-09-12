@@ -30,7 +30,7 @@ namespace ae
 		ptr = base;
 
 		indices = new unsigned int[max_particles * 6];
-		for (int i = 0; i < max_particles; ++i)
+		for (unsigned int i = 0; i < max_particles; ++i)
 		{
 			indices[i * 6 + 0] = i * 4 + 0;
 			indices[i * 6 + 1] = i * 4 + 1;
@@ -54,23 +54,15 @@ namespace ae
 
 	void ParticleSystem::attach(Emitter* emitter)
 	{
-		if (std::find(emitters.begin(), emitters.end(), emitter) == emitters.end()) {
-			emitters.push_back(emitter);
-		}
-		else {
-			throw "Emitter has already been attached to this particle system.";
-		}
+		toss(std::find(emitters.begin(), emitters.end(), emitter) != emitters.end(), "Emitter has already been attached to this particle system.");
+		emitters.push_back(emitter);
 	}
 
 	void ParticleSystem::remove(Emitter* emitter)
 	{
 		auto it = std::find(emitters.begin(), emitters.end(), emitter);
-		if (it != emitters.end()) {
-			emitters.erase(it);
-		}
-		else {
-			throw "This emitter has not been attached to the particle system.";
-		}
+		toss(it != emitters.end(), "This emitter has not been attached to the particle system.");
+		emitters.erase(it);
 	}
 
 	void ParticleSystem::update(double dt)
@@ -114,13 +106,13 @@ namespace ae
 		}
 		queue.clear();
 
-		buffer.setSubData(0, ((unsigned int)ptr - (unsigned int)base), base);
+		buffer.setSubData(0, (unsigned int)((unsigned long long)ptr - (unsigned long long)base), base);
 	}
 
 	void ParticleSystem::render()
 	{
 		buffer.bind();
-		glDrawElements(GL_TRIANGLES, particles.size() * 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, (int)(particles.size() * 6), GL_UNSIGNED_INT, 0);
 		buffer.unbind();
 	}
 

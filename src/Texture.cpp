@@ -51,7 +51,7 @@ namespace ae
 
 	void Texture::create(unsigned char* data, int length, int bpp, bool mipmaps, GLint mag_filter, GLint min_filter)
 	{
-		if (data != 0)
+		if (data != nullptr)
 		{
 			int tempWidth = texture_width;
 			int tempHeight = texture_height;
@@ -77,6 +77,10 @@ namespace ae
 			unbind();
 
 			delete data;
+		}
+		else
+		{
+			log("Texture", "Failed to load texture data.\n");
 		}
 	}
 
