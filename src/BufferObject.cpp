@@ -32,6 +32,9 @@ namespace ae
 		case BufferType::TEXTURE:
 			glGenTextures(1, &handle->id);
 			break;
+		case BufferType::RENDER:
+			glGenRenderbuffers(1, &handle->id);
+			break;
 		}
 		return handle;
 	}
@@ -51,6 +54,9 @@ namespace ae
 			break;
 		case BufferType::TEXTURE:
 			glDeleteTextures(1, &id);
+			break;
+		case BufferType::RENDER:
+			glDeleteRenderbuffers(1, &id);
 			break;
 		}
 	}

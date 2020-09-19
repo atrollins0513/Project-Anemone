@@ -3,80 +3,25 @@
 namespace ae
 {
 
-	// Error Utilities
-
-	void log(const std::string& identifier, const std::string& message)
-	{
-		std::ofstream file("log.txt", std::ios::out | std::ios::app);
-		if (file.is_open())
-		{
-			time_t rawtime;
-			struct tm* timeinfo;
-			char buffer[25];
-			time(&rawtime);
-			timeinfo = localtime(&rawtime);
-			strftime(buffer, 25, "[%F %H:%M:%S]", timeinfo);
-			file << buffer << "[" << identifier << "]\n" << "[" << message << "]" << std::endl;
-			file.close();
-		}
-	}
-
-	void log(const std::string& identifier, const std::string& message, const std::string& message_two)
-	{
-		std::ofstream file("log.txt", std::ios::out | std::ios::app);
-		if (file.is_open())
-		{
-			time_t rawtime;
-			struct tm* timeinfo;
-			char buffer[25];
-			time(&rawtime);
-			timeinfo = localtime(&rawtime);
-			strftime(buffer, 25, "[%F %H:%M:%S]", timeinfo);
-			file << buffer << "[" << identifier << "]\n" << "[" << message << message_two << "]" << std::endl;
-			file.close();
-		}
-	}
-
-	bool toss(bool trigger, const std::string& msg)
-	{
-		if (trigger) { throw std::runtime_error(msg); }
-		return trigger;
-	}
-
 	// File Utilities
 
 	std::string loadFile(const std::string& filename, int file_mode)
 	{
-		std::ifstream file(filename, file_mode);
-
-		std::string data;
+		std::ifstream file(filename, std::ios::in);
 
 		if (file.is_open())
 		{
+			std::string data;
 			file.seekg(0, std::ios::end);
-			unsigned long size = (unsigned long)file.tellg();
+			data.resize(file.tellg());
 			file.seekg(0, std::ios::beg);
-
-			if (size <= 0)
-			{
-				file.close();
-				return "";
-			}
-
-			char* fileData = new char[size + 1];
-			file.read((char*)fileData, size);
-
-			data = fileData;
-
-			delete[] fileData;
-
+			file.read(&data[0], data.size());
 			file.close();
-
 			return data;
 		}
 		else
 		{
-			log(filename, "Failed to open.");
+			log(filename, "Failed to open file.");
 			return "";
 		}
 	}
@@ -94,23 +39,6 @@ namespace ae
 		}
 
 		return result;
-	}
-
-	void setSeed(int seed)
-	{
-		srand(seed);
-	}
-
-	// Random Function Utilities
-
-	int random(unsigned int upper_limit)
-	{
-		return rand() % upper_limit;
-	}
-
-	int random(unsigned int lower_limit, unsigned int upper_limit)
-	{
-		return (rand() % (upper_limit - lower_limit)) + lower_limit;
 	}
 
 	// Timer
@@ -163,8 +91,8 @@ namespace ae
 	// FPS Counter
 
 	double fps::timer = 0.0;
-	unsigned int count = 0;
-	unsigned int last_fps = 0;
+	unsigned int fps::count = 0;
+	unsigned int fps::last_fps = 0;
 
 	bool fps::update(double dt)
 	{

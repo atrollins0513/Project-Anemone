@@ -567,6 +567,17 @@ namespace ae
 
 	extern float normalize(float scalar);
 
+	extern void setSeed(int seed);
+
+	extern int random(unsigned int upper_limit);
+
+	extern int random(unsigned int lower_limit, unsigned int upper_limit);
+
+	constexpr vec3 hexToRGB(int hex)
+	{
+		return vec3(((hex >> 16) & 0xFF) / 255.0f, ((hex >> 8) & 0xFF) / 255.0f, (hex & 0xFF) / 255.0f);
+	}
+
 	template<typename T>
 	T lerp(T a, T b, double t)
 	{

@@ -6,14 +6,10 @@
 #include <assert.h>
 #include <string>
 
-//#ifndef GLEW_STATIC
-//	#define GLEW_STATIC
-//#endif
-
-//#include "includes\glew.h"
 #include "includes\gl3w.h"
 #include "includes\glfw3.h"
 
+#include "Error.h"
 #include "Utilities.h"
 #include "Event.h"
 
@@ -37,8 +33,6 @@ namespace ae
 		virtual void render(double alpha) = 0;
 
 		virtual void event(ae::Event& e) = 0;
-
-		virtual void destroy() = 0;
 
 		bool addScene(unsigned int id, Scene* scene)
 		{
@@ -96,11 +90,9 @@ namespace ae
 
 		void addState(unsigned int id, State* state, bool set_current = false, bool initialize = false);
 
-		void removeState(unsigned int id, bool cleanup);
+		void removeState(unsigned int id);
 
 		void setState(unsigned int id, bool initialize = false);
-
-		void setState(unsigned int id, State* state, bool initialize = false);
 
 		State* getState(unsigned int id);
 

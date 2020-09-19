@@ -1,15 +1,11 @@
 #pragma once
 
-//#ifndef GLEW_STATIC
-//#define GLEW_STATIC
-//#endif
-
 #include <string>
-
 #include <Windows.h>
 #include "includes\gl3w.h"
 #include <gl\GL.h>
 
+#include "Error.h"
 #include "stb_image.h"
 #include "Utilities.h"
 #include "BufferObject.h"
@@ -20,7 +16,7 @@ namespace ae
 
 	enum TextureFiltering { NEAREST, LINEAR, TRILINEAR};
 
-	class Texture : public MakeSmartExt<Texture>
+	class Texture
 	{
 	public:
 
@@ -58,7 +54,7 @@ namespace ae
 
 	};
 
-	class TextureArray : public MakeSmartExt<TextureArray>
+	class TextureArray
 	{
 	public:
 

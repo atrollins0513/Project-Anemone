@@ -14,8 +14,17 @@
 	#endif
 #endif
 
+#if defined(_WIN32) && defined(AE_HIDE_DEBUG_CONSOLE)
+	#pragma comment(linker, "/SUBSYSTEM:WINDOWS")
+	#pragma comment(linker, "/entry:mainCRTStartup")
+#elif defined(_WIN32)
+	#pragma comment(linker, "/SUBSYSTEM:CONSOLE")
+	#pragma comment(linker, "/entry:mainCRTStartup")
+#endif
+
 /* Includes */
 
+#include "Error.h"
 #include "Base.h"
 #include "BufferObject.h"
 #include "Font.h"

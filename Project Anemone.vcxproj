@@ -23,6 +23,7 @@
     <ClInclude Include="Anemone\Base.h" />
     <ClInclude Include="Anemone\BufferObject.h" />
     <ClInclude Include="Anemone\Camera.h" />
+    <ClInclude Include="Anemone\Error.h" />
     <ClInclude Include="Anemone\Event.h" />
     <ClInclude Include="Anemone\Font.h" />
     <ClInclude Include="Anemone\Manager.h" />
@@ -45,6 +46,7 @@
   <ItemGroup>
     <ClCompile Include="src\BufferObject.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Error.cpp" />
     <ClCompile Include="src\Event.cpp" />
     <ClCompile Include="src\Font.cpp" />
     <ClCompile Include="src\gl3w.c" />

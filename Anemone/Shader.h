@@ -1,19 +1,15 @@
 #pragma once
 
-//#ifndef GLEW_STATIC
-//#define GLEW_STATIC
-//#endif
-
 #include <Windows.h>
 #include <string>
 #include <unordered_map>
-//#include "includes\glew.h"
 #include "includes\gl3w.h"
 #include <gl\GL.h>
 #include <gl\GLU.h>
 #include <cassert>
 #include <sstream>
 
+#include "Error.h"
 #include "Utilities.h"
 
 namespace ae
@@ -148,7 +144,7 @@ namespace ae
 		GLenum type;
 	};
 
-	class Shader : public MakeSmartExt<Shader>
+	class Shader
 	{
 	public:
 		

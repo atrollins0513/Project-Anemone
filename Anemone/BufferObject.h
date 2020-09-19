@@ -1,15 +1,11 @@
 #pragma once
 
-//#ifndef GLEW_STATIC
-//#define GLEW_STATIC
-//#endif
-
 #include <vector>
 #include <map>
 
-//#include "includes\glew.h"
 #include "includes\gl3w.h"
 
+#include "Error.h"
 #include "Utilities.h"
 
 namespace ae
@@ -19,7 +15,8 @@ namespace ae
 		VERTEX = 0,
 		ARRAY,
 		FRAME,
-		TEXTURE
+		TEXTURE,
+		RENDER
 	};
 
 	class BufferHandle

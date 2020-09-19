@@ -1,5 +1,6 @@
 #pragma once
 
+#include "includes/gl3w.h"
 #include "includes/glfw3.h"
 
 #include "Math.h"
@@ -114,6 +115,7 @@ namespace ae
 		static vec2 mouse_pos;
 
 		static const vec2& getMousePos();
+		static const void setMousePos(const ae::vec2& new_pos);
 		static const bool keyIsDown(unsigned int key);
 	private:
 	};

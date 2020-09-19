@@ -1,10 +1,5 @@
 #pragma once
 
-//#ifndef GLEW_STATIC
-//#define GLEW_STATIC
-//#endif
-
-//#include "includes\glew.h"
 #include "includes\gl3w.h"
 #include "includes\glfw3.h"
 

@@ -2,8 +2,9 @@
 
 namespace ae
 {
+    /*
     std::vector<ae::sptr<Base>> Manager::bases;
-    sptr<Window> Manager::window = nullptr;
+    sptr<ae::Window> Manager::window = nullptr;
 
     void Manager::add(ae::sptr<Base> base)
     {
@@ -40,86 +41,59 @@ namespace ae
             b->render();
         }
     }
+    */
 
-    /*
+    
     ApplicationManager<DefaultManager>* Manager = ApplicationManager<DefaultManager>::getInstance();
-
-    DefaultManager::DefaultManager() : Window()
-    {
-        textManager = new TextManager();
-        eventQueue = new EventQueue();
-        taskManager = new TaskManager(4);
-    }
-
-    void DefaultManager::initialization()
-    {
-        textManager->init();
-    }
 
     void DefaultManager::update(double dt)
     {
-        eventQueue->update(dt);
+        for (auto& b : bases)
+        {
+            b->update(dt);
+        }
     }
 
     void DefaultManager::render()
     {
-        textManager->render();
+        for (auto& b : bases)
+        {
+            b->render();
+        }
     }
 
-    // Text Manager Functions
-
-    void DefaultManager::updateText(TextRef text)
+    void DefaultManager::add(ae::sptr<Base> base)
     {
-        textManager->updateText(text);
+        toss(std::find(bases.begin(), bases.end(), base) != bases.end(), "This class has already been added to the Manager.");
+        bases.push_back(base);
     }
 
-    void DefaultManager::updateText(std::initializer_list<TextRef> text_list)
+    void DefaultManager::remove(ae::sptr<Base> base)
     {
-        textManager->updateText(text_list);
+        auto itr = std::find(bases.begin(), bases.end(), base);
+        if (itr != bases.end()) {
+            bases.erase(itr);
+        }
     }
 
-    TextRef DefaultManager::addText(const std::string& _str, const vec2& _pos, const vec4& _color, float _scale, bool _visible, const std::string& font_name, const TextOffset offset)
+    void create(const std::string& _title, unsigned int _width, unsigned int _height, unsigned int hints)
     {
-        return textManager->addText(_str, _pos, _color, _scale, _visible, font_name, offset);
+        Manager->create(_title, _width, _height, hints);
     }
 
-    void DefaultManager::removeText(TextRef text)
+    void start()
     {
-        textManager->removeText(text);
+        Manager->start();
     }
 
-    void DefaultManager::addFont(const std::string& name, const std::string& font_file, const std::string& font_texture)
+    void addState(unsigned int id, State* state, bool set_current, bool initialize)
     {
-        textManager->addFont(name, font_file, font_texture);
+        Manager->addState(id, state, set_current, initialize);
     }
 
-    bool DefaultManager::textExists(TextRef text)
+    void setState(unsigned int id, bool initialize)
     {
-        return textManager->textExists(text);
+        Manager->setState(id, initialize);
     }
 
-    unsigned int DefaultManager::stringWidth(const std::string& str, float scale, const std::string& font_name)
-    {
-        return textManager->stringWidth(str, scale, font_name);
-    }
-
-    unsigned int DefaultManager::stringHeight(const std::string& str, float scale, const std::string& font_name)
-    {
-        return textManager->stringHeight(str, scale, font_name);
-    }
-
-    // Event Queue Functions
-
-    void DefaultManager::addEvent(double delay, double duration, bool repeat, std::function<bool()> callback)
-    {
-        eventQueue->addEvent(delay, duration, repeat, callback);
-    }
-
-    // Task Manager Functions
-
-    void DefaultManager::addTask(FuncPtr func)
-    {
-        taskManager->addTask(func);
-    }
-    */
 };

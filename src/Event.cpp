@@ -10,6 +10,11 @@ namespace ae
 		return mouse_pos;
 	}
 
+	const void Input::setMousePos(const ae::vec2& new_pos)
+	{
+		mouse_pos = new_pos;
+	}
+
 	const bool Input::keyIsDown(unsigned int key)
 	{
 		return keys[key];

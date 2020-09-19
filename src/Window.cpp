@@ -5,6 +5,11 @@ namespace ae
 
 	Window::Window(const std::string& _title, unsigned int _width, unsigned int _height)
 	{
+		create(_title, _width, _height);
+	}
+
+	void Window::create(const std::string& _title, unsigned int _width, unsigned int _height, unsigned int hints)
+	{
 		width = _width;
 		height = _height;
 		title = _title;
@@ -22,10 +27,13 @@ namespace ae
 			return;
 		}
 
+		if (hints & Hints::BORDERLESS) {
+			setHint(AE_DECORATED, AE_FALSE);
+		}
+
 		// If GLFW Initializes, then create the Window
 		window = glfwCreateWindow(width, height, title.c_str(), monitor, share);
-		if (window == NULL)
-		{
+		if (window == NULL) {
 			log("Window", "Failed to open GLFW window.");
 			glfwTerminate();
 			return;
@@ -34,10 +42,8 @@ namespace ae
 		// Set GLFW to point to the current window
 		glfwMakeContextCurrent(window);
 
-		// Initialize GLEW
-		//glewExperimental = true;
-		//if (glfwInit != GLEW_OK)
-		if(gl3wInit())
+		// Initialize GL3W
+		if (gl3wInit())
 		{
 			log("Window", "Failed to initialize GL3W");
 			glfwTerminate();
@@ -48,6 +54,14 @@ namespace ae
 			log("Window", "System must support OpenGL version 3.2 or newer");
 			glfwTerminate();
 			return;
+		}
+
+		if (hints & Hints::FULLSCREEN) {
+			enableFullScreen((hints & Hints::BORDERLESS));
+		} else {
+			if (hints & Hints::BORDERLESS) {
+				centerWindow();
+			}
 		}
 
 		// If every initializes properly, then setup some basic OpenGL stuff and set event callbacks
@@ -61,67 +75,66 @@ namespace ae
 
 			switch (action)
 			{
-				case GLFW_PRESS:
-				{
-					state->event(KeyPressedEvent(key, scancode, mods, 0));
-					break;
-				}
-				case GLFW_RELEASE:
-				{
-					state->event(KeyReleasedEvent(key, scancode, mods));
-					break;
-				}
-				case GLFW_REPEAT:
-				{
-					state->event(KeyPressedEvent(key, scancode, mods, 1));
-					break;
-				}
+			case GLFW_PRESS:
+			{
+				state->event(KeyPressedEvent(key, scancode, mods, 0));
+				break;
 			}
-		});
+			case GLFW_RELEASE:
+			{
+				state->event(KeyReleasedEvent(key, scancode, mods));
+				break;
+			}
+			case GLFW_REPEAT:
+			{
+				state->event(KeyPressedEvent(key, scancode, mods, 1));
+				break;
+			}
+			}
+			});
 
 		glfwSetCharCallback(window, [](GLFWwindow* w, unsigned int codepoint) {
 			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(KeyTypedEvent(codepoint));
-		});
+			});
 
 		glfwSetCursorPosCallback(window, [](GLFWwindow* w, double xpos, double ypos) {
 			auto state = ((Window*)glfwGetWindowUserPointer(w));
 			ae::Input::setMousePos(ae::vec2((float)xpos, (float)(state->getHeight() - ypos)));
 			state->getCurrentState()->event(MouseMoveEvent(xpos, ypos));
-		});
+			});
 
 		glfwSetMouseButtonCallback(window, [](GLFWwindow* w, int button, int action, int mods) {
 			auto state = ((Window*)glfwGetWindowUserPointer(w))->getCurrentState();
 
 			switch (action)
 			{
-				case GLFW_PRESS:
-				{
-					state->event(MouseDownEvent(button, mods));
-					break;
-				}
-				case GLFW_RELEASE:
-				{
-					state->event(MouseReleaseEvent(button, mods));
-					break;
-				}
+			case GLFW_PRESS:
+			{
+				state->event(MouseDownEvent(button, mods));
+				break;
 			}
-		});
+			case GLFW_RELEASE:
+			{
+				state->event(MouseReleaseEvent(button, mods));
+				break;
+			}
+			}
+			});
 
 		glfwSetScrollCallback(window, [](GLFWwindow* w, double xoffset, double yoffset) {
 			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(MouseScrollEvent(xoffset, yoffset));
-		});
+			});
 
 		glfwSetCursorEnterCallback(window, [](GLFWwindow* w, int entered) {
 			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(WindowFocusEvent(entered));
-		});
+			});
 
 		glfwSetWindowSizeCallback(window, [](GLFWwindow* w, int width, int height) {
 			((Window*)glfwGetWindowUserPointer(w))->getCurrentState()->event(WindowResizeEvent(width, height));
-		});
-
+			});
 	}
 
-	void Window::Start()
+	void Window::start()
 	{
 		toss(current_state == nullptr, "State has not been set.");
 		toss(window == nullptr, "Window has to been created before you can start.");
@@ -147,13 +160,13 @@ namespace ae
 
 			while (accumulator >= dt)
 			{
-				Manager::update(dt);
+				update(dt);
 				current_state->update(dt);
 				accumulator -= dt;
 			}
 
 			current_state->render(accumulator / dt);
-			Manager::render();
+			render();
 
 			glfwSwapBuffers(window);
 		}
@@ -208,6 +221,16 @@ namespace ae
 		share = _share;
 	}
 
+	void Window::setBorderlessWindow(bool borderless)
+	{
+		setHint(GLFW_DECORATED, !borderless);
+	}
+
+	void Window::useVSync(bool on)
+	{
+		glfwSwapInterval(on);
+	}
+
 	void Window::enableFullScreen(bool windowed)
 	{
 		toss(!window, "Fullscreen cannot be enabled because the window has not been initialized.");
@@ -225,7 +248,7 @@ namespace ae
 		}
 		else
 		{
-			glfwSetWindowMonitor(window, monitor, 0, 0, width, height, GL_DONT_CARE);
+			glfwSetWindowMonitor(window, monitor, 0, 0, width, height, GLFW_DONT_CARE);
 		}
 	}
 
@@ -250,16 +273,6 @@ namespace ae
 		int monitorX, monitorY;
 		glfwGetMonitorPos(glfwGetPrimaryMonitor(), &monitorX, &monitorY);
 		setPosition(monitorX + (mode->width - width) / 2, monitorY + (mode->height - height) / 2);
-	}
-
-	void Window::setBorderlessWindow(bool borderless)
-	{
-		setHint(GLFW_DECORATED, !borderless);
-	}
-
-	void Window::useVSync(bool on)
-	{
-		glfwSwapInterval(on);
 	}
 
 	const std::unordered_map<unsigned int, std::vector<std::tuple<int, int, int>>> Window::getVideoModes() const

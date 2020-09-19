@@ -1485,4 +1485,19 @@ namespace ae
 		return (scalar > 0.0f ? 1.0f : -1.0f);
 	}
 
+	void setSeed(int seed)
+	{
+		srand(seed);
+	}
+
+	int random(unsigned int upper_limit)
+	{
+		return rand() % upper_limit;
+	}
+
+	int random(unsigned int lower_limit, unsigned int upper_limit)
+	{
+		return (rand() % (upper_limit - lower_limit)) + lower_limit;
+	}
+
 };

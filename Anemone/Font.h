@@ -6,6 +6,7 @@
 #include <sstream>
 #include <map>
 
+#include "Error.h"
 #include "Base.h"
 #include "Utilities.h"
 #include "BufferObject.h"

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Error.h"
 #include "Math.h"
 #include "Event.h"
 #include "Utilities.h"
@@ -40,9 +41,9 @@ namespace ae
 		
 		vec3 old_position;
 		vec3 translation;
-		vec3* tracked;
 		mat4 proj;
 		mat4 view;
+		vec3* tracked		{ nullptr };
 		bool mouse_down		{ false };
 		float total_zoom	{ 1.0f };
 		int drag_button		{ GLFW_MOUSE_BUTTON_MIDDLE };

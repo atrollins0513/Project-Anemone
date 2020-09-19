@@ -1,9 +1,5 @@
 #pragma once
 
-//#ifndef GLEW_STATIC
-//#define GLEW_STATIC
-//#endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <chrono>
@@ -13,14 +9,13 @@
 #include <tuple>
 #include <fstream>
 
-//#include "includes\glew.h"
 #include "includes\gl3w.h"
 #include "includes\glfw3.h"
 
+#include "Error.h"
 #include "Utilities.h"
 #include "Event.h"
 #include "State.h"
-#include "Manager.h"
 
 namespace ae
 {
@@ -30,13 +25,19 @@ namespace ae
 	{
 	public:
 
+		enum Hints
+		{
+			BORDERLESS = 0x01,
+			FULLSCREEN = 0x02
+		};
+
 		Window() = default;
 
 		Window(const std::string& _title, unsigned int _width, unsigned int _height);
 
-		//bool Create(const std::string& _title, unsigned int _width, unsigned int _height);
+		void create(const std::string& _title, unsigned int _width, unsigned int _height, unsigned int hints = 0);
 		
-		virtual void Start();
+		virtual void start();
 
 		void setWindowTitle(const std::string& new_title);
 
@@ -50,12 +51,16 @@ namespace ae
 
 		void setHint(int hint, int value);
 
-		GLFWwindow* handle() { return window; }
-	
 		void setMonitor(GLFWmonitor* _monitor);
 
 		void setShare(GLFWwindow* _share);
 
+		void setBorderlessWindow(bool borderless);
+
+		void useVSync(bool on);
+
+		GLFWwindow* handle() { return window; }
+	
 		const unsigned int getWidth() const { return width; }
 
 		const unsigned int getHeight() const { return height; }
@@ -70,19 +75,12 @@ namespace ae
 
 		void centerWindow();
 
-		void setBorderlessWindow(bool borderless);
-
-		void useVSync(bool on);
-
 		const std::unordered_map<unsigned int, std::vector<std::tuple<int, int, int>>> getVideoModes() const;
 
 	protected:
 
-		//virtual void initialization() {};
-		//
-		//virtual void update(double dt) {};
-		//
-		//virtual void render() {};
+		virtual void update(double dt) {};
+		virtual void render() {};
 
 		std::string title			{ "" };
 		unsigned int width			{ 1280 };

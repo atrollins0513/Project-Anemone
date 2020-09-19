@@ -192,7 +192,9 @@ namespace ae
 
 	void Shader::loadFromFile(const std::string& vertex, const std::string& fragment)
 	{
-		CreateShader(loadFile(vertex).c_str(), loadFile(fragment).c_str());
+		std::string& vs = loadFile(vertex);
+		std::string& fs = loadFile(fragment);
+		CreateShader(vs, fs);
 	}
 
 	void Shader::loadFromMemory(const std::string& vertex, const std::string& fragment)
